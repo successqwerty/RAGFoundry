@@ -40,14 +40,20 @@ Because full documents are too large for precise vector search and exceed LLM co
 * **`chunk_size`**: Limits the character size of each snippet to preserve semantic focus.
 * **`overlap`**: Steps the sliding window backward so consecutive chunks share overlapping text, ensuring key context is never lost across sentence boundaries.
 
-### 5. Repository Protection (`.gitignore`)
+### 5. Text Embedding Module (`embeddings.py`)
+We implemented local vector embedding generation using the open-source `all-MiniLM-L6-v2` model from `sentence-transformers`:
+* **`get_embedding(text)`**: Converts a single string (e.g., a user query) into a 384-dimensional vector.
+* **`get_embeddings_batch(texts)`**: Converts a list of text chunks into a 2D matrix of shape `(N, 384)`.
+* **Semantic Vector Space**: Maps semantic meanings into numerical coordinates so mathematical distance represents semantic similarity.
+
+### . Repository Protection (`.gitignore`)
 We configured `.gitignore` to prevent temporary Python caches (`__pycache__`), virtual environment folders, and vector index files from being tracked in version control.
 
 ---
 
 ## 📁 Current Project Structure
 
-```text
+
 RAG FOUNDRY/
 ├── data/
 │   └── sample.txt       # Enterprise HR Handbook document
@@ -55,4 +61,5 @@ RAG FOUNDRY/
 ├── requirements.txt     # Dependency list (pypdf, sentence-transformers, faiss-cpu)
 ├── ingestion.py         # Document loader and metadata extractor
 ├── chunking.py          # Sliding-window text chunker
+├── embeddings.py        # Vector embedding generator (all-MiniLM-L6-v2)
 └── README.md            # Complete project documentation
