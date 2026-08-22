@@ -51,7 +51,11 @@ We integrated Meta's FAISS library to index and query vector embeddings in memor
 * **`create_faiss_index(embeddings)`**: Initializes an `IndexFlatL2` vector index, formats vector data to `float32`, and indexes document embeddings.
 * **`search_faiss_index(index, query_vector, k=3)`**: Performs Euclidean L2 distance similarity search to find top-$K$ matching chunks for a user question.
 
-### . Repository Protection (`.gitignore`)
+### 7. Retrieval Engine Module (`retrieval.py`)
+We built a unified `RetrievalEngine` class that ties together ingestion, chunking, batch embeddings, and FAISS indexing into an end-to-end retrieval interface:
+* **Metadata Tracking**: Maps each text chunk to its source document filename for citations.
+* **`retrieve(query, k=3)`**: Embeds user query, queries FAISS index, and returns structured dictionaries containing `chunk_index`, `text`, `filename`, and `distance_score`.
+### 8. Repository Protection (`.gitignore`)
 We configured `.gitignore` to prevent temporary Python caches (`__pycache__`), virtual environment folders, and vector index files from being tracked in version control.
 
 ---
@@ -68,4 +72,5 @@ RAG FOUNDRY/
 ├── chunking.py          # Sliding-window text chunker
 ├── embeddings.py        # Vector embedding generator (all-MiniLM-L6-v2)
 ├── vector_store.py      # FAISS vector index & similarity search engine
+├── retrieval.py         # End-to-end retrieval engine with metadata tracking
 └── README.md            # Complete project documentation
