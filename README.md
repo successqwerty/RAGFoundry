@@ -46,6 +46,11 @@ We implemented local vector embedding generation using the open-source `all-Mini
 * **`get_embeddings_batch(texts)`**: Converts a list of text chunks into a 2D matrix of shape `(N, 384)`.
 * **Semantic Vector Space**: Maps semantic meanings into numerical coordinates so mathematical distance represents semantic similarity.
 
+### 6. Vector Store & Search Module (`vector_store.py`)
+We integrated Meta's FAISS library to index and query vector embeddings in memory:
+* **`create_faiss_index(embeddings)`**: Initializes an `IndexFlatL2` vector index, formats vector data to `float32`, and indexes document embeddings.
+* **`search_faiss_index(index, query_vector, k=3)`**: Performs Euclidean L2 distance similarity search to find top-$K$ matching chunks for a user question.
+
 ### . Repository Protection (`.gitignore`)
 We configured `.gitignore` to prevent temporary Python caches (`__pycache__`), virtual environment folders, and vector index files from being tracked in version control.
 
@@ -62,4 +67,5 @@ RAG FOUNDRY/
 ├── ingestion.py         # Document loader and metadata extractor
 ├── chunking.py          # Sliding-window text chunker
 ├── embeddings.py        # Vector embedding generator (all-MiniLM-L6-v2)
+├── vector_store.py      # FAISS vector index & similarity search engine
 └── README.md            # Complete project documentation
