@@ -1,3 +1,7 @@
+# Environment files (API Keys)
+.env
+*.env
+
 # Python cache files
 __pycache__/
 *.pyc

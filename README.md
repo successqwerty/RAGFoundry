@@ -55,22 +55,37 @@ We integrated Meta's FAISS library to index and query vector embeddings in memor
 We built a unified `RetrievalEngine` class that ties together ingestion, chunking, batch embeddings, and FAISS indexing into an end-to-end retrieval interface:
 * **Metadata Tracking**: Maps each text chunk to its source document filename for citations.
 * **`retrieve(query, k=3)`**: Embeds user query, queries FAISS index, and returns structured dictionaries containing `chunk_index`, `text`, `filename`, and `distance_score`.
-### 8. Repository Protection (`.gitignore`)
-We configured `.gitignore` to prevent temporary Python caches (`__pycache__`), virtual environment folders, and vector index files from being tracked in version control.
+
+### 8. LLM Generation Module (`generation.py`)
+We built a grounded answer generator using Google's `gemini-3.6-flash`:
+* **System Instructions**: Forces strict grounding on retrieved context and prevents hallucinations or outside policy inventions.
+* **`generate_answer(question, context_chunks)`**: Constructs a RAG prompt combining retrieved context snippets and query string.
+
+### 9. Master RAG Pipeline (`rag_pipeline.py`)
+We connected retrieval and generation into an end-to-end `RAGPipeline` class:
+* **Workflow**: `User Question ➔ Retrieve Top Chunks ➔ Construct Context Prompt ➔ LLM Generation ➔ Grounded Answer`.
+
+### 10. Repository Protection (`.gitignore`)
+We configured `.gitignore` to prevent temporary Python caches (`__pycache__`), virtual environment folders, `.env` API keys, and vector index files from being tracked in version control.
+
 
 ---
 
 ## 📁 Current Project Structure
 
 
+```text
 RAG FOUNDRY/
 ├── data/
 │   └── sample.txt       # Enterprise HR Handbook document
-├── .gitignore           # Git ignore rules for cache & vector files
-├── requirements.txt     # Dependency list (pypdf, sentence-transformers, faiss-cpu)
+├── .env                 # API Key environment file (ignored by Git)
+├── .gitignore           # Git ignore rules for cache, .env & vector files
+├── requirements.txt     # Dependency list (pypdf, sentence-transformers, faiss-cpu, google-genai, python-dotenv)
 ├── ingestion.py         # Document loader and metadata extractor
 ├── chunking.py          # Sliding-window text chunker
 ├── embeddings.py        # Vector embedding generator (all-MiniLM-L6-v2)
 ├── vector_store.py      # FAISS vector index & similarity search engine
 ├── retrieval.py         # End-to-end retrieval engine with metadata tracking
-└── README.md            # Complete project documentation
+├── generation.py        # LLM prompt builder and Gemini response generator
+├── rag_pipeline.py      # Master end-to-end RAG pipeline orchestrator
+└── README.md            # Complete project documentation        
