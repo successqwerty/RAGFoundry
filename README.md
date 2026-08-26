@@ -66,7 +66,14 @@ We connected retrieval, generation, and source metadata into an end-to-end `RAGP
 * **Workflow**: `User Question ➔ Retrieve Top Chunks ➔ Construct Context Prompt ➔ LLM Generation ➔ Grounded Answer + Source Citations`.
 * **Source Tracking**: Extracts unique document filenames from retrieved chunks (`sources = sorted(list(set(...)))`) to provide auditability.
 
-### 10. Repository Protection (`.gitignore`)
+### 10. RAG Failure Modes & Diagnostics
+We systematically analyzed and tested 4 core RAG failure modes:
+1. **Missing Information**: System prompts force safe refusal (*"I do not have enough information"*) when topics are missing from context.
+2. **Retrieval Failure**: Semantic misalignment when FAISS fails to rank the ideal chunk in top-$K$.
+3. **Prompt Leak**: Weak prompts allow LLMs to generate conversational fluff or unverified promises.
+4. **Document Contradiction**: Basic vector stores retrieve conflicting documents without version/timestamp filtering.
+
+### 11. Repository Protection (`.gitignore`)
 We configured `.gitignore` to prevent temporary Python caches (`__pycache__`), virtual environment folders, `.env` API keys, and vector index files from being tracked in version control.
 
 

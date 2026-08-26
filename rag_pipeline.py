@@ -30,8 +30,11 @@ class RAGPipeline:
 if __name__ == "__main__":
     rag = RAGPipeline("data")
     
+    # user_query = "What happens if I stay late at the office after 5 PM?"
+    # user_query = "Can I bring my pet dog to the office?"
     user_query = "What is the annual learning budget for employees?"
-    
+
+
     result = rag.ask(user_query, k=2)
     
     print("=" * 60)
@@ -43,4 +46,5 @@ if __name__ == "__main__":
     
     print("\n--- SOURCES CITED ---")
     for src in result["sources"]:
-        print(f"📄 {src}")
+        print(f" {src}")
+

@@ -19,7 +19,9 @@ def generate_answer(question, context_chunks, api_key=None):
         "Do NOT use outside knowledge or make up policies. "
         "If the answer is not contained in the provided context, state clearly: "
         "'I do not have enough information in the provided documents to answer your question.'"
+
     )
+    
     
     user_prompt = f"CONTEXT:\n{formatted_context}\n\nUSER QUESTION: {question}"
 
