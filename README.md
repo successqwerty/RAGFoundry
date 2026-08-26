@@ -61,9 +61,10 @@ We built a grounded answer generator using Google's `gemini-3.6-flash`:
 * **System Instructions**: Forces strict grounding on retrieved context and prevents hallucinations or outside policy inventions.
 * **`generate_answer(question, context_chunks)`**: Constructs a RAG prompt combining retrieved context snippets and query string.
 
-### 9. Master RAG Pipeline (`rag_pipeline.py`)
-We connected retrieval and generation into an end-to-end `RAGPipeline` class:
-* **Workflow**: `User Question ➔ Retrieve Top Chunks ➔ Construct Context Prompt ➔ LLM Generation ➔ Grounded Answer`.
+### 9. Master RAG Pipeline & Source Citations (`rag_pipeline.py`)
+We connected retrieval, generation, and source metadata into an end-to-end `RAGPipeline` class:
+* **Workflow**: `User Question ➔ Retrieve Top Chunks ➔ Construct Context Prompt ➔ LLM Generation ➔ Grounded Answer + Source Citations`.
+* **Source Tracking**: Extracts unique document filenames from retrieved chunks (`sources = sorted(list(set(...)))`) to provide auditability.
 
 ### 10. Repository Protection (`.gitignore`)
 We configured `.gitignore` to prevent temporary Python caches (`__pycache__`), virtual environment folders, `.env` API keys, and vector index files from being tracked in version control.
@@ -87,5 +88,5 @@ RAG FOUNDRY/
 ├── vector_store.py      # FAISS vector index & similarity search engine
 ├── retrieval.py         # End-to-end retrieval engine with metadata tracking
 ├── generation.py        # LLM prompt builder and Gemini response generator
-├── rag_pipeline.py      # Master end-to-end RAG pipeline orchestrator
-└── README.md            # Complete project documentation        
+├── rag_pipeline.py      # Master end-to-end RAG pipeline with source citations
+└── README.md            # Complete project documentation
