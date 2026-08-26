@@ -7,7 +7,7 @@ class RAGPipeline:
         self.retrieval_engine = RetrievalEngine(data_folder)
         print("Pipeline Ready!\n")
 
-    def ask(self, question, k=3):
+    def ask(self, question, k=4):
         """
         End-to-end RAG workflow with Source Citations.
         """
