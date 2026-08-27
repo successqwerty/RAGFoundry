@@ -8,19 +8,43 @@ st.set_page_config(page_title="RAGFoundry", page_icon="🏗️", layout="wide")
 st.title("🏗️ RAGFoundry — Document Question Answering System")
 st.markdown("Ask natural language questions about your uploaded documents and get grounded AI answers with source citations.")
 
-# Sidebar: File Uploader & Controls
 with st.sidebar:
-    st.header("⚙️ Document Management")
+    st.header("🤖 LLM Provider Settings")
+    provider = st.selectbox("Select Model Engine:", ["Gemini (Cloud)", "Ollama (100% Offline Local)"])
+    
+    if provider == "Gemini (Cloud)":
+        user_api_key = st.text_input(
+            "Enter your Gemini API Key (Optional):",
+            type="password",
+            help="If provided, RAGFoundry will use your key so you never hit rate limits!"
+        )
+        if user_api_key:
+            os.environ["GEMINI_API_KEY"] = user_api_key.strip()
+            st.success("Custom Gemini Key Applied!")
+        selected_provider = "gemini"
+        selected_model = "gemini-2.0-flash"
+    else:
+        selected_provider = "ollama"
+        selected_model = st.text_input("Local Ollama Model Name:", value="llama3.2", help="e.g. llama3.2, mistral, llama3")
+        st.info("ℹ️ Ollama runs 100% offline on your computer. Requires no API keys!")
+
+    st.markdown("---")
+    clear_existing = st.checkbox("Clear existing documents when uploading new files", value=True)
     uploaded_files = st.file_uploader("Upload .txt or .pdf files", type=["txt", "pdf"], accept_multiple_files=True)
     
     if uploaded_files:
         os.makedirs("data", exist_ok=True)
+        if clear_existing:
+            for existing_file in os.listdir("data"):
+                file_path_to_remove = os.path.join("data", existing_file)
+                if os.path.isfile(file_path_to_remove):
+                    os.remove(file_path_to_remove)
+
         for file in uploaded_files:
             file_path = os.path.join("data", file.name)
             with open(file_path, "wb") as f:
                 f.write(file.getbuffer())
         st.success(f"Saved {len(uploaded_files)} file(s) to data/")
-        # Clear cached pipeline to reload new documents
         if "pipeline" in st.session_state:
             del st.session_state["pipeline"]
 
@@ -30,7 +54,7 @@ with st.sidebar:
             del st.session_state["pipeline"]
         st.rerun()
 
-    k_value = st.slider("Number of Chunks to Retrieve (K):", min_value=1, max_value=5, value=2)
+    k_value = 10  # Production Dynamic Retrieval automatically sets K=10 for complete document coverage
 
 # Initialize RAG Pipeline in Streamlit Session State (cached so it loads once)
 if "pipeline" not in st.session_state:
@@ -45,7 +69,7 @@ user_question = st.text_input("💬 Ask a question about your documents:", place
 if user_question:
     with st.spinner("Searching vectors & generating answer..."):
         try:
-            result = pipeline.ask(user_question, k=k_value)
+            result = pipeline.ask(user_question, k=k_value, provider=selected_provider, model_name=selected_model)
             
             # Display LLM Answer
             st.subheader("💡 Answer:")

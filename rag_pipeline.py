@@ -7,15 +7,15 @@ class RAGPipeline:
         self.retrieval_engine = RetrievalEngine(data_folder)
         print("Pipeline Ready!\n")
 
-    def ask(self, question, k=4):
+    def ask(self, question, k=10, provider="gemini", model_name="gemini-2.0-flash"):
         """
-        End-to-end RAG workflow with Source Citations.
+        End-to-end RAG workflow supporting Gemini (Cloud) and Ollama (Local).
         """
         # Step 1: Retrieve relevant chunks with metadata
-        retrieved_chunks = self.retrieval_engine.retrieve(question, k=k)
+        retrieved_chunks = self.retrieval_engine.retrieve(question, k=k, provider=provider, model_name=model_name)
         
         # Step 2: Generate answer using retrieved chunks as context
-        llm_answer = generate_answer(question, retrieved_chunks)
+        llm_answer = generate_answer(question, retrieved_chunks, provider=provider, model_name=model_name)
         
         # Step 3: Extract unique source filenames for citations
         sources = sorted(list(set(chunk["filename"] for chunk in retrieved_chunks)))
