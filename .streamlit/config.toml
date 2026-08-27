@@ -2,6 +2,12 @@
 fileWatcherType = "none"
 headless = true
 
+[client]
+showSidebarNavigation = true
+
+[sidebar]
+state = "expanded"
+
 [theme]
 base = "light"
 primaryColor = "#8B7CC8"

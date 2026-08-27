@@ -72,13 +72,24 @@ custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Hide Streamlit Default Chrome Header & Footer */
-header[data-testid="stHeader"] {{ visibility: hidden; height: 0px; }}
+/* Make Streamlit Header Transparent while Keeping Sidebar Controls Visible */
+header[data-testid="stHeader"] {{
+    background-color: transparent !important;
+    z-index: 100 !important;
+}}
 footer {{ visibility: hidden; }}
 [data-testid="stDecoration"] {{ display: none; }}
 #MainMenu {{ visibility: hidden; }}
 
-/* Persistent Native Sidebar Open/Close Toggle Control */
+/* Ensure Sidebar & Toggle Button Are ALWAYS Visible & Styled */
+section[data-testid="stSidebar"] {{
+    display: block !important;
+    visibility: visible !important;
+    background-color: {T['bg_sidebar']} !important;
+    border-right: 1px solid {T['border']} !important;
+    width: 280px !important;
+}}
+
 [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {{
     display: flex !important;
     visibility: visible !important;
