@@ -31,50 +31,62 @@ st.set_page_config(
     initial_sidebar_state=sidebar_state
 )
 
-# 3. Theme Tokens
+# 3. Soft Pastel Light Theme & Obsidian Dark Theme Tokens
 LIGHT_THEME = {
-    "bg_main": "#F8F9FF",
+    "bg_main": "#F9F8FF",
     "bg_sidebar": "#F3F1FA",
     "bg_surface": "#FFFFFF",
-    "bg_elevated": "#FCFBFF",
+    "bg_elevated": "#FFFFFF",
     
-    # Primary Button Tokens
+    # Soft Pastel Button & Badge Palette
     "btn_bg": "#8B7CC8",
-    "btn_text": "#1F2937",
-    "btn_icon": "#1F2937",
-    "btn_hover_bg": "#7668B5",
-    "btn_hover_text": "#FFFFFF",
-    "btn_hover_icon": "#FFFFFF",
+    "btn_text": "#FFFFFF",
+    "soft_btn_bg": "#F1EEFC",
+    "soft_btn_border": "#C9BEEA",
+    "soft_btn_text": "#4F4670",
+    "soft_btn_icon": "#5E5480",
+    "soft_btn_hover_bg": "#E9E4F8",
+    "soft_btn_hover_border": "#B8A9DD",
+    "soft_btn_hover_text": "#463D65",
+    "soft_btn_active_bg": "#DDD5F2",
+    "soft_btn_active_border": "#AFA0D4",
     
-    # Secondary Control Tokens (Theme Toggle)
+    # Re-Index Action Tokens
+    "reindex_bg": "#E9E4F8",
+    "reindex_border": "#C9BEEA",
+    "reindex_hover_bg": "#DDD5F2",
+    
+    # Neutral Secondary Controls (Theme Toggle)
     "sec_btn_bg": "#FFFFFF",
-    "sec_btn_border": "#E7E5EF",
-    "sec_btn_text": "#374151",
-    "sec_btn_icon": "#6366F1",
-    "sec_btn_hover_bg": "#EDE9F7",
-    "sec_btn_hover_border": "#6366F1",
-    "sec_btn_hover_text": "#1F2937",
+    "sec_btn_border": "#D9D3E8",
+    "sec_btn_text": "#4F4670",
+    "sec_btn_icon": "#6B5FA0",
+    "sec_btn_hover_bg": "#F1EEFC",
+    "sec_btn_hover_border": "#C9BEEA",
+    "sec_btn_hover_text": "#4F4670",
     
-    "info_bg": "#E4F0FF",
-    "info_text": "#374151",
-    "mint_bg": "#E1F8F0",
+    "info_bg": "#F1EEFC",
+    "info_text": "#4F4670",
+    "mint_bg": "#E5F5EC",
     "mint_text": "#4F8A6B",
     "peach_bg": "#FCE8D8",
     "peach_text": "#374151",
-    "purple_soft_bg": "#EDE9F7",
-    "purple_soft_text": "#7C68D9",
-    "purple_soft_border": "rgba(124,104,217,0.2)",
+    "purple_soft_bg": "#F0ECFA",
+    "purple_soft_border": "#D1C7EA",
+    "purple_soft_text": "#6B5FA0",
+    
     "text_main": "#374151",
-    "text_sec": "#7B8190",
-    "text_muted": "#9AA1AF",
-    "border": "#E7E5EF",
+    "text_sec": "#7C7590",
+    "text_muted": "#9B96AA",
+    "border": "#E3DEED",
     "code_bg": "#F8F7FC",
-    "grid_color": "rgba(139, 124, 200, 0.055)",
+    "grid_color": "rgba(139, 124, 200, 0.04)",
     "drawer_bg": "#FFFFFF",
     "upload_container_bg": "#FFFFFF",
-    "upload_container_border": "#E7E5EF",
+    "upload_container_border": "#C9BEEA",
     "composer_bg": "#FFFFFF",
-    "composer_border": "#E7E5EF",
+    "composer_border": "#DED9E9",
+    "composer_focus_border": "#B8A9DD",
 }
 
 DARK_THEME = {
@@ -83,15 +95,22 @@ DARK_THEME = {
     "bg_surface": "#1A2234",
     "bg_elevated": "#1E293B",
     
-    # Primary Button Tokens
     "btn_bg": "#A78BFA",
     "btn_text": "#FFFFFF",
-    "btn_icon": "#FFFFFF",
-    "btn_hover_bg": "#8B5CF6",
-    "btn_hover_text": "#FFFFFF",
-    "btn_hover_icon": "#FFFFFF",
+    "soft_btn_bg": "#A78BFA",
+    "soft_btn_border": "#A78BFA",
+    "soft_btn_text": "#FFFFFF",
+    "soft_btn_icon": "#FFFFFF",
+    "soft_btn_hover_bg": "#8B5CF6",
+    "soft_btn_hover_border": "#8B5CF6",
+    "soft_btn_hover_text": "#FFFFFF",
+    "soft_btn_active_bg": "#7C3AED",
+    "soft_btn_active_border": "#7C3AED",
     
-    # Secondary Control Tokens (Theme Toggle)
+    "reindex_bg": "#A78BFA",
+    "reindex_border": "#A78BFA",
+    "reindex_hover_bg": "#8B5CF6",
+    
     "sec_btn_bg": "#1E293B",
     "sec_btn_border": "#2D3748",
     "sec_btn_text": "#F8FAFC",
@@ -107,8 +126,9 @@ DARK_THEME = {
     "peach_bg": "#30201C",
     "peach_text": "#FDBA9A",
     "purple_soft_bg": "#2E1E4F",
-    "purple_soft_text": "#C084FC",
     "purple_soft_border": "rgba(192, 132, 252, 0.20)",
+    "purple_soft_text": "#C084FC",
+    
     "text_main": "#F8FAFC",
     "text_sec": "#94A3B8",
     "text_muted": "#64748B",
@@ -120,11 +140,12 @@ DARK_THEME = {
     "upload_container_border": "#475569",
     "composer_bg": "#111827",
     "composer_border": "#1F293D",
+    "composer_focus_border": "#6366F1",
 }
 
 T = LIGHT_THEME if theme == "light" else DARK_THEME
 
-# 4. Universal CSS Injection with High Specificity
+# 4. Refined CSS Injection
 custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -139,11 +160,11 @@ footer {{ visibility: hidden; }}
 [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {{
     display: flex !important;
     visibility: visible !important;
-    background-color: {T['btn_bg']} !important;
-    color: {T['btn_text']} !important;
-    border: none !important;
+    background-color: {T['soft_btn_bg']} !important;
+    color: {T['soft_btn_text']} !important;
+    border: 1px solid {T['soft_btn_border']} !important;
     border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
     position: fixed !important;
     top: 14px !important;
     left: 14px !important;
@@ -155,16 +176,17 @@ footer {{ visibility: hidden; }}
     transition: all 0.2s ease !important;
 }}
 [data-testid="collapsedControl"] *, [data-testid="stSidebarCollapseButton"] * {{
-    color: {T['btn_text']} !important;
-    fill: {T['btn_text']} !important;
+    color: {T['soft_btn_text']} !important;
+    fill: {T['soft_btn_text']} !important;
 }}
 [data-testid="collapsedControl"]:hover, [data-testid="stSidebarCollapseButton"]:hover {{
-    background-color: {T['btn_hover_bg']} !important;
-    color: {T['btn_hover_text']} !important;
+    background-color: {T['soft_btn_hover_bg']} !important;
+    border-color: {T['soft_btn_hover_border']} !important;
+    color: {T['soft_btn_hover_text']} !important;
 }}
 [data-testid="collapsedControl"]:hover *, [data-testid="stSidebarCollapseButton"]:hover * {{
-    color: {T['btn_hover_text']} !important;
-    fill: {T['btn_hover_text']} !important;
+    color: {T['soft_btn_hover_text']} !important;
+    fill: {T['soft_btn_hover_text']} !important;
 }}
 
 /* Global Theme Canvas */
@@ -213,26 +235,26 @@ h1, h2, h3, h4, h5, h6 {{
     padding: 16px !important;
     font-size: 15px !important;
     font-family: 'Inter', sans-serif !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
     resize: none !important;
 }}
 .stTextArea textarea::placeholder {{
-    color: {T['text_sec']} !important;
+    color: {T['text_muted']} !important;
     opacity: 1 !important;
 }}
 .stTextArea textarea:focus {{
-    border-color: {T['btn_bg']} !important;
-    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2) !important;
+    border-color: {T['composer_focus_border']} !important;
+    box-shadow: 0 0 0 2px rgba(139, 124, 200, 0.12) !important;
 }}
 
-/* Circular Send Button (Extreme Right) */
+/* Circular Send Button (Extreme Right Level 1 Accent) */
 div[data-testid="stFormSubmitButton"] {{
     display: flex !important;
     justify-content: flex-end !important;
 }}
 div[data-testid="stFormSubmitButton"] > button {{
     background-color: {T['btn_bg']} !important;
-    color: {T['btn_text']} !important;
+    color: #FFFFFF !important;
     border: none !important;
     border-radius: 50% !important;
     width: 44px !important;
@@ -247,15 +269,12 @@ div[data-testid="stFormSubmitButton"] > button {{
     transition: all 0.2s ease !important;
 }}
 div[data-testid="stFormSubmitButton"] > button * {{
-    color: {T['btn_text']} !important;
+    color: #FFFFFF !important;
 }}
 div[data-testid="stFormSubmitButton"] > button:hover {{
-    background-color: {T['btn_hover_bg']} !important;
-    color: {T['btn_hover_text']} !important;
+    background-color: {T['btn_bg']} !important;
     transform: scale(1.05) !important;
-}}
-div[data-testid="stFormSubmitButton"] > button:hover * {{
-    color: {T['btn_hover_text']} !important;
+    box-shadow: 0 4px 12px rgba(139, 124, 200, 0.3) !important;
 }}
 
 /* File Uploader Container & Button Fix */
@@ -270,14 +289,13 @@ div[data-testid="stFileUploaderDropzone"] small {{
     color: {T['text_sec']} !important;
 }}
 
-/* File Uploader BUTTON explicitly targeted */
 div[data-testid="stFileUploaderDropzone"] button, 
 section[data-testid="stFileUploaderDropzone"] button,
 button[kind="secondary"],
 button[data-testid="baseButton-secondary"] {{
-    background-color: {T['btn_bg']} !important;
-    color: {T['btn_text']} !important;
-    border: none !important;
+    background-color: {T['soft_btn_bg']} !important;
+    color: {T['soft_btn_text']} !important;
+    border: 1px solid {T['soft_btn_border']} !important;
     border-radius: 10px !important;
     font-weight: 600 !important;
     padding: 8px 16px !important;
@@ -286,22 +304,16 @@ div[data-testid="stFileUploaderDropzone"] button *,
 section[data-testid="stFileUploaderDropzone"] button *,
 button[kind="secondary"] *,
 button[data-testid="baseButton-secondary"] * {{
-    color: {T['btn_text']} !important;
-    fill: {T['btn_text']} !important;
+    color: {T['soft_btn_text']} !important;
+    fill: {T['soft_btn_text']} !important;
 }}
 div[data-testid="stFileUploaderDropzone"] button:hover,
 section[data-testid="stFileUploaderDropzone"] button:hover,
 button[kind="secondary"]:hover,
 button[data-testid="baseButton-secondary"]:hover {{
-    background-color: {T['btn_hover_bg']} !important;
-    color: {T['btn_hover_text']} !important;
-}}
-div[data-testid="stFileUploaderDropzone"] button:hover *,
-section[data-testid="stFileUploaderDropzone"] button:hover *,
-button[kind="secondary"]:hover *,
-button[data-testid="baseButton-secondary"]:hover * {{
-    color: {T['btn_hover_text']} !important;
-    fill: {T['btn_hover_text']} !important;
+    background-color: {T['soft_btn_hover_bg']} !important;
+    border-color: {T['soft_btn_hover_border']} !important;
+    color: {T['soft_btn_hover_text']} !important;
 }}
 
 /* Checkbox Styling */
@@ -324,7 +336,7 @@ div[data-baseweb="checkbox"] label span {{
     border-radius: 14px;
     padding: 18px 22px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }}
 
 .rf-user-card {{
@@ -388,81 +400,37 @@ div[data-baseweb="checkbox"] label span {{
     display: inline-block;
 }}
 
-/* Primary Lavender Button Class */
-.rf-primary-btn button {{
-    background-color: {T['btn_bg']} !important;
-    color: {T['btn_text']} !important;
-    border: none !important;
-    border-radius: 10px !important;
-    padding: 10px 16px !important;
-    font-weight: 600 !important;
-    font-size: 13px !important;
-    transition: all 0.2s ease !important;
-}}
-.rf-primary-btn button * {{
-    color: {T['btn_text']} !important;
-    fill: {T['btn_text']} !important;
-}}
-.rf-primary-btn button:hover {{
-    background-color: {T['btn_hover_bg']} !important;
-    color: {T['btn_hover_text']} !important;
-}}
-.rf-primary-btn button:hover * {{
-    color: {T['btn_hover_text']} !important;
-    fill: {T['btn_hover_text']} !important;
-}}
-
-/* Suggested Query Lavender Cards Class */
-.rf-sug-btn button {{
-    background-color: {T['btn_bg']} !important;
-    color: {T['btn_text']} !important;
-    border: none !important;
+/* Level 2 Soft Lavender Buttons (Suggested Queries, History, Re-Index) */
+.rf-sug-btn button, .rf-history-btn button, .rf-reindex-btn button {{
+    background-color: {T['soft_btn_bg']} !important;
+    color: {T['soft_btn_text']} !important;
+    border: 1px solid {T['soft_btn_border']} !important;
     border-radius: 12px !important;
     padding: 12px 16px !important;
-    text-align: left !important;
     font-size: 13px !important;
     font-weight: 600 !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
     transition: all 0.2s ease !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
 }}
-.rf-sug-btn button * {{
-    color: {T['btn_text']} !important;
-    fill: {T['btn_text']} !important;
+.rf-sug-btn button *, .rf-history-btn button *, .rf-reindex-btn button * {{
+    color: {T['soft_btn_text']} !important;
+    fill: {T['soft_btn_text']} !important;
 }}
-.rf-sug-btn button:hover {{
-    background-color: {T['btn_hover_bg']} !important;
-    color: {T['btn_hover_text']} !important;
+.rf-sug-btn button:hover, .rf-history-btn button:hover, .rf-reindex-btn button:hover {{
+    background-color: {T['soft_btn_hover_bg']} !important;
+    border-color: {T['soft_btn_hover_border']} !important;
+    color: {T['soft_btn_hover_text']} !important;
 }}
-.rf-sug-btn button:hover * {{
-    color: {T['btn_hover_text']} !important;
-    fill: {T['btn_hover_text']} !important;
+.rf-sug-btn button:hover *, .rf-history-btn button:hover *, .rf-reindex-btn button:hover * {{
+    color: {T['soft_btn_hover_text']} !important;
+    fill: {T['soft_btn_hover_text']} !important;
+}}
+.rf-sug-btn button:active, .rf-history-btn button:active, .rf-reindex-btn button:active {{
+    background-color: {T['soft_btn_active_bg']} !important;
+    border-color: {T['soft_btn_active_border']} !important;
 }}
 
-/* History Button Class (Primary Lavender) */
-.rf-history-btn button {{
-    background-color: {T['btn_bg']} !important;
-    color: {T['btn_text']} !important;
-    border: none !important;
-    border-radius: 10px !important;
-    padding: 10px 16px !important;
-    font-weight: 600 !important;
-    font-size: 13px !important;
-    transition: all 0.2s ease !important;
-}}
-.rf-history-btn button * {{
-    color: {T['btn_text']} !important;
-    fill: {T['btn_text']} !important;
-}}
-.rf-history-btn button:hover {{
-    background-color: {T['btn_hover_bg']} !important;
-    color: {T['btn_hover_text']} !important;
-}}
-.rf-history-btn button:hover * {{
-    color: {T['btn_hover_text']} !important;
-    fill: {T['btn_hover_text']} !important;
-}}
-
-/* Secondary Theme Toggle Class */
+/* Level 3 Neutral Buttons (Theme Toggle) */
 .rf-sec-btn button {{
     background-color: {T['sec_btn_bg']} !important;
     color: {T['sec_btn_text']} !important;
@@ -546,7 +514,7 @@ with st.sidebar:
             st.markdown(f"""
                 <div class="rf-doc-card">
                     <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px;">
-                        <span style="color: {T["text_main"]};">📄</span> 
+                        <span style="color: {T["text_sec"]};">📄</span> 
                         <span style="font-size: 13px; font-weight: 500; color: {T["text_main"]};">{doc['name']}</span>
                     </div>
                     <span class="rf-badge-mint">✓ Indexed</span>
@@ -576,8 +544,8 @@ with st.sidebar:
             del st.session_state["pipeline"]
         st.rerun()
 
-    # Re-Index Button (Primary Lavender Style)
-    st.markdown('<div class="rf-primary-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
+    # Re-Index Button (Soft Pastel Action)
+    st.markdown('<div class="rf-reindex-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
     if st.button("🔄 Re-Index Documents", use_container_width=True):
         if "pipeline" in st.session_state:
             del st.session_state["pipeline"]
@@ -642,7 +610,7 @@ with col_head_left:
     st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
 with col_head_right:
-    # TOP-RIGHT CONTROLS: HISTORY (PRIMARY) + THEME TOGGLE (SECONDARY)
+    # TOP-RIGHT CONTROLS: HISTORY (LEVEL 2 SOFT) + THEME TOGGLE (LEVEL 3 NEUTRAL)
     ctrl_col1, ctrl_col2 = st.columns(2)
     with ctrl_col1:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
@@ -679,7 +647,7 @@ if st.session_state["show_history_drawer"]:
     
     h_col1, h_col2 = st.columns([1, 3])
     with h_col1:
-        st.markdown('<div class="rf-primary-btn">', unsafe_allow_html=True)
+        st.markdown('<div class="rf-history-btn">', unsafe_allow_html=True)
         if st.button("+ New Conversation", key="drawer_new_chat", use_container_width=True):
             st.session_state["current_conversation_id"] = None
             st.session_state["input_question"] = ""
@@ -726,11 +694,11 @@ with st.form(key="query_composer_form", clear_on_submit=False):
             </div>
         """, unsafe_allow_html=True)
     with col_comp_right:
-        # Circular Send Button with Horizontal Right Arrow ➔
+        # Level 1 Accent Circular Send Button with Horizontal Right Arrow ➔
         submit_button = st.form_submit_button("➔", use_container_width=False)
 
 
-# 11. SUGGESTED QUERY CARDS (UNIFORM PRIMARY LAVENDER CARDS)
+# 11. SUGGESTED QUERY CARDS (LEVEL 2 SOFT PASTEL LAVENDER CARDS)
 if not st.session_state["current_conversation_id"] and "last_result" not in st.session_state:
     st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; text-transform: uppercase; margin-top: 20px; margin-bottom: 12px;">SUGGESTED QUERIES</div>', unsafe_allow_html=True)
     
