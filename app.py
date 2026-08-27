@@ -31,121 +31,104 @@ st.set_page_config(
     initial_sidebar_state=sidebar_state
 )
 
-# 3. Soft Pastel Light Theme & Obsidian Dark Theme Tokens
+# 3. Standardized Design Tokens for Light & Dark Mode
 LIGHT_THEME = {
-    "bg_main": "#F9F8FF",
-    "bg_sidebar": "#F3F1FA",
+    "bg_main": "#F8F7FC",
+    "bg_sidebar": "#F1EFF9",
     "bg_surface": "#FFFFFF",
     "bg_elevated": "#FFFFFF",
     
-    # Soft Pastel Button & Badge Palette
-    "btn_bg": "#8B7CC8",
-    "btn_text": "#FFFFFF",
-    "soft_btn_bg": "#F1EEFC",
-    "soft_btn_border": "#C9BEEA",
-    "soft_btn_text": "#4F4670",
-    "soft_btn_icon": "#5E5480",
-    "soft_btn_hover_bg": "#E9E4F8",
-    "soft_btn_hover_border": "#B8A9DD",
-    "soft_btn_hover_text": "#463D65",
-    "soft_btn_active_bg": "#DDD5F2",
-    "soft_btn_active_border": "#AFA0D4",
+    "btn_bg": "#8F7BC9",
+    "btn_hover_bg": "#9B87D2",
+    "btn_active_bg": "#7C6AB8",
+    "btn_border": "#C9BFE5",
+    "btn_text": "#172033",
+    "btn_icon": "#172033",
+    "btn_hover_text": "#FFFFFF",
+    "btn_hover_icon": "#FFFFFF",
     
-    # Re-Index Action Tokens
-    "reindex_bg": "#E9E4F8",
-    "reindex_border": "#C9BEEA",
-    "reindex_hover_bg": "#DDD5F2",
+    "sec_btn_bg": "#8F7BC9",
+    "sec_btn_border": "#C9BFE5",
+    "sec_btn_text": "#172033",
+    "sec_btn_icon": "#172033",
+    "sec_btn_hover_bg": "#9B87D2",
+    "sec_btn_hover_border": "#B8A9DD",
+    "sec_btn_hover_text": "#FFFFFF",
     
-    # Neutral Secondary Controls (Theme Toggle)
-    "sec_btn_bg": "#FFFFFF",
-    "sec_btn_border": "#D9D3E8",
-    "sec_btn_text": "#4F4670",
-    "sec_btn_icon": "#6B5FA0",
-    "sec_btn_hover_bg": "#F1EEFC",
-    "sec_btn_hover_border": "#C9BEEA",
-    "sec_btn_hover_text": "#4F4670",
-    
-    "info_bg": "#F1EEFC",
-    "info_text": "#4F4670",
-    "mint_bg": "#E5F5EC",
-    "mint_text": "#4F8A6B",
+    "info_bg": "#EDE9F8",
+    "info_text": "#24324A",
+    "mint_bg": "#E7F7EF",
+    "mint_text": "#18794E",
     "peach_bg": "#FCE8D8",
-    "peach_text": "#374151",
-    "purple_soft_bg": "#F0ECFA",
-    "purple_soft_border": "#D1C7EA",
-    "purple_soft_text": "#6B5FA0",
+    "peach_text": "#24324A",
+    "purple_soft_bg": "#EEEAF8",
+    "purple_soft_border": "#D8CFF0",
+    "purple_soft_text": "#7764B5",
     
-    "text_main": "#374151",
-    "text_sec": "#7C7590",
-    "text_muted": "#9B96AA",
-    "border": "#E3DEED",
+    "text_main": "#24324A",
+    "text_sec": "#667085",
+    "text_muted": "#8A94A6",
+    "border": "#D8D1EA",
     "code_bg": "#F8F7FC",
-    "grid_color": "rgba(139, 124, 200, 0.04)",
+    "grid_color": "rgba(139, 124, 200, 0.03)",
     "drawer_bg": "#FFFFFF",
     "upload_container_bg": "#FFFFFF",
-    "upload_container_border": "#C9BEEA",
+    "upload_container_border": "#D8D1EA",
     "composer_bg": "#FFFFFF",
-    "composer_border": "#DED9E9",
-    "composer_focus_border": "#B8A9DD",
+    "composer_border": "#D8D1EA",
+    "composer_focus_border": "#8F7BC9",
 }
 
 DARK_THEME = {
     "bg_main": "#0B0F17",
     "bg_sidebar": "#111827",
-    "bg_surface": "#1A2234",
-    "bg_elevated": "#1E293B",
+    "bg_surface": "#151C2B",
+    "bg_elevated": "#151C2B",
     
-    "btn_bg": "#A78BFA",
+    "btn_bg": "#9B7AEF",
+    "btn_hover_bg": "#A98AF5",
+    "btn_active_bg": "#8B68DE",
+    "btn_border": "transparent",
     "btn_text": "#FFFFFF",
-    "soft_btn_bg": "#A78BFA",
-    "soft_btn_border": "#A78BFA",
-    "soft_btn_text": "#FFFFFF",
-    "soft_btn_icon": "#FFFFFF",
-    "soft_btn_hover_bg": "#8B5CF6",
-    "soft_btn_hover_border": "#8B5CF6",
-    "soft_btn_hover_text": "#FFFFFF",
-    "soft_btn_active_bg": "#7C3AED",
-    "soft_btn_active_border": "#7C3AED",
+    "btn_icon": "#FFFFFF",
+    "btn_hover_text": "#FFFFFF",
+    "btn_hover_icon": "#FFFFFF",
     
-    "reindex_bg": "#A78BFA",
-    "reindex_border": "#A78BFA",
-    "reindex_hover_bg": "#8B5CF6",
+    "sec_btn_bg": "#9B7AEF",
+    "sec_btn_border": "transparent",
+    "sec_btn_text": "#FFFFFF",
+    "sec_btn_icon": "#FFFFFF",
+    "sec_btn_hover_bg": "#A98AF5",
+    "sec_btn_hover_border": "transparent",
+    "sec_btn_hover_text": "#FFFFFF",
     
-    "sec_btn_bg": "#1E293B",
-    "sec_btn_border": "#2D3748",
-    "sec_btn_text": "#F8FAFC",
-    "sec_btn_icon": "#A78BFA",
-    "sec_btn_hover_bg": "#2A364F",
-    "sec_btn_hover_border": "#6366F1",
-    "sec_btn_hover_text": "#F8FAFC",
-    
-    "info_bg": "#161F30",
-    "info_text": "#3B82F6",
-    "mint_bg": "#064E3B",
-    "mint_text": "#34D399",
+    "info_bg": "#151C2B",
+    "info_text": "#A8B3C7",
+    "mint_bg": "#12352D",
+    "mint_text": "#6EE7B7",
     "peach_bg": "#30201C",
-    "peach_text": "#FDBA9A",
-    "purple_soft_bg": "#2E1E4F",
-    "purple_soft_border": "rgba(192, 132, 252, 0.20)",
-    "purple_soft_text": "#C084FC",
+    "peach_text": "#F87171",
+    "purple_soft_bg": "#2A2144",
+    "purple_soft_border": "#51406F",
+    "purple_soft_text": "#C4B5FD",
     
     "text_main": "#F8FAFC",
-    "text_sec": "#94A3B8",
-    "text_muted": "#64748B",
+    "text_sec": "#A8B3C7",
+    "text_muted": "#7F8AA3",
     "border": "#2D3748",
     "code_bg": "#111827",
-    "grid_color": "rgba(99, 102, 241, 0.02)",
+    "grid_color": "rgba(155, 122, 239, 0.02)",
     "drawer_bg": "#111827",
-    "upload_container_bg": "#1E293B",
+    "upload_container_bg": "#1A2234",
     "upload_container_border": "#475569",
-    "composer_bg": "#111827",
-    "composer_border": "#1F293D",
-    "composer_focus_border": "#6366F1",
+    "composer_bg": "#1A2234",
+    "composer_border": "#2D3748",
+    "composer_focus_border": "#9B7AEF",
 }
 
 T = LIGHT_THEME if theme == "light" else DARK_THEME
 
-# 4. Refined CSS Injection
+# 4. Standardized CSS Rules
 custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -160,11 +143,11 @@ footer {{ visibility: hidden; }}
 [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {{
     display: flex !important;
     visibility: visible !important;
-    background-color: {T['soft_btn_bg']} !important;
-    color: {T['soft_btn_text']} !important;
-    border: 1px solid {T['soft_btn_border']} !important;
+    background-color: {T['btn_bg']} !important;
+    color: {T['btn_text']} !important;
+    border: none !important;
     border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
     position: fixed !important;
     top: 14px !important;
     left: 14px !important;
@@ -176,17 +159,16 @@ footer {{ visibility: hidden; }}
     transition: all 0.2s ease !important;
 }}
 [data-testid="collapsedControl"] *, [data-testid="stSidebarCollapseButton"] * {{
-    color: {T['soft_btn_text']} !important;
-    fill: {T['soft_btn_text']} !important;
+    color: {T['btn_text']} !important;
+    fill: {T['btn_text']} !important;
 }}
 [data-testid="collapsedControl"]:hover, [data-testid="stSidebarCollapseButton"]:hover {{
-    background-color: {T['soft_btn_hover_bg']} !important;
-    border-color: {T['soft_btn_hover_border']} !important;
-    color: {T['soft_btn_hover_text']} !important;
+    background-color: {T['btn_hover_bg']} !important;
+    color: {T['btn_hover_text']} !important;
 }}
 [data-testid="collapsedControl"]:hover *, [data-testid="stSidebarCollapseButton"]:hover * {{
-    color: {T['soft_btn_hover_text']} !important;
-    fill: {T['soft_btn_hover_text']} !important;
+    color: {T['btn_hover_text']} !important;
+    fill: {T['btn_hover_text']} !important;
 }}
 
 /* Global Theme Canvas */
@@ -244,37 +226,35 @@ h1, h2, h3, h4, h5, h6 {{
 }}
 .stTextArea textarea:focus {{
     border-color: {T['composer_focus_border']} !important;
-    box-shadow: 0 0 0 2px rgba(139, 124, 200, 0.12) !important;
+    box-shadow: 0 0 0 2px rgba(155, 122, 239, 0.2) !important;
 }}
 
-/* Circular Send Button (Extreme Right Level 1 Accent) */
+/* Rectangular Pill Send Query Button (Aligned Extreme Right) */
 div[data-testid="stFormSubmitButton"] {{
     display: flex !important;
     justify-content: flex-end !important;
 }}
 div[data-testid="stFormSubmitButton"] > button {{
     background-color: {T['btn_bg']} !important;
-    color: #FFFFFF !important;
+    color: {T['btn_text']} !important;
     border: none !important;
-    border-radius: 50% !important;
-    width: 44px !important;
-    height: 44px !important;
-    padding: 0px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 22px !important;
-    font-weight: bold !important;
+    border-radius: 10px !important;
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
     transition: all 0.2s ease !important;
 }}
 div[data-testid="stFormSubmitButton"] > button * {{
-    color: #FFFFFF !important;
+    color: {T['btn_text']} !important;
 }}
 div[data-testid="stFormSubmitButton"] > button:hover {{
-    background-color: {T['btn_bg']} !important;
-    transform: scale(1.05) !important;
-    box-shadow: 0 4px 12px rgba(139, 124, 200, 0.3) !important;
+    background-color: {T['btn_hover_bg']} !important;
+    color: {T['btn_hover_text']} !important;
+    transform: translateY(-1px) !important;
+}}
+div[data-testid="stFormSubmitButton"] > button:hover * {{
+    color: {T['btn_hover_text']} !important;
 }}
 
 /* File Uploader Container & Button Fix */
@@ -293,27 +273,33 @@ div[data-testid="stFileUploaderDropzone"] button,
 section[data-testid="stFileUploaderDropzone"] button,
 button[kind="secondary"],
 button[data-testid="baseButton-secondary"] {{
-    background-color: {T['soft_btn_bg']} !important;
-    color: {T['soft_btn_text']} !important;
-    border: 1px solid {T['soft_btn_border']} !important;
+    background-color: {T['btn_bg']} !important;
+    color: {T['btn_text']} !important;
+    border: none !important;
     border-radius: 10px !important;
     font-weight: 600 !important;
-    padding: 8px 16px !important;
+    padding: 10px 18px !important;
 }}
 div[data-testid="stFileUploaderDropzone"] button *,
 section[data-testid="stFileUploaderDropzone"] button *,
 button[kind="secondary"] *,
 button[data-testid="baseButton-secondary"] * {{
-    color: {T['soft_btn_text']} !important;
-    fill: {T['soft_btn_text']} !important;
+    color: {T['btn_text']} !important;
+    fill: {T['btn_text']} !important;
 }}
 div[data-testid="stFileUploaderDropzone"] button:hover,
 section[data-testid="stFileUploaderDropzone"] button:hover,
 button[kind="secondary"]:hover,
 button[data-testid="baseButton-secondary"]:hover {{
-    background-color: {T['soft_btn_hover_bg']} !important;
-    border-color: {T['soft_btn_hover_border']} !important;
-    color: {T['soft_btn_hover_text']} !important;
+    background-color: {T['btn_hover_bg']} !important;
+    color: {T['btn_hover_text']} !important;
+}}
+div[data-testid="stFileUploaderDropzone"] button:hover *,
+section[data-testid="stFileUploaderDropzone"] button:hover *,
+button[kind="secondary"]:hover *,
+button[data-testid="baseButton-secondary"]:hover * {{
+    color: {T['btn_hover_text']} !important;
+    fill: {T['btn_hover_text']} !important;
 }}
 
 /* Checkbox Styling */
@@ -336,7 +322,7 @@ div[data-baseweb="checkbox"] label span {{
     border-radius: 14px;
     padding: 18px 22px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }}
 
 .rf-user-card {{
@@ -400,44 +386,42 @@ div[data-baseweb="checkbox"] label span {{
     display: inline-block;
 }}
 
-/* Level 2 Soft Lavender Buttons (Suggested Queries, History, Re-Index) */
-.rf-sug-btn button, .rf-history-btn button, .rf-reindex-btn button {{
-    background-color: {T['soft_btn_bg']} !important;
-    color: {T['soft_btn_text']} !important;
-    border: 1px solid {T['soft_btn_border']} !important;
+/* Primary Lavender Buttons (Suggested Queries, History, Re-Index) */
+.rf-sug-btn button, .rf-history-btn button, .rf-reindex-btn button, .rf-primary-btn button {{
+    background-color: {T['btn_bg']} !important;
+    color: {T['btn_text']} !important;
+    border: none !important;
     border-radius: 12px !important;
     padding: 12px 16px !important;
     font-size: 13px !important;
     font-weight: 600 !important;
     transition: all 0.2s ease !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
 }}
-.rf-sug-btn button *, .rf-history-btn button *, .rf-reindex-btn button * {{
-    color: {T['soft_btn_text']} !important;
-    fill: {T['soft_btn_text']} !important;
+.rf-sug-btn button *, .rf-history-btn button *, .rf-reindex-btn button *, .rf-primary-btn button * {{
+    color: {T['btn_text']} !important;
+    fill: {T['btn_text']} !important;
 }}
-.rf-sug-btn button:hover, .rf-history-btn button:hover, .rf-reindex-btn button:hover {{
-    background-color: {T['soft_btn_hover_bg']} !important;
-    border-color: {T['soft_btn_hover_border']} !important;
-    color: {T['soft_btn_hover_text']} !important;
+.rf-sug-btn button:hover, .rf-history-btn button:hover, .rf-reindex-btn button:hover, .rf-primary-btn button:hover {{
+    background-color: {T['btn_hover_bg']} !important;
+    color: {T['btn_hover_text']} !important;
 }}
-.rf-sug-btn button:hover *, .rf-history-btn button:hover *, .rf-reindex-btn button:hover * {{
-    color: {T['soft_btn_hover_text']} !important;
-    fill: {T['soft_btn_hover_text']} !important;
+.rf-sug-btn button:hover *, .rf-history-btn button:hover *, .rf-reindex-btn button:hover *, .rf-primary-btn button:hover * {{
+    color: {T['btn_hover_text']} !important;
+    fill: {T['btn_hover_text']} !important;
 }}
-.rf-sug-btn button:active, .rf-history-btn button:active, .rf-reindex-btn button:active {{
-    background-color: {T['soft_btn_active_bg']} !important;
-    border-color: {T['soft_btn_active_border']} !important;
+.rf-sug-btn button:active, .rf-history-btn button:active, .rf-reindex-btn button:active, .rf-primary-btn button:active {{
+    background-color: {T['btn_active_bg']} !important;
 }}
 
-/* Level 3 Neutral Buttons (Theme Toggle) */
+/* Secondary Buttons (Theme Toggle) */
 .rf-sec-btn button {{
     background-color: {T['sec_btn_bg']} !important;
     color: {T['sec_btn_text']} !important;
-    border: 1px solid {T['sec_btn_border']} !important;
+    border: none !important;
     border-radius: 10px !important;
     padding: 10px 16px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     font-size: 13px !important;
     transition: all 0.2s ease !important;
 }}
@@ -446,7 +430,6 @@ div[data-baseweb="checkbox"] label span {{
 }}
 .rf-sec-btn button:hover {{
     background-color: {T['sec_btn_hover_bg']} !important;
-    border-color: {T['sec_btn_hover_border']} !important;
     color: {T['sec_btn_hover_text']} !important;
 }}
 .rf-sec-btn button:hover * {{
@@ -544,7 +527,7 @@ with st.sidebar:
             del st.session_state["pipeline"]
         st.rerun()
 
-    # Re-Index Button (Soft Pastel Action)
+    # Re-Index Button (Primary Lavender Action)
     st.markdown('<div class="rf-reindex-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
     if st.button("🔄 Re-Index Documents", use_container_width=True):
         if "pipeline" in st.session_state:
@@ -610,7 +593,7 @@ with col_head_left:
     st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
 with col_head_right:
-    # TOP-RIGHT CONTROLS: HISTORY (LEVEL 2 SOFT) + THEME TOGGLE (LEVEL 3 NEUTRAL)
+    # TOP-RIGHT CONTROLS: HISTORY (PRIMARY LAVENDER) + THEME TOGGLE (PRIMARY LAVENDER)
     ctrl_col1, ctrl_col2 = st.columns(2)
     with ctrl_col1:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
@@ -675,7 +658,7 @@ if st.session_state["show_history_drawer"]:
 if "input_question" not in st.session_state:
     st.session_state["input_question"] = ""
 
-# 10. LARGE AI QUERY COMPOSER WITH CIRCULAR SEND BUTTON (HORIZONTAL RIGHT ARROW ➔)
+# 10. LARGE AI QUERY COMPOSER WITH RECTANGULAR PILL SEND QUERY BUTTON (EXTREME RIGHT ALIGNED)
 with st.form(key="query_composer_form", clear_on_submit=False):
     user_query = st.text_area(
         "Ask anything about your documents...",
@@ -685,7 +668,7 @@ with st.form(key="query_composer_form", clear_on_submit=False):
         label_visibility="collapsed"
     )
     
-    col_comp_left, col_comp_right = st.columns([4, 1])
+    col_comp_left, col_comp_right = st.columns([3, 1])
     with col_comp_left:
         st.markdown(f"""
             <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 10px;">
@@ -694,11 +677,11 @@ with st.form(key="query_composer_form", clear_on_submit=False):
             </div>
         """, unsafe_allow_html=True)
     with col_comp_right:
-        # Level 1 Accent Circular Send Button with Horizontal Right Arrow ➔
-        submit_button = st.form_submit_button("➔", use_container_width=False)
+        # Compact Rectangular Pill Send Query Button (Aligned Extreme Right)
+        submit_button = st.form_submit_button("Send Query ➔", use_container_width=False)
 
 
-# 11. SUGGESTED QUERY CARDS (LEVEL 2 SOFT PASTEL LAVENDER CARDS)
+# 11. SUGGESTED QUERY CARDS (UNIFORM PRIMARY LAVENDER CARDS)
 if not st.session_state["current_conversation_id"] and "last_result" not in st.session_state:
     st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; text-transform: uppercase; margin-top: 20px; margin-bottom: 12px;">SUGGESTED QUERIES</div>', unsafe_allow_html=True)
     
