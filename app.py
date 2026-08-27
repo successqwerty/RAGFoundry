@@ -2,18 +2,22 @@ import os
 import streamlit as st
 from rag_pipeline import RAGPipeline
 
-# 1. State Initialization
+# 1. Session State Initialization
 if "theme" not in st.session_state:
     st.session_state["theme"] = "light"
 
-theme = st.session_state["theme"]
+if "sidebar_state" not in st.session_state:
+    st.session_state["sidebar_state"] = "expanded"
 
-# 2. Page Configuration
+theme = st.session_state["theme"]
+sidebar_state = st.session_state["sidebar_state"]
+
+# 2. Page Configuration with Dynamic Sidebar State
 st.set_page_config(
     page_title="RAGFoundry — Local AI Document Intelligence",
     page_icon="✦",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state=sidebar_state
 )
 
 # 3. Centralized Theme System Dictionaries
@@ -68,13 +72,13 @@ custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Hide Header & Footer Chrome */
+/* Hide Streamlit Default Chrome Header & Footer */
 header[data-testid="stHeader"] {{ visibility: hidden; height: 0px; }}
 footer {{ visibility: hidden; }}
 [data-testid="stDecoration"] {{ display: none; }}
 #MainMenu {{ visibility: hidden; }}
 
-/* Persistent Sidebar Open/Close Toggle Control */
+/* Persistent Native Sidebar Open/Close Toggle Control */
 [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {{
     display: flex !important;
     visibility: visible !important;
@@ -109,10 +113,10 @@ html, body, .stApp {{
 section[data-testid="stSidebar"] {{
     background-color: {T['bg_sidebar']} !important;
     border-right: 1px solid {T['border']} !important;
-    width: 270px !important;
+    width: 280px !important;
 }}
 section[data-testid="stSidebar"] > div {{
-    padding: 1.5rem 1rem !important;
+    padding: 1.2rem 1rem !important;
 }}
 section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
     color: {T['text_main']} !important;
@@ -121,7 +125,7 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
 /* Main Container Width */
 .main .block-container {{
     max-width: 1050px !important;
-    padding-top: 1.5rem !important;
+    padding-top: 1.2rem !important;
     padding-bottom: 3rem !important;
     margin: 0 auto !important;
 }}
@@ -154,7 +158,7 @@ h1, h2, h3, h4, h5, h6 {{
     box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2) !important;
 }}
 
-/* Selectbox, Text Input & File Uploader In Dark/Light */
+/* Selectbox & Inputs */
 .stSelectbox div[data-baseweb="select"] > div, .stTextInput > div > div > input {{
     background-color: {T['bg_surface']} !important;
     border: 1px solid {T['border']} !important;
@@ -162,7 +166,7 @@ h1, h2, h3, h4, h5, h6 {{
     border-radius: 10px !important;
 }}
 
-/* Custom Workspace Cards */
+/* Custom Cards */
 .rf-card {{
     background-color: {T['bg_surface']};
     border: 1px solid {T['border']};
@@ -259,7 +263,17 @@ h1, h2, h3, h4, h5, h6 {{
     background-color: {T['soft_accent']} !important;
 }}
 
-/* Suggested Query White/Dark Cards (NO Bright Purple Bars) */
+/* Sidebar Explicit Close Button */
+.rf-sidebar-close-btn button {{
+    background-color: {T['soft_accent']} !important;
+    color: {T['primary']} !important;
+    border: 1px solid {T['border']} !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    padding: 4px 10px !important;
+}}
+
+/* Suggested Query Cards */
 .rf-sug-btn button {{
     background-color: {T['bg_surface']} !important;
     color: {T['text_main']} !important;
@@ -332,15 +346,23 @@ doc_count = len(documents_in_data)
 
 # 6. SIDEBAR RENDERING (WORKSPACE, MODEL & SYSTEM STATUS)
 with st.sidebar:
-    # Branding Header
-    st.markdown(f"""
-        <div style='margin-bottom: 20px;'>
-            <div style='font-size: 20px; font-weight: 700; color: {T["text_main"]}; display: flex; align-items: center; gap: 8px;'>
-                <span style='color: {T["primary"]};'>✦</span> RAGFoundry
+    # Branding & Explicit Hide Sidebar Button
+    sb_header_col1, sb_header_col2 = st.columns([3, 1])
+    with sb_header_col1:
+        st.markdown(f"""
+            <div style='margin-bottom: 12px;'>
+                <div style='font-size: 18px; font-weight: 700; color: {T["text_main"]}; display: flex; align-items: center; gap: 6px;'>
+                    <span style='color: {T["primary"]};'>✦</span> RAGFoundry
+                </div>
+                <div style='font-size: 11px; color: {T["text_sec"]}; margin-top: 1px;'>Local AI Document Intelligence</div>
             </div>
-            <div style='font-size: 12px; color: {T["text_sec"]}; margin-top: 2px;'>Local AI Document Intelligence</div>
-        </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    with sb_header_col2:
+        st.markdown('<div class="rf-sidebar-close-btn">', unsafe_allow_html=True)
+        if st.button("◀ Close", key="btn_close_sidebar", help="Hide Workspace Sidebar"):
+            st.session_state["sidebar_state"] = "collapsed"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # WORKSPACE SECTION
     st.markdown('<div class="rf-sidebar-label">WORKSPACE</div>', unsafe_allow_html=True)
@@ -440,10 +462,18 @@ pipeline = st.session_state["pipeline"]
 
 # 8. MAIN WORKSPACE CONTENT
 
-# Top Header Layout with Compact Segmented Theme Toggle
+# Top Header Layout with Explicit Sidebar Open Button & Theme Toggle
 col_head_left, col_head_right = st.columns([3, 1])
 
 with col_head_left:
+    # Explicit Sidebar Open Button (visible when sidebar is closed, or accessible at top-left)
+    if sidebar_state == "collapsed":
+        st.markdown('<div class="rf-secondary-btn" style="margin-bottom: 8px;">', unsafe_allow_html=True)
+        if st.button("▶ Open Sidebar / Workspace", key="btn_open_sidebar", help="Open Workspace Sidebar"):
+            st.session_state["sidebar_state"] = "expanded"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown('<span class="rf-badge-lavender">DOCUMENT INTELLIGENCE</span>', unsafe_allow_html=True)
     st.markdown(f'<h1 style="font-size: 32px; margin-top: 6px; margin-bottom: 4px; color: {T["text_main"]};">Ask your documents anything</h1>', unsafe_allow_html=True)
     st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 20px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
