@@ -25,7 +25,7 @@ current_user_id = "user_default"
 
 # 2. Page Setup
 st.set_page_config(
-    page_title="RAGFoundry — Public Local AI Document Intelligence",
+    page_title="RAGFoundry — Local AI Document Intelligence",
     page_icon="✦",
     layout="wide",
     initial_sidebar_state=sidebar_state
@@ -37,8 +37,8 @@ LIGHT_THEME = {
     "bg_sidebar": "#F3F1FA",
     "bg_surface": "#FFFFFF",
     "bg_elevated": "#FCFBFF",
-    "primary": "#7C68D9",
-    "primary_hover": "#6B56C8",
+    "primary": "#8B7CC8",
+    "primary_hover": "#7668B5",
     "primary_btn_text": "#FFFFFF",
     "soft_accent": "#EDE9F7",
     "info_bg": "#E4F0FF",
@@ -54,6 +54,9 @@ LIGHT_THEME = {
     "code_bg": "#F8F7FC",
     "grid_color": "rgba(139, 124, 200, 0.055)",
     "drawer_bg": "#FFFFFF",
+    "toggle_bg": "#FFFFFF",
+    "toggle_border": "#E7E5EF",
+    "toggle_color": "#6F638F",
 }
 
 DARK_THEME = {
@@ -62,8 +65,8 @@ DARK_THEME = {
     "bg_surface": "#171A22",
     "bg_elevated": "#1C202A",
     "primary": "#A78BFA",
-    "primary_hover": "#8B7CF6",
-    "primary_btn_text": "#101218",
+    "primary_hover": "#B49AFB",
+    "primary_btn_text": "#FFFFFF",
     "soft_accent": "#242033",
     "info_bg": "#172536",
     "info_text": "#93C5FD",
@@ -78,46 +81,49 @@ DARK_THEME = {
     "code_bg": "#11141C",
     "grid_color": "rgba(167, 139, 250, 0.03)",
     "drawer_bg": "#11141A",
+    "toggle_bg": "#1C202A",
+    "toggle_border": "#292E38",
+    "toggle_color": "#FFFFFF",
 }
 
 T = LIGHT_THEME if theme == "light" else DARK_THEME
 
-# 4. Professional CSS Injection
+# 4. Comprehensive Theme CSS Injection
 custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Hide Default Chrome Header & Footer */
+/* Hide Streamlit Default Chrome Header & Footer */
 header[data-testid="stHeader"] {{ background-color: transparent !important; z-index: 100 !important; }}
 footer {{ visibility: hidden; }}
 [data-testid="stDecoration"] {{ display: none; }}
 #MainMenu {{ visibility: hidden; }}
 
-/* Persistent Sidebar Open/Close Control */
+/* SINGLE Persistent Sidebar Toggle Control */
 [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {{
     display: flex !important;
     visibility: visible !important;
-    background-color: {T['bg_surface']} !important;
-    border: 1px solid {T['border']} !important;
-    border-radius: 10px !important;
-    color: {T['primary']} !important;
+    background-color: {T['toggle_bg']} !important;
+    border: 1px solid {T['toggle_border']} !important;
+    border-radius: 12px !important;
+    color: {T['toggle_color']} !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
     position: fixed !important;
     top: 14px !important;
     left: 14px !important;
     z-index: 999999 !important;
-    width: 38px !important;
-    height: 38px !important;
+    width: 44px !important;
+    height: 44px !important;
     align-items: center !important;
     justify-content: center !important;
     transition: all 0.2s ease !important;
 }}
 [data-testid="collapsedControl"]:hover, [data-testid="stSidebarCollapseButton"]:hover {{
     background-color: {T['soft_accent']} !important;
-    color: {T['primary']} !important;
+    color: #FFFFFF !important;
 }}
 
-/* Atmospheric Background Canvas & Grid */
+/* Global Theme Canvas */
 html, body, .stApp {{
     background-color: {T['bg_main']} !important;
     background-image: radial-gradient({T['grid_color']} 1px, transparent 1px) !important;
@@ -130,7 +136,7 @@ html, body, .stApp {{
 section[data-testid="stSidebar"] {{
     background-color: {T['bg_sidebar']} !important;
     border-right: 1px solid {T['border']} !important;
-    width: 275px !important;
+    width: 280px !important;
 }}
 section[data-testid="stSidebar"] > div {{
     padding: 1.2rem 1rem !important;
@@ -163,7 +169,7 @@ h1, h2, h3, h4, h5, h6 {{
     padding: 16px !important;
     font-size: 15px !important;
     font-family: 'Inter', sans-serif !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
     resize: none !important;
 }}
 .stTextArea textarea::placeholder {{
@@ -172,13 +178,17 @@ h1, h2, h3, h4, h5, h6 {{
 }}
 .stTextArea textarea:focus {{
     border-color: {T['primary']} !important;
-    box-shadow: 0 0 0 3px rgba(124, 104, 217, 0.18) !important;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2) !important;
 }}
 
-/* Form Submit Button Container & Circular Send Button */
+/* Form Submit Button Container & Circular Send Button (Extreme Right) */
+div[data-testid="stFormSubmitButton"] {{
+    display: flex !important;
+    justify-content: flex-end !important;
+}}
 div[data-testid="stFormSubmitButton"] > button {{
     background-color: {T['primary']} !important;
-    color: {T['primary_btn_text']} !important;
+    color: #FFFFFF !important;
     border: none !important;
     border-radius: 50% !important;
     width: 44px !important;
@@ -187,14 +197,32 @@ div[data-testid="stFormSubmitButton"] > button {{
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 20px !important;
+    font-size: 22px !important;
     font-weight: bold !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
     transition: all 0.2s ease !important;
 }}
 div[data-testid="stFormSubmitButton"] > button:hover {{
     background-color: {T['primary_hover']} !important;
+    color: #FFFFFF !important;
     transform: scale(1.05) !important;
+}}
+
+/* Dark/Light File Uploader Dropzone Styling */
+div[data-testid="stFileUploaderDropzone"], section[data-testid="stFileUploaderDropzone"] {{
+    background-color: {T['bg_surface']} !important;
+    border: 1px solid {T['border']} !important;
+    color: {T['text_main']} !important;
+    border-radius: 12px !important;
+}}
+div[data-testid="stFileUploaderDropzone"] *, div[data-testid="stFileUploader"] * {{
+    color: {T['text_main']} !important;
+}}
+div[data-testid="stFileUploaderDropzone"] button {{
+    background-color: {T['primary']} !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 8px !important;
 }}
 
 /* Selectbox & Inputs */
@@ -212,7 +240,7 @@ div[data-testid="stFormSubmitButton"] > button:hover {{
     border-radius: 14px;
     padding: 18px 22px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }}
 
 .rf-user-card {{
@@ -242,21 +270,6 @@ div[data-testid="stFormSubmitButton"] > button:hover {{
     display: flex;
     justify-content: space-between;
     align-items: center;
-}}
-
-/* History Drawer Card */
-.rf-history-card {{
-    background-color: {T['bg_surface']};
-    border: 1px solid {T['border']};
-    border-radius: 10px;
-    padding: 10px 14px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}}
-.rf-history-card:hover {{
-    border-color: {T['primary']};
-    background-color: {T['soft_accent']};
 }}
 
 /* Badges */
@@ -290,7 +303,23 @@ div[data-testid="stFormSubmitButton"] > button:hover {{
     display: inline-block;
 }}
 
-/* Standard Buttons */
+/* Standard Primary Action Buttons in Light & Dark Mode */
+.rf-primary-btn button {{
+    background-color: {T['primary']} !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: all 0.2s ease !important;
+}}
+.rf-primary-btn button:hover {{
+    background-color: {T['primary_hover']} !important;
+    color: #FFFFFF !important;
+}}
+
+/* Standard Secondary Outline Buttons */
 .stButton > button {{
     background-color: {T['bg_surface']} !important;
     color: {T['text_main']} !important;
@@ -304,9 +333,10 @@ div[data-testid="stFormSubmitButton"] > button:hover {{
 .stButton > button:hover {{
     background-color: {T['soft_accent']} !important;
     border-color: {T['primary']} !important;
+    color: {T['text_main']} !important;
 }}
 
-/* Suggested Query White Cards */
+/* Suggested Query White/Dark Cards */
 .rf-sug-btn button {{
     background-color: {T['bg_surface']} !important;
     color: {T['text_main']} !important;
@@ -321,6 +351,19 @@ div[data-testid="stFormSubmitButton"] > button:hover {{
 .rf-sug-btn button:hover {{
     border-color: {T['primary']} !important;
     background-color: {T['soft_accent']} !important;
+    color: {T['text_main']} !important;
+}}
+
+/* Streamlit Expander Styling */
+div[data-testid="stExpander"] {{
+    background-color: {T['bg_surface']} !important;
+    border: 1px solid {T['border']} !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+}}
+div[data-testid="stExpander"] summary {{
+    color: {T['text_sec']} !important;
+    font-weight: 500 !important;
 }}
 
 /* Sidebar Labels & Panels */
@@ -346,7 +389,7 @@ div[data-testid="stFormSubmitButton"] > button:hover {{
 """
 st.markdown(custom_css, unsafe_allow_html=True)
 
-# 5. Helper Function to Get Documents Info
+# 5. Helper Function to Get Documents List
 def get_documents_info(data_folder="data"):
     if not os.path.exists(data_folder):
         return []
@@ -363,22 +406,17 @@ def get_documents_info(data_folder="data"):
 documents_in_data = get_documents_info("data")
 doc_count = len(documents_in_data)
 
-# 6. SIDEBAR RENDERING (WORKSPACE, DOCUMENTS, AI ENGINE & SYSTEM)
+# 6. SIDEBAR RENDERING (CLEAN BRANDING, WORKSPACE, DOCUMENTS & AI ENGINE)
 with st.sidebar:
-    sb_header_col1, sb_header_col2 = st.columns([3, 1])
-    with sb_header_col1:
-        st.markdown(f"""
-            <div style='margin-bottom: 12px;'>
-                <div style='font-size: 18px; font-weight: 700; color: {T["text_main"]}; display: flex; align-items: center; gap: 6px;'>
-                    <span style='color: {T["primary"]};'>✦</span> RAGFoundry
-                </div>
-                <div style='font-size: 11px; color: {T["text_sec"]}; margin-top: 1px;'>Local AI Document Intelligence</div>
+    # Clean Brand Header
+    st.markdown(f"""
+        <div style='margin-bottom: 20px;'>
+            <div style='font-size: 20px; font-weight: 700; color: {T["text_main"]}; display: flex; align-items: center; gap: 8px;'>
+                <span style='color: {T["primary"]};'>✦</span> RAGFoundry
             </div>
-        """, unsafe_allow_html=True)
-    with sb_header_col2:
-        if st.button("◀ Close", key="btn_close_sidebar", help="Hide Sidebar"):
-            st.session_state["sidebar_state"] = "collapsed"
-            st.rerun()
+            <div style='font-size: 12px; color: {T["text_sec"]}; margin-top: 2px;'>Local AI Document Intelligence</div>
+        </div>
+    """, unsafe_allow_html=True)
 
     # WORKSPACE SECTION
     st.markdown('<div class="rf-sidebar-label">WORKSPACE</div>', unsafe_allow_html=True)
@@ -419,11 +457,13 @@ with st.sidebar:
             del st.session_state["pipeline"]
         st.rerun()
 
-    # Re-Index Button
+    # Re-Index Button (Primary Lavender Style)
+    st.markdown('<div class="rf-primary-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
     if st.button("🔄 Re-Index Documents", use_container_width=True):
         if "pipeline" in st.session_state:
             del st.session_state["pipeline"]
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown(f"<hr style='border:none; border-top:1px solid {T['border']}; margin:16px 0;'>", unsafe_allow_html=True)
 
@@ -478,11 +518,6 @@ pipeline = st.session_state["pipeline"]
 col_head_left, col_head_right = st.columns([3, 2])
 
 with col_head_left:
-    if sidebar_state == "collapsed":
-        if st.button("▶ Open Sidebar", key="btn_open_sidebar", help="Open Workspace Sidebar"):
-            st.session_state["sidebar_state"] = "expanded"
-            st.rerun()
-
     st.markdown('<span class="rf-badge-lavender">DOCUMENT INTELLIGENCE</span>', unsafe_allow_html=True)
     st.markdown(f'<h1 style="font-size: 32px; margin-top: 6px; margin-bottom: 4px; color: {T["text_main"]};">Ask your documents anything</h1>', unsafe_allow_html=True)
     st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
@@ -533,7 +568,6 @@ if st.session_state["show_history_drawer"]:
         if convs:
             st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; margin-top: 12px; margin-bottom: 6px;">{group_name}</div>', unsafe_allow_html=True)
             for c in convs:
-                active_style = "border-color: #7C68D9; background-color: " + T['soft_accent'] + ";" if c["id"] == st.session_state["current_conversation_id"] else ""
                 if st.button(f"💬 {c['title']}", key=f"conv_{c['id']}", use_container_width=True):
                     st.session_state["current_conversation_id"] = c["id"]
                     st.session_state["show_history_drawer"] = False
@@ -546,12 +580,12 @@ if st.session_state["show_history_drawer"]:
 if "input_question" not in st.session_state:
     st.session_state["input_question"] = ""
 
-# 10. LARGE AI QUERY COMPOSER WITH CIRCULAR SEND BUTTON INSIDE
+# 10. LARGE AI QUERY COMPOSER WITH CIRCULAR SEND BUTTON INSIDE (HORIZONTAL RIGHT ARROW ➔)
 with st.form(key="query_composer_form", clear_on_submit=False):
     user_query = st.text_area(
         "Ask anything about your documents...",
         value=st.session_state.get("input_question", ""),
-        height=100,
+        height=105,
         placeholder="Ask anything about your documents (e.g. What is the second project listed in the resume?)...",
         label_visibility="collapsed"
     )
@@ -565,8 +599,8 @@ with st.form(key="query_composer_form", clear_on_submit=False):
             </div>
         """, unsafe_allow_html=True)
     with col_comp_right:
-        # Circular Send Button (↑ Arrow Icon) Inside Composer
-        submit_button = st.form_submit_button("↑", use_container_width=False)
+        # Circular Send Button with Horizontal Right Arrow ➔
+        submit_button = st.form_submit_button("➔", use_container_width=False)
 
 
 # 11. SUGGESTED QUERY CARDS (Shown when starting a fresh chat)
