@@ -47,6 +47,9 @@ LIGHT_THEME = {
     "mint_text": "#4F8A6B",
     "peach_bg": "#FCE8D8",
     "peach_text": "#374151",
+    "purple_soft_bg": "#EDE9F7",
+    "purple_soft_text": "#7C68D9",
+    "purple_soft_border": "rgba(124,104,217,0.2)",
     "text_main": "#374151",
     "text_sec": "#7B8190",
     "text_muted": "#9AA1AF",
@@ -57,38 +60,71 @@ LIGHT_THEME = {
     "toggle_bg": "#FFFFFF",
     "toggle_border": "#E7E5EF",
     "toggle_color": "#6F638F",
+    "upload_bg": "#FFFFFF",
+    "upload_border": "#E7E5EF",
+    "composer_bg": "#FFFFFF",
+    "composer_border": "#E7E5EF",
+    "sug_bg": "#FFFFFF",
+    "sug_border": "#E7E5EF",
+    "sug_text": "#374151",
+    "sug_icon": "#8B7CC8",
+    "sug_hover_bg": "#EDE9F7",
+    "sug_hover_border": "#D9D1F0",
+    "top_btn_bg": "#FFFFFF",
+    "top_btn_border": "#E7E5EF",
+    "top_btn_text": "#374151",
+    "top_btn_hover_bg": "#EDE9F7",
+    "top_btn_hover_border": "#6366F1",
 }
 
 DARK_THEME = {
-    "bg_main": "#101218",
-    "bg_sidebar": "#0C0E13",
-    "bg_surface": "#171A22",
-    "bg_elevated": "#1C202A",
-    "primary": "#A78BFA",
-    "primary_hover": "#B49AFB",
+    "bg_main": "#0B0F17",
+    "bg_sidebar": "#111827",
+    "bg_surface": "#1A2234",
+    "bg_elevated": "#1E293B",
+    "primary": "#6366F1",
+    "primary_hover": "#4F46E5",
     "primary_btn_text": "#FFFFFF",
-    "soft_accent": "#242033",
-    "info_bg": "#172536",
-    "info_text": "#93C5FD",
-    "mint_bg": "#142A21",
-    "mint_text": "#86E3B3",
+    "soft_accent": "#1E293B",
+    "info_bg": "#161F30",
+    "info_text": "#3B82F6",
+    "mint_bg": "#064E3B",
+    "mint_text": "#34D399",
     "peach_bg": "#30201C",
     "peach_text": "#FDBA9A",
-    "text_main": "#F3F4F6",
-    "text_sec": "#A7ADBB",
-    "text_muted": "#737B8C",
-    "border": "#292E38",
-    "code_bg": "#11141C",
-    "grid_color": "rgba(167, 139, 250, 0.03)",
-    "drawer_bg": "#11141A",
-    "toggle_bg": "#1C202A",
-    "toggle_border": "#292E38",
-    "toggle_color": "#FFFFFF",
+    "purple_soft_bg": "#2E1E4F",
+    "purple_soft_text": "#C084FC",
+    "purple_soft_border": "rgba(192, 132, 252, 0.20)",
+    "text_main": "#F8FAFC",
+    "text_sec": "#94A3B8",
+    "text_muted": "#64748B",
+    "border": "#2D3748",
+    "code_bg": "#111827",
+    "grid_color": "rgba(99, 102, 241, 0.02)",
+    "drawer_bg": "#111827",
+    "toggle_bg": "#1E293B",
+    "toggle_border": "#2D3748",
+    "toggle_color": "#F8FAFC",
+    "upload_bg": "#1E293B",
+    "upload_border": "#475569",
+    "composer_bg": "#111827",
+    "composer_border": "#1F293D",
+    "sug_bg": "#161F30",
+    "sug_border": "#283548",
+    "sug_text": "#E2E8F0",
+    "sug_icon": "#C084FC",
+    "sug_hover_bg": "#1E2B42",
+    "sug_hover_border": "#3B82F6",
+    "top_btn_bg": "#161F30",
+    "top_btn_border": "#283548",
+    "top_btn_text": "#E2E8F0",
+    "top_btn_hover_bg": "#1E2B42",
+    "top_btn_hover_border": "#3B82F6",
 }
 
 T = LIGHT_THEME if theme == "light" else DARK_THEME
 
-# 4. Comprehensive Theme CSS Injection
+# 4. Comprehensive Standardized CSS Injection
 custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -120,6 +156,7 @@ footer {{ visibility: hidden; }}
 }}
 [data-testid="collapsedControl"]:hover, [data-testid="stSidebarCollapseButton"]:hover {{
     background-color: {T['soft_accent']} !important;
+    border-color: {T['primary']} !important;
     color: #FFFFFF !important;
 }}
 
@@ -162,8 +199,8 @@ h1, h2, h3, h4, h5, h6 {{
 
 /* Large AI Query Composer Styling */
 .stTextArea textarea {{
-    background-color: {T['bg_surface']} !important;
-    border: 1px solid {T['border']} !important;
+    background-color: {T['composer_bg']} !important;
+    border: 1px solid {T['composer_border']} !important;
     border-radius: 18px !important;
     color: {T['text_main']} !important;
     padding: 16px !important;
@@ -173,12 +210,12 @@ h1, h2, h3, h4, h5, h6 {{
     resize: none !important;
 }}
 .stTextArea textarea::placeholder {{
-    color: {T['text_muted']} !important;
+    color: {T['text_sec']} !important;
     opacity: 1 !important;
 }}
 .stTextArea textarea:focus {{
     border-color: {T['primary']} !important;
-    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15) !important;
 }}
 
 /* Form Submit Button Container & Circular Send Button (Extreme Right) */
@@ -208,21 +245,37 @@ div[data-testid="stFormSubmitButton"] > button:hover {{
     transform: scale(1.05) !important;
 }}
 
-/* Dark/Light File Uploader Dropzone Styling */
+/* File Uploader Dropzone Styling */
 div[data-testid="stFileUploaderDropzone"], section[data-testid="stFileUploaderDropzone"] {{
-    background-color: {T['bg_surface']} !important;
-    border: 1px solid {T['border']} !important;
+    background-color: {T['upload_bg']} !important;
+    border: 1px dashed {T['upload_border']} !important;
     color: {T['text_main']} !important;
     border-radius: 12px !important;
+    transition: all 0.2s ease !important;
+}}
+div[data-testid="stFileUploaderDropzone"]:hover {{
+    background-color: #1E2B42 !important;
+    border-color: #3B82F6 !important;
 }}
 div[data-testid="stFileUploaderDropzone"] *, div[data-testid="stFileUploader"] * {{
     color: {T['text_main']} !important;
+}}
+div[data-testid="stFileUploaderDropzone"] small {{
+    color: {T['text_sec']} !important;
 }}
 div[data-testid="stFileUploaderDropzone"] button {{
     background-color: {T['primary']} !important;
     color: #FFFFFF !important;
     border: none !important;
     border-radius: 8px !important;
+}}
+div[data-testid="stFileUploaderDropzone"] button:hover {{
+    background-color: {T['primary_hover']} !important;
+}}
+
+/* Checkbox Styling */
+div[data-baseweb="checkbox"] label span {{
+    color: {T['text_main']} !important;
 }}
 
 /* Selectbox & Inputs */
@@ -244,7 +297,7 @@ div[data-testid="stFileUploaderDropzone"] button {{
 }}
 
 .rf-user-card {{
-    background-color: {T['soft_accent']};
+    background-color: {T['bg_elevated']};
     border: 1px solid {T['border']};
     border-radius: 14px;
     padding: 14px 18px;
@@ -264,12 +317,17 @@ div[data-testid="stFileUploaderDropzone"] button {{
 .rf-doc-card {{
     background-color: {T['bg_surface']};
     border: 1px solid {T['border']};
-    border-radius: 10px;
-    padding: 8px 12px;
+    border-radius: 12px;
+    padding: 10px 14px;
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.2s ease;
+}}
+.rf-doc-card:hover {{
+    background-color: {T['soft_accent']};
+    border-color: {T['info_text']};
 }}
 
 /* Badges */
@@ -278,17 +336,18 @@ div[data-testid="stFileUploaderDropzone"] button {{
     color: {T['mint_text']};
     font-size: 11px;
     font-weight: 600;
-    padding: 3px 8px;
+    padding: 4px 10px;
     border-radius: 12px;
     display: inline-block;
 }}
 
-.rf-badge-lavender {{
-    background-color: {T['soft_accent']};
-    color: {T['primary']};
+.rf-badge-purple {{
+    background-color: {T['purple_soft_bg']};
+    color: {T['purple_soft_text']};
+    border: 1px solid {T['purple_soft_border']};
     font-size: 11px;
     font-weight: 600;
-    padding: 3px 8px;
+    padding: 4px 10px;
     border-radius: 12px;
     display: inline-block;
 }}
@@ -298,12 +357,12 @@ div[data-testid="stFileUploaderDropzone"] button {{
     color: {T['info_text']};
     font-size: 11px;
     font-weight: 500;
-    padding: 3px 8px;
+    padding: 4px 10px;
     border-radius: 12px;
     display: inline-block;
 }}
 
-/* Standard Primary Action Buttons in Light & Dark Mode */
+/* Standard Primary Action Buttons */
 .rf-primary-btn button {{
     background-color: {T['primary']} !important;
     color: #FFFFFF !important;
@@ -319,11 +378,28 @@ div[data-testid="stFileUploaderDropzone"] button {{
     color: #FFFFFF !important;
 }}
 
-/* Standard Secondary Outline Buttons */
+/* Standard Top-Right & Drawer Control Buttons */
+.rf-top-btn button {{
+    background-color: {T['top_btn_bg']} !important;
+    color: {T['top_btn_text']} !important;
+    border: 1px solid {T['top_btn_border']} !important;
+    border-radius: 10px !important;
+    padding: 8px 16px !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    transition: all 0.2s ease !important;
+}}
+.rf-top-btn button:hover {{
+    background-color: {T['top_btn_hover_bg']} !important;
+    border-color: {T['top_btn_hover_border']} !important;
+    color: #F8FAFC !important;
+}}
+
+/* Standard Secondary Buttons */
 .stButton > button {{
-    background-color: {T['bg_surface']} !important;
-    color: {T['text_main']} !important;
-    border: 1px solid {T['border']} !important;
+    background-color: {T['top_btn_bg']} !important;
+    color: {T['top_btn_text']} !important;
+    border: 1px solid {T['top_btn_border']} !important;
     border-radius: 10px !important;
     padding: 8px 16px !important;
     font-weight: 500 !important;
@@ -331,16 +407,16 @@ div[data-testid="stFileUploaderDropzone"] button {{
     transition: all 0.2s ease !important;
 }}
 .stButton > button:hover {{
-    background-color: {T['soft_accent']} !important;
-    border-color: {T['primary']} !important;
-    color: {T['text_main']} !important;
+    background-color: {T['top_btn_hover_bg']} !important;
+    border-color: {T['top_btn_hover_border']} !important;
+    color: #F8FAFC !important;
 }}
 
-/* Suggested Query White/Dark Cards */
+/* Suggested Query Secondary Cards */
 .rf-sug-btn button {{
-    background-color: {T['bg_surface']} !important;
-    color: {T['text_main']} !important;
-    border: 1px solid {T['border']} !important;
+    background-color: {T['sug_bg']} !important;
+    color: {T['sug_text']} !important;
+    border: 1px solid {T['sug_border']} !important;
     border-radius: 12px !important;
     padding: 12px 16px !important;
     text-align: left !important;
@@ -349,15 +425,15 @@ div[data-testid="stFileUploaderDropzone"] button {{
     box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
 }}
 .rf-sug-btn button:hover {{
-    border-color: {T['primary']} !important;
-    background-color: {T['soft_accent']} !important;
-    color: {T['text_main']} !important;
+    border-color: {T['sug_hover_border']} !important;
+    background-color: {T['sug_hover_bg']} !important;
+    color: #F8FAFC !important;
 }}
 
 /* Streamlit Expander Styling */
 div[data-testid="stExpander"] {{
-    background-color: {T['bg_surface']} !important;
-    border: 1px solid {T['border']} !important;
+    background-color: {T['sug_bg']} !important;
+    border: 1px solid {T['sug_border']} !important;
     border-radius: 12px !important;
     box-shadow: none !important;
 }}
@@ -427,7 +503,7 @@ with st.sidebar:
             st.markdown(f"""
                 <div class="rf-doc-card">
                     <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px;">
-                        <span style="color: {T["primary"]};">📄</span> 
+                        <span style="color: {T["text_main"]};">📄</span> 
                         <span style="font-size: 13px; font-weight: 500; color: {T["text_main"]};">{doc['name']}</span>
                     </div>
                     <span class="rf-badge-mint">✓ Indexed</span>
@@ -457,7 +533,7 @@ with st.sidebar:
             del st.session_state["pipeline"]
         st.rerun()
 
-    # Re-Index Button (Primary Lavender Style)
+    # Re-Index Button (Primary Lavender/Iris Style)
     st.markdown('<div class="rf-primary-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
     if st.button("🔄 Re-Index Documents", use_container_width=True):
         if "pipeline" in st.session_state:
@@ -518,7 +594,7 @@ pipeline = st.session_state["pipeline"]
 col_head_left, col_head_right = st.columns([3, 2])
 
 with col_head_left:
-    st.markdown('<span class="rf-badge-lavender">DOCUMENT INTELLIGENCE</span>', unsafe_allow_html=True)
+    st.markdown('<span class="rf-badge-purple">DOCUMENT INTELLIGENCE</span>', unsafe_allow_html=True)
     st.markdown(f'<h1 style="font-size: 32px; margin-top: 6px; margin-bottom: 4px; color: {T["text_main"]};">Ask your documents anything</h1>', unsafe_allow_html=True)
     st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
@@ -527,15 +603,19 @@ with col_head_right:
     ctrl_col1, ctrl_col2 = st.columns(2)
     with ctrl_col1:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
+        st.markdown('<div class="rf-top-btn">', unsafe_allow_html=True)
         if st.button(hist_btn_text, key="top_history_btn", use_container_width=True):
             st.session_state["show_history_drawer"] = not st.session_state["show_history_drawer"]
             st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
             
     with ctrl_col2:
         theme_btn_label = "☾ Dark Mode" if theme == "light" else "☀ Light Mode"
+        st.markdown('<div class="rf-top-btn">', unsafe_allow_html=True)
         if st.button(theme_btn_label, key="top_theme_btn", use_container_width=True):
             st.session_state["theme"] = "dark" if theme == "light" else "light"
             st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown(f"""
         <div style="text-align: right; margin-top: 8px;">
@@ -556,11 +636,13 @@ if st.session_state["show_history_drawer"]:
     
     h_col1, h_col2 = st.columns([1, 3])
     with h_col1:
+        st.markdown('<div class="rf-primary-btn">', unsafe_allow_html=True)
         if st.button("+ New Conversation", key="drawer_new_chat", use_container_width=True):
             st.session_state["current_conversation_id"] = None
             st.session_state["input_question"] = ""
             st.session_state["show_history_drawer"] = False
             st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     grouped_convs = db_manager.get_user_conversations_grouped(current_user_id)
     
@@ -742,7 +824,7 @@ if active_conv_id:
                             st.markdown(f"""
                                 <div style="background-color: {T['bg_surface']}; border: 1px solid {T['border']}; border-radius: 10px; padding: 14px; margin-bottom: 10px;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                        <span class="rf-badge-lavender">Rank {rank+1}</span>
+                                        <span class="rf-badge-purple">Rank {rank+1}</span>
                                         <span style="font-size: 12px; color: {T['text_sec']};">{score_display} &nbsp;·&nbsp; 📄 {chunk['filename']}</span>
                                     </div>
                                     <div style="font-size: 13px; font-family: monospace; background-color: {T['code_bg']}; padding: 10px; border-radius: 6px; color: {T['text_main']}; white-space: pre-wrap;">
