@@ -54,18 +54,18 @@ LIGHT_THEME = {
     
     # Document Intelligence Badge
     "badge_bg": "#F3E8FF",
-    "badge_border": "#E9D5FF",
-    "badge_text": "#7E22CE",
+    "badge_border": "#D8CCF5",
+    "badge_text": "#6D3FB3",
     
     # Non-Sidebar Utility & Suggested Query Buttons
     "btn_lavender_bg": "#F5EEFD",
-    "btn_lavender_border": "#E9D5FF",
-    "btn_lavender_text": "#6B21A8",
-    "btn_lavender_icon": "#6B21A8",
-    "btn_lavender_hover_bg": "#EDE0FB",
-    "btn_lavender_hover_border": "#D8B4FE",
-    "btn_lavender_hover_text": "#581C87",
-    "btn_lavender_hover_icon": "#581C87",
+    "btn_lavender_border": "#D8CCF5",
+    "btn_lavender_text": "#5B3A8E",
+    "btn_lavender_icon": "#5B3A8E",
+    "btn_lavender_hover_bg": "#EEE4FA",
+    "btn_lavender_hover_border": "#BFA7EA",
+    "btn_lavender_hover_text": "#4C2A7A",
+    "btn_lavender_hover_icon": "#4C2A7A",
     
     # Send Query Button (Primary Action)
     "btn_primary_bg": "#7C3AED",
@@ -85,19 +85,19 @@ LIGHT_THEME = {
     "upload_btn_hover_icon": "#6D28D9",
 
     "reindex_bg": "#F5EEFD",
-    "reindex_border": "#E9D5FF",
-    "reindex_text": "#6B21A8",
-    "reindex_icon": "#6B21A8",
-    "reindex_hover_bg": "#EDE0FB",
-    "reindex_hover_border": "#D8B4FE",
-    "reindex_hover_text": "#581C87",
+    "reindex_border": "#D8CCF5",
+    "reindex_text": "#5B3A8E",
+    "reindex_icon": "#5B3A8E",
+    "reindex_hover_bg": "#EEE4FA",
+    "reindex_hover_border": "#BFA7EA",
+    "reindex_hover_text": "#4C2A7A",
     
     "mint_bg": "#ECFDF5",
     "mint_text": "#047857",
     "peach_bg": "#FCE8D8",
     "peach_text": "#24324A",
     "info_bg": "#F3E8FF",
-    "info_text": "#7E22CE",
+    "info_text": "#6D3FB3",
 }
 
 DARK_THEME = {
@@ -170,7 +170,7 @@ DARK_THEME = {
 
 T = LIGHT_THEME if theme == "light" else DARK_THEME
 
-# 4. Standardized CSS Rules
+# 4. Standardized CSS Rules (Using valid section[data-testid="stMain"] and section[data-testid="stSidebar"] selectors)
 custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -260,7 +260,7 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
 }}
 
 /* Main Container Width & Spacing */
-.main .block-container {{
+section[data-testid="stMain"] .block-container, .main .block-container {{
     max-width: 1050px !important;
     padding-top: 1.2rem !important;
     padding-bottom: 3rem !important;
@@ -296,52 +296,59 @@ h1, h2, h3, h4, h5, h6 {{
 }}
 
 /* ALL NON-SIDEBAR MAIN CONTENT BUTTONS (History, Theme Toggle, Suggested Queries) */
-.main .rf-history-btn button,
-.main .rf-sec-btn button,
-.main .rf-sug-btn button,
-.main .stButton > button:not(section[data-testid="stSidebar"] button):not(div[data-testid="stFormSubmitButton"] button) {{
+section[data-testid="stMain"] .stButton > button,
+section[data-testid="stMain"] .rf-history-btn button,
+section[data-testid="stMain"] .rf-sec-btn button,
+section[data-testid="stMain"] .rf-sug-btn button,
+.main .stButton > button {{
     background-color: var(--btn-lavender-bg) !important;
     border: 1px solid var(--btn-lavender-border) !important;
     color: var(--btn-lavender-text) !important;
     border-radius: 12px !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     font-size: 13.5px !important;
     padding: 10px 18px !important;
     box-shadow: none !important;
     transition: all 0.2s ease !important;
 }}
 
-.main .rf-history-btn button *,
-.main .rf-sec-btn button *,
-.main .rf-sug-btn button *,
-.main .stButton > button:not(section[data-testid="stSidebar"] button):not(div[data-testid="stFormSubmitButton"] button) * {{
+section[data-testid="stMain"] .stButton > button *,
+section[data-testid="stMain"] .rf-history-btn button *,
+section[data-testid="stMain"] .rf-sec-btn button *,
+section[data-testid="stMain"] .rf-sug-btn button *,
+.main .stButton > button * {{
     color: var(--btn-lavender-icon) !important;
     fill: var(--btn-lavender-icon) !important;
 }}
 
-.main .rf-history-btn button:hover,
-.main .rf-sec-btn button:hover,
-.main .rf-sug-btn button:hover,
-.main .stButton > button:not(section[data-testid="stSidebar"] button):not(div[data-testid="stFormSubmitButton"] button):hover {{
+section[data-testid="stMain"] .stButton > button:hover,
+section[data-testid="stMain"] .rf-history-btn button:hover,
+section[data-testid="stMain"] .rf-sec-btn button:hover,
+section[data-testid="stMain"] .rf-sug-btn button:hover,
+.main .stButton > button:hover {{
     background-color: var(--btn-lavender-hover-bg) !important;
     border-color: var(--btn-lavender-hover-border) !important;
     color: var(--btn-lavender-hover-text) !important;
 }}
 
-.main .rf-history-btn button:hover *,
-.main .rf-sec-btn button:hover *,
-.main .rf-sug-btn button:hover *,
-.main .stButton > button:not(section[data-testid="stSidebar"] button):not(div[data-testid="stFormSubmitButton"] button):hover * {{
+section[data-testid="stMain"] .stButton > button:hover *,
+section[data-testid="stMain"] .rf-history-btn button:hover *,
+section[data-testid="stMain"] .rf-sec-btn button:hover *,
+section[data-testid="stMain"] .rf-sug-btn button:hover *,
+.main .stButton > button:hover * {{
     color: var(--btn-lavender-hover-icon) !important;
     fill: var(--btn-lavender-hover-icon) !important;
 }}
 
 /* PRIMARY ACTION BUTTON: SEND QUERY (ALIGN EXTREME RIGHT) */
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"],
 .main div[data-testid="stFormSubmitButton"] {{
     display: flex !important;
     justify-content: flex-end !important;
 }}
 
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] > button,
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] button,
 .main div[data-testid="stFormSubmitButton"] > button,
 .main div[data-testid="stFormSubmitButton"] button {{
     background-color: var(--btn-primary-bg) !important;
@@ -355,18 +362,24 @@ h1, h2, h3, h4, h5, h6 {{
     transition: all 0.2s ease !important;
 }}
 
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] > button *,
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] button *,
 .main div[data-testid="stFormSubmitButton"] > button *,
 .main div[data-testid="stFormSubmitButton"] button * {{
     color: #FFFFFF !important;
     fill: #FFFFFF !important;
 }}
 
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] > button:hover,
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] button:hover,
 .main div[data-testid="stFormSubmitButton"] > button:hover,
 .main div[data-testid="stFormSubmitButton"] button:hover {{
     background-color: var(--btn-primary-hover) !important;
     color: #FFFFFF !important;
 }}
 
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] > button:hover *,
+section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] button:hover *,
 .main div[data-testid="stFormSubmitButton"] > button:hover *,
 .main div[data-testid="stFormSubmitButton"] button:hover * {{
     color: #FFFFFF !important;
