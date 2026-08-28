@@ -523,7 +523,7 @@ div[data-baseweb="checkbox"] label span {{
 """
 st.markdown(custom_css, unsafe_allow_html=True)
 
-# 5. Helper Function to Get Documents List
+# 5. Helper Function to Get Documents List & Dynamic Suggestions Generator
 def get_documents_info(data_folder="data"):
     if not os.path.exists(data_folder):
         return []
@@ -536,6 +536,49 @@ def get_documents_info(data_folder="data"):
             doc_list.append({"name": f, "size_kb": size_kb})
             db_manager.register_document(f, size_kb, current_user_id)
     return doc_list
+
+def get_dynamic_suggested_queries(documents):
+    """
+    Dynamically generates 3 smart suggested query chips based on the uploaded document names.
+    """
+    if not documents:
+        return [
+            ("✦ What are the main topics?", "What are the main topics covered in these documents?"),
+            ("≡ Summarize this document", "Summarize the key information in these documents."),
+            ("◇ Key takeaways & concepts", "What are the key takeaways and important concepts?")
+        ]
+    
+    doc_names_lower = " ".join([d["name"].lower() for d in documents])
+    
+    # Unit / Syllabus / Study Material / Textbook / Exam / HRPM / Module
+    if any(k in doc_names_lower for k in ["unit", "chapter", "lecture", "syllabus", "hrpm", "exam", "notes", "module", "book", "subject"]):
+        return [
+            ("✦ Key concepts in Unit 1", "What are the key concepts and main topics in this unit?"),
+            ("≡ Summarize this unit", "Provide a comprehensive summary of this unit."),
+            ("◇ Main definitions & terms", "What are the main definitions and key terms explained?")
+        ]
+    # Resume / CV / Bio / Profile
+    elif any(k in doc_names_lower for k in ["resume", "cv", "bio", "profile", "portfolio"]):
+        return [
+            ("✦ Main projects & experience", "What are the main projects and work experience listed?"),
+            ("≡ Professional summary", "Summarize the professional background and qualifications."),
+            ("◇ Skills & technical stack", "What technical skills and tools are mentioned?")
+        ]
+    # Report / Project / Research Paper / Thesis
+    elif any(k in doc_names_lower for k in ["report", "paper", "project", "research", "thesis", "proposal"]):
+        return [
+            ("✦ Main objectives & findings", "What are the main objectives and findings of this document?"),
+            ("≡ Executive summary", "Summarize the key executive findings and conclusions."),
+            ("◇ Methodology & results", "What methodologies and key results are presented?")
+        ]
+    # Generic Default Document Intelligence Prompts
+    else:
+        first_name = documents[0]["name"].rsplit(".", 1)[0].replace("_", " ").replace("-", " ")
+        return [
+            (f"✦ Overview of {first_name[:14]}", f"What is the main overview of {first_name}?"),
+            ("≡ Summarize this document", "Summarize the key points in this document."),
+            ("◇ Important insights & details", "What are the most important insights and details covered?")
+        ]
 
 documents_in_data = get_documents_info("data")
 doc_count = len(documents_in_data)
@@ -722,13 +765,19 @@ if st.session_state["show_history_drawer"]:
 if "input_question" not in st.session_state:
     st.session_state["input_question"] = ""
 
+# Handle Instant Execution for Suggested Queries
+query_to_execute = None
+
+if "pending_question" in st.session_state and st.session_state["pending_question"]:
+    query_to_execute = st.session_state.pop("pending_question")
+
 # 10. LARGE AI QUERY COMPOSER WITH PRIMARY ACTION SEND QUERY BUTTON (EXTREME RIGHT ALIGNED)
 with st.form(key="query_composer_form", clear_on_submit=False):
     user_query = st.text_area(
         "Ask anything about your documents...",
         value=st.session_state.get("input_question", ""),
         height=105,
-        placeholder="Ask anything about your documents (e.g. What is the second project listed in the resume?)...",
+        placeholder="Ask anything about your documents (e.g. What are the key concepts in this unit?)...",
         label_visibility="collapsed"
     )
     
@@ -744,37 +793,30 @@ with st.form(key="query_composer_form", clear_on_submit=False):
         # Primary Action Send Query Button (Aligned Extreme Right)
         submit_button = st.form_submit_button("Send Query ➔", use_container_width=False)
 
+if submit_button and user_query.strip():
+    query_to_execute = user_query.strip()
 
-# 11. SUGGESTED QUERY CARDS (SUBTLE CHIPS/CARDS IN DARK MODE)
+
+# 11. DYNAMIC SUGGESTED QUERY CARDS (ADAPTS TO UPLOADED DOCUMENT TYPE & EXECUTES INSTANTLY)
 if not st.session_state["current_conversation_id"] and "last_result" not in st.session_state:
     st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; text-transform: uppercase; margin-top: 20px; margin-bottom: 12px;">SUGGESTED QUERIES</div>', unsafe_allow_html=True)
     
+    dynamic_suggestions = get_dynamic_suggested_queries(documents_in_data)
     s_col1, s_col2, s_col3 = st.columns(3)
-    with s_col1:
-        st.markdown('<div class="rf-sug-btn">', unsafe_allow_html=True)
-        if st.button("✦ What are the main projects?", key="sug_p1", use_container_width=True):
-            st.session_state["input_question"] = "What are the main projects?"
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-    with s_col2:
-        st.markdown('<div class="rf-sug-btn">', unsafe_allow_html=True)
-        if st.button("≡ Summarize this document", key="sug_p2", use_container_width=True):
-            st.session_state["input_question"] = "Summarize this document"
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-    with s_col3:
-        st.markdown('<div class="rf-sug-btn">', unsafe_allow_html=True)
-        if st.button("◇ What skills are mentioned?", key="sug_p3", use_container_width=True):
-            st.session_state["input_question"] = "What skills are mentioned?"
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+    
+    for idx, (col_target, (label, full_prompt)) in enumerate(zip([s_col1, s_col2, s_col3], dynamic_suggestions)):
+        with col_target:
+            st.markdown('<div class="rf-sug-btn">', unsafe_allow_html=True)
+            if st.button(label, key=f"sug_p{idx+1}", use_container_width=True):
+                st.session_state["pending_question"] = full_prompt
+                st.session_state["input_question"] = full_prompt
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
 
 # 12. PROCESS QUERY SUBMISSION & PERSISTENT AUTO-SAVE TO DATABASE
-if submit_button and user_query.strip():
-    question_text = user_query.strip()
+if query_to_execute:
+    question_text = query_to_execute
     st.session_state["input_question"] = ""
     
     # 1. Active conversation check or create new
