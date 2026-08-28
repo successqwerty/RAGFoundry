@@ -32,84 +32,83 @@ st.set_page_config(
 )
 
 # 3. Standardized Design Tokens for Light & Dark Mode
-# LIGHT MODE: REFINED HIGH-CONTRAST BUTTON DESIGN SYSTEM ACCORDING TO SPECIFICATION
+# LIGHT MODE: MATCHING UPLOADED REFERENCE IMAGE VISUAL LANGUAGE FOR NON-SIDEBAR ELEMENTS
 LIGHT_THEME = {
     "bg_main": "#F8F7FC",
     "bg_sidebar": "#F1EFF9",
     "bg_surface": "#FFFFFF",
     "bg_elevated": "#FFFFFF",
     
-    # 1. Primary Action (Send Query)
-    "btn_bg": "#6366F1",
-    "btn_hover_bg": "#4F46E5",
-    "btn_active_bg": "#4338CA",
+    # 1. Primary Action (Send Query) — Stronger Lavender Accent
+    "btn_bg": "#8B7CC7",
+    "btn_hover_bg": "#7565B3",
+    "btn_active_bg": "#6354A0",
     "btn_border": "none",
     "btn_text": "#FFFFFF",
     "btn_icon": "#FFFFFF",
     
-    # 2. Secondary Utility Actions (Upload Button)
+    # 2. Sidebar Buttons (EXCLUDED from non-sidebar reference styling)
     "upload_btn_bg": "#FFFFFF",
-    "upload_btn_border": "#E2E8F0",
-    "upload_btn_text": "#334155",
-    "upload_btn_icon": "#4F46E5",
-    "upload_btn_hover_bg": "#F8FAFC",
-    "upload_btn_hover_border": "#6366F1",
-    "upload_btn_hover_text": "#1E293B",
-    "upload_btn_hover_icon": "#4338CA",
+    "upload_btn_border": "#D8D0F5",
+    "upload_btn_text": "#4C4670",
+    "upload_btn_icon": "#6D63A3",
+    "upload_btn_hover_bg": "#F5F3FF",
+    "upload_btn_hover_border": "#BDB3EA",
+    "upload_btn_hover_text": "#3F3863",
+    "upload_btn_hover_icon": "#5B50A0",
 
-    # 4. Re-Index Action
-    "reindex_bg": "#EEF2FF",
-    "reindex_border": "#C7D2FE",
-    "reindex_text": "#4F46E5",
-    "reindex_icon": "#4F46E5",
-    "reindex_hover_bg": "#E0E7FF",
-    "reindex_hover_border": "#A5B4FC",
-    "reindex_hover_text": "#4338CA",
+    "reindex_bg": "#F5F3FF",
+    "reindex_border": "#D8D0F5",
+    "reindex_text": "#4C4670",
+    "reindex_icon": "#6D63A3",
+    "reindex_hover_bg": "#EEE9FF",
+    "reindex_hover_border": "#BDB3EA",
+    "reindex_hover_text": "#3F3863",
     
-    # 2. Secondary Header Controls (History, Theme Toggle, Sidebar Toggle)
-    "ctrl_bg": "#FFFFFF",
-    "ctrl_border": "#E2E8F0",
-    "ctrl_text": "#334155",
-    "ctrl_icon": "#334155",
-    "ctrl_hover_bg": "#F1F5F9",
-    "ctrl_hover_border": "#CBD5E1",
-    "ctrl_hover_text": "#0F172A",
+    # 3. Non-Sidebar Header Controls (History, Theme Toggle, Sidebar Toggle)
+    "ctrl_bg": "#F5F3FF",
+    "ctrl_border": "#D8D0F5",
+    "ctrl_text": "#4C4670",
+    "ctrl_icon": "#6D63A3",
+    "ctrl_hover_bg": "#EEE9FF",
+    "ctrl_hover_border": "#BDB3EA",
+    "ctrl_hover_text": "#3F3863",
     
-    # 3. Suggested Query Chips / Cards
-    "sug_bg": "#FFFFFF",
-    "sug_border": "#E2E8F0",
-    "sug_text": "#475569",
-    "sug_icon": "#6366F1",
-    "sug_hover_bg": "#F8FAFC",
-    "sug_hover_border": "#6366F1",
-    "sug_hover_text": "#1E293B",
-    "sug_hover_icon": "#4F46E5",
-    "sug_active_bg": "#EEF2FF",
-    "sug_active_border": "#6366F1",
-    "sug_active_text": "#1E293B",
+    # 4. Non-Sidebar Suggested Query Cards (Reference Image Soft Lavender Style)
+    "sug_bg": "#F5F3FF",
+    "sug_border": "#D8D0F5",
+    "sug_text": "#4C4670",
+    "sug_icon": "#6D63A3",
+    "sug_hover_bg": "#EEE9FF",
+    "sug_hover_border": "#BDB3EA",
+    "sug_hover_text": "#3F3863",
+    "sug_hover_icon": "#5B50A0",
+    "sug_active_bg": "#E5DFFF",
+    "sug_active_border": "#A89CE0",
+    "sug_active_text": "#352F57",
     
-    "info_bg": "#EEF2FF",
-    "info_text": "#4F46E5",
+    "info_bg": "#F5F3FF",
+    "info_text": "#4C4670",
     "mint_bg": "#E7F7EF",
     "mint_text": "#18794E",
     "peach_bg": "#FCE8D8",
     "peach_text": "#24324A",
-    "purple_soft_bg": "#EEEAF8",
-    "purple_soft_border": "#D8CFF0",
-    "purple_soft_text": "#7764B5",
+    "purple_soft_bg": "#F3F0FF",
+    "purple_soft_border": "#D8D0F5",
+    "purple_soft_text": "#665CA3",
     
     "text_main": "#24324A",
     "text_sec": "#667085",
     "text_muted": "#8A94A6",
     "border": "#D8D1EA",
     "code_bg": "#F8F7FC",
-    "grid_color": "rgba(99, 102, 241, 0.03)",
+    "grid_color": "rgba(139, 124, 200, 0.03)",
     "drawer_bg": "#FFFFFF",
     "upload_container_bg": "#FFFFFF",
-    "upload_container_border": "#E2E8F0",
+    "upload_container_border": "#D8D0F5",
     "composer_bg": "#FFFFFF",
-    "composer_border": "#E2E8F0",
-    "composer_focus_border": "#6366F1",
+    "composer_border": "#D8D0F5",
+    "composer_focus_border": "#BDB3EA",
 }
 
 # DARK MODE: 100% UNTOUCHED EXACTLY AS PREVIOUSLY CONFIGURED
@@ -293,7 +292,7 @@ h1, h2, h3, h4, h5, h6 {{
 }}
 .stTextArea textarea:focus {{
     border-color: {T['composer_focus_border']} !important;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(139, 124, 200, 0.15) !important;
 }}
 
 /* Primary Action Button (Send Query — Extreme Right Aligned) */
@@ -443,8 +442,8 @@ div[data-baseweb="checkbox"] label span {{
     border: 1px solid {T['purple_soft_border']};
     font-size: 11px;
     font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 12px;
+    padding: 4px 12px;
+    border-radius: 14px;
     display: inline-block;
 }}
 
@@ -458,7 +457,7 @@ div[data-baseweb="checkbox"] label span {{
     display: inline-block;
 }}
 
-/* Re-Index Button (Subtle Indigo-Tinted Style) */
+/* Re-Index Button (Sidebar Button) */
 .rf-reindex-btn button {{
     background-color: {T['reindex_bg']} !important;
     color: {T['reindex_text']} !important;
@@ -483,12 +482,12 @@ div[data-baseweb="checkbox"] label span {{
     fill: {T['reindex_hover_text']} !important;
 }}
 
-/* Secondary Header Control Buttons (History & Theme Toggle) */
+/* Non-Sidebar Header Control Buttons (History & Theme Toggle - Soft Lavender Style) */
 .rf-history-btn button, .rf-sec-btn button {{
     background-color: {T['ctrl_bg']} !important;
     color: {T['ctrl_text']} !important;
     border: 1px solid {T['ctrl_border']} !important;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
     padding: 10px 16px !important;
     font-weight: 600 !important;
     font-size: 13px !important;
@@ -508,7 +507,7 @@ div[data-baseweb="checkbox"] label span {{
     fill: {T['ctrl_hover_text']} !important;
 }}
 
-/* Suggested Query Chips / Cards */
+/* Non-Sidebar Suggested Query Chips / Cards (Soft Lavender Style) */
 .rf-sug-btn button {{
     background-color: {T['sug_bg']} !important;
     color: {T['sug_text']} !important;
@@ -672,7 +671,7 @@ with st.sidebar:
             del st.session_state["pipeline"]
         st.rerun()
 
-    # Re-Index Button (Secondary Action)
+    # Re-Index Button (Sidebar Button)
     st.markdown('<div class="rf-reindex-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
     if st.button("🔄 Re-Index Documents", use_container_width=True):
         if "pipeline" in st.session_state:
@@ -738,7 +737,7 @@ with col_head_left:
     st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
 with col_head_right:
-    # TOP-RIGHT CONTROLS: HISTORY (HEADER CONTROL) + THEME TOGGLE (HEADER CONTROL)
+    # TOP-RIGHT CONTROLS: HISTORY (SOFT LAVENDER) + THEME TOGGLE (SOFT LAVENDER)
     ctrl_col1, ctrl_col2 = st.columns(2)
     with ctrl_col1:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
