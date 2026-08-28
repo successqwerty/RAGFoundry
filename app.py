@@ -31,123 +31,141 @@ st.set_page_config(
     initial_sidebar_state=sidebar_state
 )
 
-# 3. Standardized Design Tokens for Light & Dark Mode
-# LIGHT MODE: EXACT SPECIFICATION LIGHT LAVENDER FILLED BUTTONS (#F4F0FF bg, #CFC2FF border, #4F46A5 text)
+# 3. Standardized Design Tokens for Light & Dark Mode according to User Specifications
 LIGHT_THEME = {
-    "bg_main": "#F8F7FC",
-    "bg_sidebar": "#F1EFF9",
+    "bg_main": "#F8FAFC",
+    "bg_sidebar": "#F1F5F9",
+    "border_sidebar": "#E2E8F0",
     "bg_surface": "#FFFFFF",
     "bg_elevated": "#FFFFFF",
-    
-    # Non-Sidebar Main Content Buttons
-    "main_btn_bg": "#F4F0FF",
-    "main_btn_border": "#CFC2FF",
-    "main_btn_text": "#4F46A5",
-    "main_btn_icon": "#4F46A5",
-    "main_btn_hover_bg": "#EDE7FF",
-    "main_btn_hover_border": "#B8A8FF",
-    "main_btn_hover_text": "#4338CA",
-    "main_btn_hover_icon": "#4338CA",
-    
-    # Sidebar Actions (Preserved Sidebar Styling)
-    "upload_btn_bg": "#FFFFFF",
-    "upload_btn_border": "#D8D0F5",
-    "upload_btn_text": "#4C4670",
-    "upload_btn_icon": "#6D63A3",
-    "upload_btn_hover_bg": "#F5F3FF",
-    "upload_btn_hover_border": "#BDB3EA",
-    "upload_btn_hover_text": "#3F3863",
-    "upload_btn_hover_icon": "#5B50A0",
-
-    "reindex_bg": "#F5F3FF",
-    "reindex_border": "#D8D0F5",
-    "reindex_text": "#4C4670",
-    "reindex_icon": "#6D63A3",
-    "reindex_hover_bg": "#EEE9FF",
-    "reindex_hover_border": "#BDB3EA",
-    "reindex_hover_text": "#3F3863",
-    
-    "info_bg": "#F4F0FF",
-    "info_text": "#4F46A5",
-    "mint_bg": "#E7F7EF",
-    "mint_text": "#18794E",
-    "peach_bg": "#FCE8D8",
-    "peach_text": "#24324A",
-    "purple_soft_bg": "#F4F0FF",
-    "purple_soft_border": "#CFC2FF",
-    "purple_soft_text": "#6355B8",
-    
-    "text_main": "#24324A",
-    "text_sec": "#667085",
-    "text_muted": "#8A94A6",
-    "border": "#D8D1EA",
-    "code_bg": "#F8F7FC",
-    "grid_color": "rgba(139, 124, 200, 0.03)",
+    "border_card": "#E2E8F0",
+    "text_main": "#0F172A",
+    "text_sec": "#64748B",
+    "text_muted": "#94A3B8",
+    "border": "#E2E8F0",
+    "code_bg": "#F8FAFC",
+    "grid_color": "rgba(124, 58, 237, 0.03)",
     "drawer_bg": "#FFFFFF",
     "upload_container_bg": "#FFFFFF",
-    "upload_container_border": "#D8D0F5",
+    "upload_container_border": "#E2E8F0",
     "composer_bg": "#FFFFFF",
-    "composer_border": "#CFC2FF",
-    "composer_focus_border": "#B8A8FF",
+    "composer_border": "#E2E8F0",
+    "composer_focus_border": "#7C3AED",
+    
+    # Document Intelligence Badge
+    "badge_bg": "#F3E8FF",
+    "badge_border": "#E9D5FF",
+    "badge_text": "#7E22CE",
+    
+    # Non-Sidebar Utility & Suggested Query Buttons
+    "btn_lavender_bg": "#F5EEFD",
+    "btn_lavender_border": "#E9D5FF",
+    "btn_lavender_text": "#6B21A8",
+    "btn_lavender_icon": "#6B21A8",
+    "btn_lavender_hover_bg": "#EDE0FB",
+    "btn_lavender_hover_border": "#D8B4FE",
+    "btn_lavender_hover_text": "#581C87",
+    "btn_lavender_hover_icon": "#581C87",
+    
+    # Send Query Button (Primary Action)
+    "btn_primary_bg": "#7C3AED",
+    "btn_primary_text": "#FFFFFF",
+    "btn_primary_icon": "#FFFFFF",
+    "btn_primary_hover_bg": "#6D28D9",
+    "btn_primary_hover_text": "#FFFFFF",
+    
+    # Sidebar Independent Controls
+    "upload_btn_bg": "#FFFFFF",
+    "upload_btn_border": "#E2E8F0",
+    "upload_btn_text": "#334155",
+    "upload_btn_icon": "#7C3AED",
+    "upload_btn_hover_bg": "#F8FAFC",
+    "upload_btn_hover_border": "#7C3AED",
+    "upload_btn_hover_text": "#0F172A",
+    "upload_btn_hover_icon": "#6D28D9",
+
+    "reindex_bg": "#F5EEFD",
+    "reindex_border": "#E9D5FF",
+    "reindex_text": "#6B21A8",
+    "reindex_icon": "#6B21A8",
+    "reindex_hover_bg": "#EDE0FB",
+    "reindex_hover_border": "#D8B4FE",
+    "reindex_hover_text": "#581C87",
+    
+    "mint_bg": "#ECFDF5",
+    "mint_text": "#047857",
+    "peach_bg": "#FCE8D8",
+    "peach_text": "#24324A",
+    "info_bg": "#F3E8FF",
+    "info_text": "#7E22CE",
 }
 
-# DARK MODE: OBSIDIAN CANVAS (#0B0F17) WITH VIBRANT LAVENDER NON-SIDEBAR BUTTONS (#9B7AF5 bg, SOLID WHITE TEXT & ICONS)
 DARK_THEME = {
-    "bg_main": "#0B0F17",
-    "bg_sidebar": "#111827",
-    "bg_surface": "#1A2234",
-    "bg_elevated": "#1A2234",
+    "bg_main": "#0B0E14",
+    "bg_sidebar": "#111622",
+    "border_sidebar": "#1E293B",
+    "bg_surface": "#141B2B",
+    "bg_elevated": "#141B2B",
+    "border_card": "#242E42",
+    "text_main": "#F8FAFC",
+    "text_sec": "#94A3B8",
+    "text_muted": "#64748B",
+    "border": "#242E42",
+    "code_bg": "#111622",
+    "grid_color": "rgba(139, 92, 246, 0.02)",
+    "drawer_bg": "#111622",
+    "upload_container_bg": "#141B2B",
+    "upload_container_border": "#242E42",
+    "composer_bg": "#141B2B",
+    "composer_border": "#242E42",
+    "composer_focus_border": "#8B5CF6",
     
-    # Non-Sidebar Main Content Buttons
-    "main_btn_bg": "#9B7AF5",
-    "main_btn_border": "#9B7AF5",
-    "main_btn_text": "#FFFFFF",
-    "main_btn_icon": "#FFFFFF",
-    "main_btn_hover_bg": "#8B68E8",
-    "main_btn_hover_border": "#8B68E8",
-    "main_btn_hover_text": "#FFFFFF",
-    "main_btn_hover_icon": "#FFFFFF",
+    # Document Intelligence Badge
+    "badge_bg": "#2A1B4E",
+    "badge_border": "#4C2889",
+    "badge_text": "#D8B4FE",
     
-    # Sidebar Actions (Preserved Dark Mode Sidebar Styling - Prevents White-on-White Bug)
-    "upload_btn_bg": "#1A2234",
-    "upload_btn_border": "#2D3748",
-    "upload_btn_text": "#F8FAFC",
-    "upload_btn_icon": "#A78BFA",
-    "upload_btn_hover_bg": "#222D42",
+    # Non-Sidebar Utility & Suggested Query Buttons (NO WHITE BACKGROUNDS IN DARK MODE)
+    "btn_lavender_bg": "#1F1735",
+    "btn_lavender_border": "#3E2968",
+    "btn_lavender_text": "#E9D5FF",
+    "btn_lavender_icon": "#E9D5FF",
+    "btn_lavender_hover_bg": "#2E1F4D",
+    "btn_lavender_hover_border": "#6D28D9",
+    "btn_lavender_hover_text": "#FFFFFF",
+    "btn_lavender_hover_icon": "#FFFFFF",
+    
+    # Send Query Button (Primary Action in Dark Mode)
+    "btn_primary_bg": "#8B5CF6",
+    "btn_primary_text": "#FFFFFF",
+    "btn_primary_icon": "#FFFFFF",
+    "btn_primary_hover_bg": "#7C3AED",
+    "btn_primary_hover_text": "#FFFFFF",
+    
+    # Sidebar Independent Controls (Prevents White-on-White Bug)
+    "upload_btn_bg": "#1E293B",
+    "upload_btn_border": "#334155",
+    "upload_btn_text": "#CBD5E1",
+    "upload_btn_icon": "#8B5CF6",
+    "upload_btn_hover_bg": "#2A364F",
     "upload_btn_hover_border": "#8B5CF6",
     "upload_btn_hover_text": "#FFFFFF",
-    "upload_btn_hover_icon": "#A78BFA",
+    "upload_btn_hover_icon": "#8B5CF6",
 
-    "reindex_bg": "#1A2234",
-    "reindex_border": "#2D3748",
-    "reindex_text": "#F8FAFC",
-    "reindex_icon": "#A78BFA",
-    "reindex_hover_bg": "#222D42",
+    "reindex_bg": "#1E293B",
+    "reindex_border": "#334155",
+    "reindex_text": "#CBD5E1",
+    "reindex_icon": "#8B5CF6",
+    "reindex_hover_bg": "#2A364F",
     "reindex_hover_border": "#8B5CF6",
     "reindex_hover_text": "#FFFFFF",
     
-    "info_bg": "#111827",
-    "info_text": "#CBD5E1",
     "mint_bg": "#064E3B",
     "mint_text": "#34D399",
     "peach_bg": "#30201C",
     "peach_text": "#F87171",
-    "purple_soft_bg": "#241A3D",
-    "purple_soft_border": "#6D5AA8",
-    "purple_soft_text": "#C4B5FD",
-    
-    "text_main": "#F8FAFC",
-    "text_sec": "#CBD5E1",
-    "text_muted": "#94A3B8",
-    "border": "#2D3748",
-    "code_bg": "#111827",
-    "grid_color": "rgba(139, 92, 246, 0.02)",
-    "drawer_bg": "#111827",
-    "upload_container_bg": "#1A2234",
-    "upload_container_border": "#475569",
-    "composer_bg": "#1A2234",
-    "composer_border": "#2D3748",
-    "composer_focus_border": "#8B5CF6",
+    "info_bg": "#2A1B4E",
+    "info_text": "#D8B4FE",
 }
 
 T = LIGHT_THEME if theme == "light" else DARK_THEME
@@ -156,6 +174,29 @@ T = LIGHT_THEME if theme == "light" else DARK_THEME
 custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {{
+    --bg-main: {T['bg_main']};
+    --bg-sidebar: {T['bg_sidebar']};
+    --border-sidebar: {T['border_sidebar']};
+    --bg-card: {T['bg_surface']};
+    --border-card: {T['border_card']};
+    --text-primary: {T['text_main']};
+    --text-secondary: {T['text_sec']};
+
+    --btn-lavender-bg: {T['btn_lavender_bg']};
+    --btn-lavender-border: {T['btn_lavender_border']};
+    --btn-lavender-text: {T['btn_lavender_text']};
+    --btn-lavender-icon: {T['btn_lavender_icon']};
+    --btn-lavender-hover-bg: {T['btn_lavender_hover_bg']};
+    --btn-lavender-hover-border: {T['btn_lavender_hover_border']};
+    --btn-lavender-hover-text: {T['btn_lavender_hover_text']};
+    --btn-lavender-hover-icon: {T['btn_lavender_hover_icon']};
+
+    --btn-primary-bg: {T['btn_primary_bg']};
+    --btn-primary-text: {T['btn_primary_text']};
+    --btn-primary-hover: {T['btn_primary_hover_bg']};
+}}
 
 /* Hide Default Chrome Header & Footer */
 header[data-testid="stHeader"] {{ background-color: transparent !important; z-index: 100 !important; }}
@@ -167,9 +208,9 @@ footer {{ visibility: hidden; }}
 [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {{
     display: flex !important;
     visibility: visible !important;
-    background-color: {T['main_btn_bg']} !important;
-    color: {T['main_btn_text']} !important;
-    border: 1px solid {T['main_btn_border']} !important;
+    background-color: var(--btn-lavender-bg) !important;
+    color: var(--btn-lavender-text) !important;
+    border: 1px solid var(--btn-lavender-border) !important;
     border-radius: 12px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
     position: fixed !important;
@@ -183,39 +224,39 @@ footer {{ visibility: hidden; }}
     transition: all 0.2s ease !important;
 }}
 [data-testid="collapsedControl"] *, [data-testid="stSidebarCollapseButton"] * {{
-    color: {T['main_btn_icon']} !important;
-    fill: {T['main_btn_icon']} !important;
+    color: var(--btn-lavender-icon) !important;
+    fill: var(--btn-lavender-icon) !important;
 }}
 [data-testid="collapsedControl"]:hover, [data-testid="stSidebarCollapseButton"]:hover {{
-    background-color: {T['main_btn_hover_bg']} !important;
-    border-color: {T['main_btn_hover_border']} !important;
-    color: {T['main_btn_hover_text']} !important;
+    background-color: var(--btn-lavender-hover-bg) !important;
+    border-color: var(--btn-lavender-hover-border) !important;
+    color: var(--btn-lavender-hover-text) !important;
 }}
 [data-testid="collapsedControl"]:hover *, [data-testid="stSidebarCollapseButton"]:hover * {{
-    color: {T['main_btn_hover_icon']} !important;
-    fill: {T['main_btn_hover_icon']} !important;
+    color: var(--btn-lavender-hover-icon) !important;
+    fill: var(--btn-lavender-hover-icon) !important;
 }}
 
 /* Global Theme Canvas */
 html, body, .stApp {{
-    background-color: {T['bg_main']} !important;
+    background-color: var(--bg-main) !important;
     background-image: radial-gradient({T['grid_color']} 1px, transparent 1px) !important;
     background-size: 24px 24px !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    color: {T['text_main']} !important;
+    color: var(--text-primary) !important;
 }}
 
 /* Sidebar Styling */
 section[data-testid="stSidebar"] {{
-    background-color: {T['bg_sidebar']} !important;
-    border-right: 1px solid {T['border']} !important;
+    background-color: var(--bg-sidebar) !important;
+    border-right: 1px solid var(--border-sidebar) !important;
     width: 280px !important;
 }}
 section[data-testid="stSidebar"] > div {{
     padding: 1.2rem 1rem !important;
 }}
 section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
-    color: {T['text_main']} !important;
+    color: var(--text-primary) !important;
 }}
 
 /* Main Container Width & Spacing */
@@ -229,16 +270,16 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
 /* Typography */
 h1, h2, h3, h4, h5, h6 {{
     font-family: 'Inter', sans-serif !important;
-    color: {T['text_main']} !important;
+    color: var(--text-primary) !important;
     font-weight: 600 !important;
 }}
 
 /* Large AI Query Composer Styling */
 .stTextArea textarea {{
-    background-color: {T['composer_bg']} !important;
-    border: 1px solid {T['composer_border']} !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-card) !important;
     border-radius: 18px !important;
-    color: {T['text_main']} !important;
+    color: var(--text-primary) !important;
     padding: 16px !important;
     font-size: 15px !important;
     font-family: 'Inter', sans-serif !important;
@@ -246,23 +287,22 @@ h1, h2, h3, h4, h5, h6 {{
     resize: none !important;
 }}
 .stTextArea textarea::placeholder {{
-    color: {T['text_muted']} !important;
+    color: var(--text-secondary) !important;
     opacity: 1 !important;
 }}
 .stTextArea textarea:focus {{
     border-color: {T['composer_focus_border']} !important;
-    box-shadow: 0 0 0 2px rgba(139, 124, 200, 0.15) !important;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15) !important;
 }}
 
-/* ALL NON-SIDEBAR MAIN CONTENT BUTTONS (History, Theme Toggle, Suggested Queries, Send Query) */
-.main .stButton > button,
-.main div[data-testid="stFormSubmitButton"] > button,
-.rf-history-btn button,
-.rf-sec-btn button,
-.rf-sug-btn button {{
-    background-color: {T['main_btn_bg']} !important;
-    border: 1px solid {T['main_btn_border']} !important;
-    color: {T['main_btn_text']} !important;
+/* ALL NON-SIDEBAR MAIN CONTENT BUTTONS (History, Theme Toggle, Suggested Queries) */
+.main .rf-history-btn button,
+.main .rf-sec-btn button,
+.main .rf-sug-btn button,
+.main .stButton > button:not(section[data-testid="stSidebar"] button):not(div[data-testid="stFormSubmitButton"] button) {{
+    background-color: var(--btn-lavender-bg) !important;
+    border: 1px solid var(--btn-lavender-border) !important;
+    color: var(--btn-lavender-text) !important;
     border-radius: 12px !important;
     font-weight: 600 !important;
     font-size: 13.5px !important;
@@ -271,41 +311,69 @@ h1, h2, h3, h4, h5, h6 {{
     transition: all 0.2s ease !important;
 }}
 
-.main .stButton > button *,
-.main div[data-testid="stFormSubmitButton"] > button *,
-.rf-history-btn button *,
-.rf-sec-btn button *,
-.rf-sug-btn button * {{
-    color: {T['main_btn_icon']} !important;
-    fill: {T['main_btn_icon']} !important;
+.main .rf-history-btn button *,
+.main .rf-sec-btn button *,
+.main .rf-sug-btn button *,
+.main .stButton > button:not(section[data-testid="stSidebar"] button):not(div[data-testid="stFormSubmitButton"] button) * {{
+    color: var(--btn-lavender-icon) !important;
+    fill: var(--btn-lavender-icon) !important;
 }}
 
-.main .stButton > button:hover,
-.main div[data-testid="stFormSubmitButton"] > button:hover,
-.rf-history-btn button:hover,
-.rf-sec-btn button:hover,
-.rf-sug-btn button:hover {{
-    background-color: {T['main_btn_hover_bg']} !important;
-    border-color: {T['main_btn_hover_border']} !important;
-    color: {T['main_btn_hover_text']} !important;
+.main .rf-history-btn button:hover,
+.main .rf-sec-btn button:hover,
+.main .rf-sug-btn button:hover,
+.main .stButton > button:not(section[data-testid="stSidebar"] button):not(div[data-testid="stFormSubmitButton"] button):hover {{
+    background-color: var(--btn-lavender-hover-bg) !important;
+    border-color: var(--btn-lavender-hover-border) !important;
+    color: var(--btn-lavender-hover-text) !important;
 }}
 
-.main .stButton > button:hover *,
-.main div[data-testid="stFormSubmitButton"] > button:hover *,
-.rf-history-btn button:hover *,
-.rf-sec-btn button:hover *,
-.rf-sug-btn button:hover * {{
-    color: {T['main_btn_hover_icon']} !important;
-    fill: {T['main_btn_hover_icon']} !important;
+.main .rf-history-btn button:hover *,
+.main .rf-sec-btn button:hover *,
+.main .rf-sug-btn button:hover *,
+.main .stButton > button:not(section[data-testid="stSidebar"] button):not(div[data-testid="stFormSubmitButton"] button):hover * {{
+    color: var(--btn-lavender-hover-icon) !important;
+    fill: var(--btn-lavender-hover-icon) !important;
 }}
 
-/* Primary Action Button (Send Query — Extreme Right Aligned) */
+/* PRIMARY ACTION BUTTON: SEND QUERY (ALIGN EXTREME RIGHT) */
 .main div[data-testid="stFormSubmitButton"] {{
     display: flex !important;
     justify-content: flex-end !important;
 }}
 
-/* SIDEBAR EXCLUSION & SPECIFIC SIDEBAR BUTTON STYLES */
+.main div[data-testid="stFormSubmitButton"] > button,
+.main div[data-testid="stFormSubmitButton"] button {{
+    background-color: var(--btn-primary-bg) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 10px 20px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.2s ease !important;
+}}
+
+.main div[data-testid="stFormSubmitButton"] > button *,
+.main div[data-testid="stFormSubmitButton"] button * {{
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+}}
+
+.main div[data-testid="stFormSubmitButton"] > button:hover,
+.main div[data-testid="stFormSubmitButton"] button:hover {{
+    background-color: var(--btn-primary-hover) !important;
+    color: #FFFFFF !important;
+}}
+
+.main div[data-testid="stFormSubmitButton"] > button:hover *,
+.main div[data-testid="stFormSubmitButton"] button:hover * {{
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+}}
+
+/* SIDEBAR INDEPENDENT STYLING — EXCLUDED FROM NON-SIDEBAR RULES */
 section[data-testid="stSidebar"] button,
 section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button,
 section[data-testid="stSidebar"] .rf-reindex-btn button {{
@@ -342,31 +410,31 @@ section[data-testid="stSidebar"] .rf-reindex-btn button:hover * {{
 div[data-testid="stFileUploaderDropzone"], section[data-testid="stFileUploaderDropzone"] {{
     background-color: {T['upload_container_bg']} !important;
     border: 1px dashed {T['upload_container_border']} !important;
-    color: {T['text_main']} !important;
+    color: var(--text-primary) !important;
     border-radius: 12px !important;
     transition: all 0.2s ease !important;
 }}
 div[data-testid="stFileUploaderDropzone"] small {{
-    color: {T['text_sec']} !important;
+    color: var(--text-secondary) !important;
 }}
 
 /* Checkbox Styling */
 div[data-baseweb="checkbox"] label span {{
-    color: {T['text_main']} !important;
+    color: var(--text-primary) !important;
 }}
 
 /* Selectbox & Inputs */
 .stSelectbox div[data-baseweb="select"] > div, .stTextInput > div > div > input {{
-    background-color: {T['bg_surface']} !important;
-    border: 1px solid {T['border']} !important;
-    color: {T['text_main']} !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-card) !important;
+    color: var(--text-primary) !important;
     border-radius: 10px !important;
 }}
 
 /* Custom Cards */
 .rf-card {{
-    background-color: {T['bg_surface']};
-    border: 1px solid {T['border']};
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
     border-radius: 14px;
     padding: 18px 22px;
     margin-bottom: 16px;
@@ -375,16 +443,16 @@ div[data-baseweb="checkbox"] label span {{
 
 .rf-user-card {{
     background-color: {T['bg_elevated']};
-    border: 1px solid {T['border']};
+    border: 1px solid var(--border-card);
     border-radius: 14px;
     padding: 14px 18px;
     margin-bottom: 16px;
-    color: {T['text_main']};
+    color: var(--text-primary);
 }}
 
 .rf-ai-card {{
-    background-color: {T['bg_surface']};
-    border: 1px solid {T['border']};
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
     border-radius: 16px;
     padding: 24px;
     margin-bottom: 20px;
@@ -392,8 +460,8 @@ div[data-baseweb="checkbox"] label span {{
 }}
 
 .rf-doc-card {{
-    background-color: {T['bg_surface']};
-    border: 1px solid {T['border']};
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
     border-radius: 12px;
     padding: 10px 14px;
     margin-bottom: 8px;
@@ -414,14 +482,14 @@ div[data-baseweb="checkbox"] label span {{
 }}
 
 .rf-badge-purple {{
-    background-color: {T['purple_soft_bg']};
-    color: {T['purple_soft_text']};
-    border: 1px solid {T['purple_soft_border']};
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 14px;
-    display: inline-block;
+    background-color: {T['badge_bg']} !important;
+    color: {T['badge_text']} !important;
+    border: 1px solid {T['badge_border']} !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 4px 12px !important;
+    border-radius: 14px !important;
+    display: inline-block !important;
 }}
 
 .rf-badge-blue {{
@@ -439,7 +507,7 @@ div[data-baseweb="checkbox"] label span {{
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.8px;
-    color: {T['text_sec']};
+    color: var(--text-secondary);
     text-transform: uppercase;
     margin-top: 18px;
     margin-bottom: 8px;
@@ -523,7 +591,7 @@ with st.sidebar:
     st.markdown(f"""
         <div style='margin-bottom: 20px;'>
             <div style='font-size: 20px; font-weight: 700; color: {T["text_main"]}; display: flex; align-items: center; gap: 8px;'>
-                <span style='color: {T["main_btn_bg"]};'>✦</span> RAGFoundry
+                <span style='color: {T["btn_primary_bg"]};'>✦</span> RAGFoundry
             </div>
             <div style='font-size: 12px; color: {T["text_sec"]}; margin-top: 2px;'>Local AI Document Intelligence</div>
         </div>
@@ -598,7 +666,7 @@ with st.sidebar:
             os.environ["GEMINI_API_KEY"] = user_api_key.strip()
             st.markdown(f'<div style="font-size:12px; color:{T["mint_text"]}; margin-top:4px;">✓ Custom Key Applied</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div style="font-size:12px; color:{T["main_btn_bg"]}; margin-top:4px;">● Gemini Cloud Active</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="font-size:12px; color:{T["btn_primary_bg"]}; margin-top:4px;">● Gemini Cloud Active</div>', unsafe_allow_html=True)
 
     # SYSTEM STATUS PANEL
     if doc_count > 0:
@@ -634,7 +702,7 @@ with col_head_left:
     st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
 with col_head_right:
-    # TOP-RIGHT CONTROLS: HISTORY (LIGHT LAVENDER FILLED BUTTON) + THEME TOGGLE (LIGHT LAVENDER FILLED BUTTON)
+    # TOP-RIGHT CONTROLS: HISTORY + THEME TOGGLE (NON-SIDEBAR LAVENDER STYLING)
     ctrl_col1, ctrl_col2 = st.columns(2)
     with ctrl_col1:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
@@ -719,7 +787,7 @@ with st.form(key="query_composer_form", clear_on_submit=False):
     with col_comp_left:
         st.markdown(f"""
             <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 10px;">
-                <span style="color: {T['main_btn_bg']};">📄</span> {doc_count} Document(s) Indexed &nbsp;·&nbsp; 
+                <span style="color: {T['btn_primary_bg']};">📄</span> {doc_count} Document(s) Indexed &nbsp;·&nbsp; 
                 <span style="color: {T['mint_text']};">●</span> {selected_provider.title()} ({selected_model})
             </div>
         """, unsafe_allow_html=True)
@@ -813,7 +881,7 @@ if active_conv_id:
                 # User Prompt Card
                 st.markdown(f"""
                     <div class="rf-user-card">
-                        <div style="font-size: 11px; font-weight: 700; color: {T['main_btn_bg']}; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;">You</div>
+                        <div style="font-size: 11px; font-weight: 700; color: {T['btn_primary_bg']}; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;">You</div>
                         <div style="font-size: 15px; font-weight: 500; color: {T['text_main']};">{msg['content']}</div>
                     </div>
                 """, unsafe_allow_html=True)
@@ -823,7 +891,7 @@ if active_conv_id:
                     <div class="rf-ai-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <div style="font-size: 14px; font-weight: 600; color: {T['text_main']}; display: flex; align-items: center; gap: 6px;">
-                                <span style="color: {T['main_btn_bg']};">✦</span> RAGFoundry
+                                <span style="color: {T['btn_primary_bg']};">✦</span> RAGFoundry
                             </div>
                             <span class="rf-badge-mint">✓ Grounded in your documents</span>
                         </div>
