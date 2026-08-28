@@ -847,7 +847,7 @@ if query_to_execute:
     # 3. Run RAG Pipeline
     with st.spinner("✦ Searching knowledge base & generating grounded answer..."):
         try:
-            result = pipeline.ask(question_text, k=10, provider=selected_provider, model_name=selected_model)
+            result = pipeline.ask(question_text, k=5, provider=selected_provider, model_name=selected_model)
             
             # 4. Auto-save AI Grounded Answer to Database
             db_manager.save_message(
