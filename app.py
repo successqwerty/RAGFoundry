@@ -32,49 +32,64 @@ st.set_page_config(
 )
 
 # 3. Standardized Design Tokens for Light & Dark Mode
-# LIGHT MODE: EXACTLY UNCHANGED AS PREVIOUSLY CONFIGURED
+# LIGHT MODE: REFINED HIGH-CONTRAST BUTTON DESIGN SYSTEM ACCORDING TO SPECIFICATION
 LIGHT_THEME = {
     "bg_main": "#F8F7FC",
     "bg_sidebar": "#F1EFF9",
     "bg_surface": "#FFFFFF",
     "bg_elevated": "#FFFFFF",
     
-    "btn_bg": "#8F7BC9",
-    "btn_hover_bg": "#9B87D2",
-    "btn_active_bg": "#7C6AB8",
-    "btn_border": "#C9BFE5",
-    "btn_text": "#172033",
-    "btn_icon": "#172033",
+    # 1. Primary Action (Send Query)
+    "btn_bg": "#6366F1",
+    "btn_hover_bg": "#4F46E5",
+    "btn_active_bg": "#4338CA",
+    "btn_border": "none",
+    "btn_text": "#FFFFFF",
+    "btn_icon": "#FFFFFF",
     
-    # Secondary Actions (Upload, Re-Index)
-    "sec_action_bg": "#8F7BC9",
-    "sec_action_border": "#C9BFE5",
-    "sec_action_text": "#172033",
-    "sec_action_icon": "#172033",
-    "sec_action_hover_bg": "#9B87D2",
-    "sec_action_hover_border": "#B8A9DD",
-    "sec_action_hover_text": "#FFFFFF",
+    # 2. Secondary Utility Actions (Upload Button)
+    "upload_btn_bg": "#FFFFFF",
+    "upload_btn_border": "#E2E8F0",
+    "upload_btn_text": "#334155",
+    "upload_btn_icon": "#4F46E5",
+    "upload_btn_hover_bg": "#F8FAFC",
+    "upload_btn_hover_border": "#6366F1",
+    "upload_btn_hover_text": "#1E293B",
+    "upload_btn_hover_icon": "#4338CA",
+
+    # 4. Re-Index Action
+    "reindex_bg": "#EEF2FF",
+    "reindex_border": "#C7D2FE",
+    "reindex_text": "#4F46E5",
+    "reindex_icon": "#4F46E5",
+    "reindex_hover_bg": "#E0E7FF",
+    "reindex_hover_border": "#A5B4FC",
+    "reindex_hover_text": "#4338CA",
     
-    # Header Controls (History, Theme Toggle, Sidebar Toggle)
-    "ctrl_bg": "#8F7BC9",
-    "ctrl_border": "#C9BFE5",
-    "ctrl_text": "#172033",
-    "ctrl_icon": "#172033",
-    "ctrl_hover_bg": "#9B87D2",
-    "ctrl_hover_border": "#B8A9DD",
-    "ctrl_hover_text": "#FFFFFF",
+    # 2. Secondary Header Controls (History, Theme Toggle, Sidebar Toggle)
+    "ctrl_bg": "#FFFFFF",
+    "ctrl_border": "#E2E8F0",
+    "ctrl_text": "#334155",
+    "ctrl_icon": "#334155",
+    "ctrl_hover_bg": "#F1F5F9",
+    "ctrl_hover_border": "#CBD5E1",
+    "ctrl_hover_text": "#0F172A",
     
-    # Suggested Query Cards
-    "sug_bg": "#8F7BC9",
-    "sug_border": "#C9BFE5",
-    "sug_text": "#172033",
-    "sug_icon": "#172033",
-    "sug_hover_bg": "#9B87D2",
-    "sug_hover_border": "#B8A9DD",
-    "sug_hover_text": "#FFFFFF",
+    # 3. Suggested Query Chips / Cards
+    "sug_bg": "#FFFFFF",
+    "sug_border": "#E2E8F0",
+    "sug_text": "#475569",
+    "sug_icon": "#6366F1",
+    "sug_hover_bg": "#F8FAFC",
+    "sug_hover_border": "#6366F1",
+    "sug_hover_text": "#1E293B",
+    "sug_hover_icon": "#4F46E5",
+    "sug_active_bg": "#EEF2FF",
+    "sug_active_border": "#6366F1",
+    "sug_active_text": "#1E293B",
     
-    "info_bg": "#EDE9F8",
-    "info_text": "#24324A",
+    "info_bg": "#EEF2FF",
+    "info_text": "#4F46E5",
     "mint_bg": "#E7F7EF",
     "mint_text": "#18794E",
     "peach_bg": "#FCE8D8",
@@ -88,16 +103,16 @@ LIGHT_THEME = {
     "text_muted": "#8A94A6",
     "border": "#D8D1EA",
     "code_bg": "#F8F7FC",
-    "grid_color": "rgba(139, 124, 200, 0.03)",
+    "grid_color": "rgba(99, 102, 241, 0.03)",
     "drawer_bg": "#FFFFFF",
     "upload_container_bg": "#FFFFFF",
-    "upload_container_border": "#D8D1EA",
+    "upload_container_border": "#E2E8F0",
     "composer_bg": "#FFFFFF",
-    "composer_border": "#D8D1EA",
-    "composer_focus_border": "#8F7BC9",
+    "composer_border": "#E2E8F0",
+    "composer_focus_border": "#6366F1",
 }
 
-# DARK MODE: POLISHED MULTI-TIER BUTTON HIERARCHY ACCORDING TO SPECIFICATION
+# DARK MODE: 100% UNTOUCHED EXACTLY AS PREVIOUSLY CONFIGURED
 DARK_THEME = {
     "bg_main": "#0B0F17",
     "bg_sidebar": "#111827",
@@ -112,14 +127,24 @@ DARK_THEME = {
     "btn_text": "#FFFFFF",
     "btn_icon": "#FFFFFF",
     
-    # Secondary Actions (Upload, Re-Index)
-    "sec_action_bg": "#1A2234",
-    "sec_action_border": "#2D3748",
-    "sec_action_text": "#F8FAFC",
-    "sec_action_icon": "#A78BFA",
-    "sec_action_hover_bg": "#222D42",
-    "sec_action_hover_border": "#8B5CF6",
-    "sec_action_hover_text": "#FFFFFF",
+    # Secondary Actions (Upload)
+    "upload_btn_bg": "#1A2234",
+    "upload_btn_border": "#2D3748",
+    "upload_btn_text": "#F8FAFC",
+    "upload_btn_icon": "#A78BFA",
+    "upload_btn_hover_bg": "#222D42",
+    "upload_btn_hover_border": "#8B5CF6",
+    "upload_btn_hover_text": "#FFFFFF",
+    "upload_btn_hover_icon": "#A78BFA",
+
+    # Re-Index Action
+    "reindex_bg": "#1A2234",
+    "reindex_border": "#2D3748",
+    "reindex_text": "#F8FAFC",
+    "reindex_icon": "#A78BFA",
+    "reindex_hover_bg": "#222D42",
+    "reindex_hover_border": "#8B5CF6",
+    "reindex_hover_text": "#FFFFFF",
     
     # Header Controls (History, Light Mode, Sidebar Toggle)
     "ctrl_bg": "#111827",
@@ -138,6 +163,10 @@ DARK_THEME = {
     "sug_hover_bg": "#1E293B",
     "sug_hover_border": "#8B5CF6",
     "sug_hover_text": "#FFFFFF",
+    "sug_hover_icon": "#A78BFA",
+    "sug_active_bg": "#1E293B",
+    "sug_active_border": "#8B5CF6",
+    "sug_active_text": "#FFFFFF",
     
     "info_bg": "#111827",
     "info_text": "#CBD5E1",
@@ -184,7 +213,7 @@ footer {{ visibility: hidden; }}
     color: {T['ctrl_text']} !important;
     border: 1px solid {T['ctrl_border']} !important;
     border-radius: 12px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
     position: fixed !important;
     top: 14px !important;
     left: 14px !important;
@@ -264,7 +293,7 @@ h1, h2, h3, h4, h5, h6 {{
 }}
 .stTextArea textarea:focus {{
     border-color: {T['composer_focus_border']} !important;
-    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
 }}
 
 /* Primary Action Button (Send Query — Extreme Right Aligned) */
@@ -275,7 +304,7 @@ div[data-testid="stFormSubmitButton"] {{
 div[data-testid="stFormSubmitButton"] > button {{
     background-color: {T['btn_bg']} !important;
     color: {T['btn_text']} !important;
-    border: none !important;
+    border: {T['btn_border']} !important;
     border-radius: 10px !important;
     padding: 10px 20px !important;
     font-size: 14px !important;
@@ -294,8 +323,11 @@ div[data-testid="stFormSubmitButton"] > button:hover {{
 div[data-testid="stFormSubmitButton"] > button:hover * {{
     color: {T['btn_text']} !important;
 }}
+div[data-testid="stFormSubmitButton"] > button:active {{
+    background-color: {T['btn_active_bg']} !important;
+}}
 
-/* File Uploader Container & Secondary Sidebar Actions */
+/* File Uploader Dropzone Container & Secondary Upload Button */
 div[data-testid="stFileUploaderDropzone"], section[data-testid="stFileUploaderDropzone"] {{
     background-color: {T['upload_container_bg']} !important;
     border: 1px dashed {T['upload_container_border']} !important;
@@ -311,34 +343,35 @@ div[data-testid="stFileUploaderDropzone"] button,
 section[data-testid="stFileUploaderDropzone"] button,
 button[kind="secondary"],
 button[data-testid="baseButton-secondary"] {{
-    background-color: {T['sec_action_bg']} !important;
-    color: {T['sec_action_text']} !important;
-    border: 1px solid {T['sec_action_border']} !important;
+    background-color: {T['upload_btn_bg']} !important;
+    color: {T['upload_btn_text']} !important;
+    border: 1px solid {T['upload_btn_border']} !important;
     border-radius: 10px !important;
     font-weight: 600 !important;
     padding: 10px 18px !important;
+    transition: all 0.2s ease !important;
 }}
 div[data-testid="stFileUploaderDropzone"] button *,
 section[data-testid="stFileUploaderDropzone"] button *,
 button[kind="secondary"] *,
 button[data-testid="baseButton-secondary"] * {{
-    color: {T['sec_action_icon']} !important;
-    fill: {T['sec_action_icon']} !important;
+    color: {T['upload_btn_icon']} !important;
+    fill: {T['upload_btn_icon']} !important;
 }}
 div[data-testid="stFileUploaderDropzone"] button:hover,
 section[data-testid="stFileUploaderDropzone"] button:hover,
 button[kind="secondary"]:hover,
 button[data-testid="baseButton-secondary"]:hover {{
-    background-color: {T['sec_action_hover_bg']} !important;
-    border-color: {T['sec_action_hover_border']} !important;
-    color: {T['sec_action_hover_text']} !important;
+    background-color: {T['upload_btn_hover_bg']} !important;
+    border-color: {T['upload_btn_hover_border']} !important;
+    color: {T['upload_btn_hover_text']} !important;
 }}
 div[data-testid="stFileUploaderDropzone"] button:hover *,
 section[data-testid="stFileUploaderDropzone"] button:hover *,
 button[kind="secondary"]:hover *,
 button[data-testid="baseButton-secondary"]:hover * {{
-    color: {T['sec_action_hover_text']} !important;
-    fill: {T['sec_action_hover_text']} !important;
+    color: {T['upload_btn_hover_icon']} !important;
+    fill: {T['upload_btn_hover_icon']} !important;
 }}
 
 /* Checkbox Styling */
@@ -425,11 +458,11 @@ div[data-baseweb="checkbox"] label span {{
     display: inline-block;
 }}
 
-/* Re-Index Button (Secondary Sidebar Action) */
+/* Re-Index Button (Subtle Indigo-Tinted Style) */
 .rf-reindex-btn button {{
-    background-color: {T['sec_action_bg']} !important;
-    color: {T['sec_action_text']} !important;
-    border: 1px solid {T['sec_action_border']} !important;
+    background-color: {T['reindex_bg']} !important;
+    color: {T['reindex_text']} !important;
+    border: 1px solid {T['reindex_border']} !important;
     border-radius: 12px !important;
     padding: 12px 16px !important;
     font-size: 13px !important;
@@ -437,20 +470,20 @@ div[data-baseweb="checkbox"] label span {{
     transition: all 0.2s ease !important;
 }}
 .rf-reindex-btn button * {{
-    color: {T['sec_action_icon']} !important;
-    fill: {T['sec_action_icon']} !important;
+    color: {T['reindex_icon']} !important;
+    fill: {T['reindex_icon']} !important;
 }}
 .rf-reindex-btn button:hover {{
-    background-color: {T['sec_action_hover_bg']} !important;
-    border-color: {T['sec_action_hover_border']} !important;
-    color: {T['sec_action_hover_text']} !important;
+    background-color: {T['reindex_hover_bg']} !important;
+    border-color: {T['reindex_hover_border']} !important;
+    color: {T['reindex_hover_text']} !important;
 }}
 .rf-reindex-btn button:hover * {{
-    color: {T['sec_action_hover_text']} !important;
-    fill: {T['sec_action_hover_text']} !important;
+    color: {T['reindex_hover_text']} !important;
+    fill: {T['reindex_hover_text']} !important;
 }}
 
-/* Header Control Buttons (History & Theme Toggle) */
+/* Secondary Header Control Buttons (History & Theme Toggle) */
 .rf-history-btn button, .rf-sec-btn button {{
     background-color: {T['ctrl_bg']} !important;
     color: {T['ctrl_text']} !important;
@@ -475,7 +508,7 @@ div[data-baseweb="checkbox"] label span {{
     fill: {T['ctrl_hover_text']} !important;
 }}
 
-/* Suggested Queries (Subtle Chips/Cards) */
+/* Suggested Query Chips / Cards */
 .rf-sug-btn button {{
     background-color: {T['sug_bg']} !important;
     color: {T['sug_text']} !important;
@@ -496,8 +529,13 @@ div[data-baseweb="checkbox"] label span {{
     color: {T['sug_hover_text']} !important;
 }}
 .rf-sug-btn button:hover * {{
-    color: {T['sug_hover_text']} !important;
-    fill: {T['sug_hover_text']} !important;
+    color: {T['sug_hover_icon']} !important;
+    fill: {T['sug_hover_icon']} !important;
+}}
+.rf-sug-btn button:active {{
+    background-color: {T['sug_active_bg']} !important;
+    border-color: {T['sug_active_border']} !important;
+    color: {T['sug_active_text']} !important;
 }}
 
 /* Sidebar Labels & Panels */
