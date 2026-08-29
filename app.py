@@ -697,7 +697,10 @@ def get_rag_pipeline():
     return RAGPipeline("data")
 
 pipeline = get_rag_pipeline()
-pipeline.sync(user_id=current_user_id)
+if hasattr(pipeline, "sync"):
+    pipeline.sync(user_id=current_user_id)
+elif hasattr(pipeline, "retrieval_engine"):
+    pipeline.retrieval_engine.sync_documents(user_id=current_user_id)
 
 
 # 8. MAIN WORKSPACE TOP HEADER
