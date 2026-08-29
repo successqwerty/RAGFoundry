@@ -442,6 +442,17 @@ div[data-baseweb="checkbox"] label span {{
     border: 1px solid var(--border-card) !important;
     color: var(--text-primary) !important;
     border-radius: 10px !important;
+    outline: none !important;
+    box-shadow: none !important;
+}}
+.stSelectbox div[data-baseweb="select"]:focus-within,
+.stTextInput > div > div:focus-within {{
+    border-color: var(--border-card) !important;
+    box-shadow: none !important;
+    outline: none !important;
+}}
+div[data-testid="stTooltipIcon"] {{
+    display: none !important;
 }}
 
 /* Custom Cards */
@@ -662,24 +673,24 @@ with st.sidebar:
     # AI ENGINE SECTION
     st.markdown('<div class="rf-sidebar-label">AI ENGINE</div>', unsafe_allow_html=True)
     provider_choice = st.selectbox(
-        "Select Provider",
+        "AI Engine Selector",
         ["Ollama (100% Offline Local)", "Gemini (Cloud)"],
         label_visibility="collapsed"
     )
     
     if provider_choice == "Ollama (100% Offline Local)":
         selected_provider = "ollama"
-        selected_model = st.text_input("Model Name", value="llama3.2", help="e.g. llama3.2, mistral")
+        selected_model = st.text_input("Model Name", value="llama3.2")
         st.markdown(f'<div style="font-size:12px; color:{T["mint_text"]}; margin-top:4px;">● Local AI Active</div>', unsafe_allow_html=True)
     else:
         selected_provider = "gemini"
         selected_model = "gemini-2.0-flash"
-        user_api_key = st.text_input("Gemini API Key (Optional)", type="password", help="Overrides default API Key")
+        user_api_key = st.text_input("Gemini API Key (Optional)", type="password")
         if user_api_key:
             os.environ["GEMINI_API_KEY"] = user_api_key.strip()
             st.markdown(f'<div style="font-size:12px; color:{T["mint_text"]}; margin-top:4px;">✓ Custom Key Applied</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div style="font-size:12px; color:{T["btn_primary_bg"]}; margin-top:4px;">● Gemini Cloud Active</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="font-size:12px; color:{T["mint_text"]}; margin-top:4px;">● Gemini Cloud Active</div>', unsafe_allow_html=True)
 
     # SYSTEM STATUS PANEL
     if doc_count > 0:
