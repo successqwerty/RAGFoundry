@@ -35,6 +35,11 @@ class RetrievalEngine:
         """Alias for sync_documents."""
         self.sync_documents(user_id=user_id)
 
+    def rebuild_index(self, user_id="user_default"):
+        """Clears existing store and re-indexes all workspace documents from scratch."""
+        self.store.clear()
+        self.sync_documents(user_id=user_id)
+
     def retrieve(self, query, k=5, use_query_rewriting=True, provider="gemini", model_name=None, user_id=None):
         """
         Two-Stage Production Retrieval:

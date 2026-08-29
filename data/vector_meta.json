@@ -448,5 +448,15 @@
     "page_number": 15,
     "chunk_index": 45,
     "text": "Consequently, protocols such as Quantum Key Distribution (BB84, E91) and quantum teleportation -based\nnetworks derive their security directly from these three linked principles: unclonability prevents covert copying,\nteleportation shows how information move s without duplication, and Bell violation certifies the non -classical,\ntamper-evident nature of the shared entanglement — together establishing the physical foundations of secure\nquantum communication."
+  },
+  {
+    "chunk_id": "doc_5d3269881787_c1",
+    "doc_id": "doc_5d3269881787",
+    "filename": "sample_doc.txt",
+    "file_hash": "5d326988178741d7a2c4b4c10980ad659f49c1c49ecd6828fa6d9af9a38dac1e",
+    "user_id": "user_default",
+    "page_number": 1,
+    "chunk_index": 1,
+    "text": "Human Resource Management (HRM) involves planning, organizing, and developing human resources. Unit 1 covers foundational principles."
   }
 ]

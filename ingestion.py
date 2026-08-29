@@ -1,6 +1,6 @@
 import os
 import hashlib
-from pypdf import PdfReader
+from loader_factory import DocumentLoaderFactory
 
 def get_file_hash(file_path):
     """Calculates SHA256 hash of a file for content-based deduplication."""
@@ -12,10 +12,10 @@ def get_file_hash(file_path):
 
 def load_documents(data_folder, user_id="user_default"):
     """
-    Production Document Loader:
-    - Extracts page-by-page text from PDFs with exact 1-indexed page numbers.
-    - Extracts .txt document content.
-    - Attaches comprehensive metadata (filename, page_number, file_hash, doc_id, user_id).
+    Production Multi-Format Document Ingestion Engine:
+    - Leverages DocumentLoaderFactory for PDF, TXT, MD, DOCX, XLSX, CSV, PPTX, HTML, JSON, YAML, Images.
+    - Extracts page-by-page content with page numbers.
+    - Attaches comprehensive metadata (filename, page_number, file_hash, doc_id, user_id, size_kb).
     """
     documents = []
     if not os.path.exists(data_folder):
@@ -23,57 +23,26 @@ def load_documents(data_folder, user_id="user_default"):
         
     for filename in sorted(os.listdir(data_folder)):
         file_path = os.path.join(data_folder, filename)
-        if not os.path.isfile(file_path) or filename.endswith(".db") or filename.startswith("."):
+        if not os.path.isfile(file_path) or filename.endswith(".db") or filename.endswith(".faiss") or filename.endswith(".json") or filename.startswith("."):
             continue
             
         file_hash = get_file_hash(file_path)
         doc_id = f"doc_{file_hash[:12]}"
         size_kb = round(os.path.getsize(file_path) / 1024, 1)
         
-        # 1. Handle .txt files
-        if filename.endswith(".txt"):
-            try:
-                with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
-                    text = file.read()
-                    if text.strip():
-                        documents.append({
-                            "doc_id": doc_id,
-                            "filename": filename,
-                            "file_path": file_path,
-                            "file_hash": file_hash,
-                            "size_kb": size_kb,
-                            "user_id": user_id,
-                            "pages": [{"page_number": 1, "text": text}]
-                        })
-            except Exception as e:
-                print(f"Error reading TXT {filename}: {e}")
-                
-        # 2. Handle .pdf files
-        elif filename.endswith(".pdf"):
-            try:
-                reader = PdfReader(file_path)
-                pages_data = []
-                for i, page in enumerate(reader.pages):
-                    extracted = page.extract_text()
-                    if extracted and extracted.strip():
-                        pages_data.append({
-                            "page_number": i + 1,
-                            "text": extracted.strip()
-                        })
-                        
-                if pages_data:
-                    documents.append({
-                        "doc_id": doc_id,
-                        "filename": filename,
-                        "file_path": file_path,
-                        "file_hash": file_hash,
-                        "size_kb": size_kb,
-                        "user_id": user_id,
-                        "pages": pages_data
-                    })
-            except Exception as e:
-                print(f"Error reading PDF {filename}: {e}")
-                
+        parsed_result = DocumentLoaderFactory.load_file(file_path, filename)
+        
+        if parsed_result.get("supported") and parsed_result.get("pages"):
+            documents.append({
+                "doc_id": doc_id,
+                "filename": filename,
+                "file_path": file_path,
+                "file_hash": file_hash,
+                "size_kb": size_kb,
+                "user_id": user_id,
+                "pages": parsed_result["pages"]
+            })
+            
     return documents
 
 if __name__ == "__main__":

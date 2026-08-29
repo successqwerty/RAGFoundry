@@ -622,7 +622,12 @@ with st.sidebar:
 
     # Upload Controls
     clear_existing = st.checkbox("Clear old documents on upload", value=True)
-    uploaded_files = st.file_uploader("Upload .txt or .pdf files", type=["txt", "pdf"], accept_multiple_files=True, label_visibility="collapsed")
+    uploaded_files = st.file_uploader(
+        "Upload files", 
+        type=["txt", "pdf", "md", "docx", "xlsx", "xls", "csv", "tsv", "pptx", "html", "xml", "json", "yaml", "png", "jpg", "jpeg", "webp"], 
+        accept_multiple_files=True, 
+        label_visibility="collapsed"
+    )
     
     if uploaded_files:
         os.makedirs("data", exist_ok=True)
@@ -647,6 +652,8 @@ with st.sidebar:
     st.markdown('<div class="rf-reindex-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
     if st.button("🔄 Re-Index Documents", use_container_width=True):
         st.cache_resource.clear()
+        if hasattr(pipeline, "rebuild_index"):
+            pipeline.rebuild_index(user_id=current_user_id)
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 

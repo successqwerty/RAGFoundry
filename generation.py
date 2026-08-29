@@ -4,13 +4,17 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3.2")
+EMBEDDING_MODEL = os.environ.get("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+
 SYSTEM_INSTRUCTION = (
     "You are a document question-answering assistant. "
-    "Answer the user's question using the provided retrieved context snippets below. "
+    "Answer the user's question strictly using ONLY the provided document context snippets below. "
     "Do not invent facts that are not supported by the context. "
     "If the answer cannot be found in the uploaded documents, clearly say: "
-    "'I couldn't find enough information in the uploaded documents to answer that reliably.' "
-    "Do not pretend to know information that is not present in the retrieved context."
+    "'I could not find this information in the uploaded documents.' "
+    "Do not fabricate citations or sources."
 )
 
 def rewrite_query(original_question, api_key=None, provider="gemini", model_name=None):
@@ -27,7 +31,7 @@ def rewrite_query(original_question, api_key=None, provider="gemini", model_name
         try:
             import ollama
             res = ollama.chat(
-                model=model_name or "llama3.2",
+                model=model_name or OLLAMA_MODEL,
                 messages=[{"role": "user", "content": prompt}]
             )
             return res['message']['content'].strip()
@@ -58,12 +62,12 @@ def format_context(context_chunks):
 def generate_answer_stream_ollama(question, context_chunks, model_name="llama3.2"):
     """
     100% Offline LLM Answer Generation using local Ollama streaming tokens.
-    Yields string deltas.
+    Yields string deltas. Handles Ollama connection errors gracefully.
     """
     try:
         import ollama
     except ImportError:
-        yield "Error: 'ollama' package is not installed. Run 'pip install ollama'."
+        yield "AI model package 'ollama' is not installed. Please install it using 'pip install ollama'."
         return
 
     formatted_context = format_context(context_chunks)
@@ -71,7 +75,7 @@ def generate_answer_stream_ollama(question, context_chunks, model_name="llama3.2
 
     try:
         stream = ollama.chat(
-            model=model_name,
+            model=model_name or OLLAMA_MODEL,
             messages=[
                 {"role": "system", "content": SYSTEM_INSTRUCTION},
                 {"role": "user", "content": user_prompt}
@@ -84,7 +88,11 @@ def generate_answer_stream_ollama(question, context_chunks, model_name="llama3.2
             if content:
                 yield content
     except Exception as e:
-        yield f"Ollama Local Model Error: {e}\n(Make sure Ollama app is running locally with 'ollama run {model_name}')"
+        err_msg = str(e)
+        if "connection" in err_msg.lower() or "refused" in err_msg.lower() or "not found" in err_msg.lower():
+            yield "AI model is currently unavailable. Please make sure Ollama is running and try again."
+        else:
+            yield f"Unable to generate answer: {err_msg}"
 
 def generate_answer_stream_gemini(question, context_chunks, api_key=None, model_name="gemini-2.0-flash"):
     """
@@ -95,7 +103,11 @@ def generate_answer_stream_gemini(question, context_chunks, api_key=None, model_
 
     try:
         load_dotenv(override=True)
-        client = genai.Client(api_key=api_key or os.environ.get("GEMINI_API_KEY"))
+        key = api_key or os.environ.get("GEMINI_API_KEY")
+        if not key:
+            yield "Gemini API Key is missing. Please provide a valid Gemini API Key in the sidebar or .env file."
+            return
+        client = genai.Client(api_key=key)
         response = client.models.generate_content_stream(
             model=model_name or "gemini-2.0-flash",
             contents=[SYSTEM_INSTRUCTION, user_prompt],
@@ -105,14 +117,14 @@ def generate_answer_stream_gemini(question, context_chunks, api_key=None, model_
             if chunk.text:
                 yield chunk.text
     except Exception as e:
-        yield f"Gemini API Error: {e}"
+        yield f"Unable to generate answer via Gemini Cloud: {e}"
 
 def generate_answer_stream(question, context_chunks, api_key=None, provider="gemini", model_name="gemini-2.0-flash"):
     """
     Unified streaming response generator for Ollama and Gemini.
     """
     if provider.lower() == "ollama":
-        return generate_answer_stream_ollama(question, context_chunks, model_name=model_name or "llama3.2")
+        return generate_answer_stream_ollama(question, context_chunks, model_name=model_name or OLLAMA_MODEL)
     else:
         return generate_answer_stream_gemini(question, context_chunks, api_key=api_key, model_name=model_name)
 
