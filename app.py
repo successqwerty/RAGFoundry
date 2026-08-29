@@ -645,7 +645,6 @@ with st.sidebar:
             st.markdown(f"""
                 <div class="rf-doc-card">
                     <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px;">
-                        <span style="color: {T["text_sec"]};">📄</span> 
                         <span style="font-size: 13px; font-weight: 500; color: {T["text_main"]};">{doc['name']}</span>
                     </div>
                     <span class="rf-badge-mint">✓ Indexed</span>
@@ -807,7 +806,7 @@ if st.session_state["show_history_drawer"]:
             st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; margin-top: 12px; margin-bottom: 6px;">{group_name}</div>', unsafe_allow_html=True)
             for c in convs:
                 st.markdown('<div class="rf-sec-btn" style="margin-bottom:4px;">', unsafe_allow_html=True)
-                if st.button(f"💬 {c['title']}", key=f"conv_{c['id']}", use_container_width=True):
+                if st.button(f"{c['title']}", key=f"conv_{c['id']}", use_container_width=True):
                     st.session_state["current_conversation_id"] = c["id"]
                     st.session_state["show_history_drawer"] = False
                     st.rerun()
@@ -843,7 +842,7 @@ with st.form(key="query_composer_form", clear_on_submit=False):
     with col_comp_left:
         st.markdown(f"""
             <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 10px;">
-                <span style="color: {T['btn_primary_bg']};">📄</span> {doc_count} Document(s) Indexed &nbsp;·&nbsp; 
+                {doc_count} Document(s) Indexed &nbsp;·&nbsp; 
                 <span style="color: {T['mint_text']};">●</span> {selected_provider.title()} ({selected_model})
             </div>
         """, unsafe_allow_html=True)
@@ -912,7 +911,7 @@ if active_conv_id:
                             st.markdown(f"""
                                 <div class="rf-card" style="padding: 12px 16px; margin-bottom: 12px;">
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="font-size: 13px; font-weight: 600; color: {T['text_main']};">📄 {src}</span>
+                                        <span style="font-size: 13px; font-weight: 600; color: {T['text_main']};">{src}</span>
                                         <span class="rf-badge-blue">Relevant source</span>
                                     </div>
                                 </div>
@@ -930,7 +929,7 @@ if active_conv_id:
                                 <div style="background-color: {T['bg_surface']}; border: 1px solid {T['border']}; border-radius: 10px; padding: 14px; margin-bottom: 10px;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                                         <span class="rf-badge-purple">Rank {rank+1}</span>
-                                        <span style="font-size: 12px; color: {T['text_sec']};">{score_display} &nbsp;·&nbsp; 📄 {chunk['filename']}{page_label}</span>
+                                        <span style="font-size: 12px; color: {T['text_sec']};">{score_display} &nbsp;·&nbsp; {chunk['filename']}{page_label}</span>
                                     </div>
                                     <div style="font-size: 13px; font-family: monospace; background-color: {T['code_bg']}; padding: 10px; border-radius: 6px; color: {T['text_main']}; white-space: pre-wrap;">
 {chunk['text']}
