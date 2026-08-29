@@ -31,6 +31,10 @@ class RetrievalEngine:
             all_chunks = chunk_document(doc, chunk_size=500, overlap=80)
             self.store.add_chunks(all_chunks)
 
+    def sync(self, user_id="user_default"):
+        """Alias for sync_documents."""
+        self.sync_documents(user_id=user_id)
+
     def retrieve(self, query, k=5, use_query_rewriting=True, provider="gemini", model_name=None, user_id=None):
         """
         Two-Stage Production Retrieval:
