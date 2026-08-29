@@ -212,3 +212,20 @@ def get_conversation_messages(conversation_id):
             "created_at": r["created_at"]
         })
     return messages
+
+def delete_conversation(conversation_id):
+    """Deletes a single conversation and its associated messages safely by conversation_id."""
+    if not conversation_id:
+        return False
+    try:
+        init_db()
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM messages WHERE conversation_id = ?", (conversation_id,))
+        cursor.execute("DELETE FROM conversations WHERE id = ?", (conversation_id,))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"Error deleting conversation {conversation_id}: {e}")
+        return False
