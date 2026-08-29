@@ -792,7 +792,10 @@ query_to_execute = None
 if "pending_question" in st.session_state and st.session_state["pending_question"]:
     query_to_execute = st.session_state.pop("pending_question")
 
-# 10. LARGE AI QUERY COMPOSER WITH PRIMARY ACTION SEND QUERY BUTTON
+# 10. LARGE AI QUERY COMPOSER WITH DYNAMIC BUTTON STATE (SEND QUERY vs ANALYZING)
+is_processing = st.session_state.get("is_processing", False)
+submit_label = "⟳ Analyzing..." if is_processing else "Send Query ➔"
+
 with st.form(key="query_composer_form", clear_on_submit=False):
     user_query = st.text_area(
         "Ask anything about your documents...",
@@ -811,10 +814,11 @@ with st.form(key="query_composer_form", clear_on_submit=False):
             </div>
         """, unsafe_allow_html=True)
     with col_comp_right:
-        submit_button = st.form_submit_button("Send Query ➔", use_container_width=False)
+        submit_button = st.form_submit_button(submit_label, disabled=is_processing, use_container_width=False)
 
 if submit_button and user_query.strip():
     query_to_execute = user_query.strip()
+    st.session_state["is_processing"] = True
 
 
 # 11. DYNAMIC SUGGESTED QUERY CARDS
@@ -827,9 +831,10 @@ if not st.session_state["current_conversation_id"] and "last_result" not in st.s
     for idx, (col_target, (label, full_prompt)) in enumerate(zip([s_col1, s_col2, s_col3], dynamic_suggestions)):
         with col_target:
             st.markdown('<div class="rf-sug-btn">', unsafe_allow_html=True)
-            if st.button(label, key=f"sug_p{idx+1}", use_container_width=True):
+            if st.button(label, key=f"sug_p{idx+1}", use_container_width=True, disabled=is_processing):
                 st.session_state["pending_question"] = full_prompt
                 st.session_state["input_question"] = full_prompt
+                st.session_state["is_processing"] = True
                 st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -900,7 +905,7 @@ if active_conv_id:
                             """, unsafe_allow_html=True)
 
 
-# 13. PROCESS NEW QUERY SUBMISSION WITH LIVE TOKEN STREAMING
+# 13. PROCESS NEW QUERY SUBMISSION WITH STAGE PROGRESS & PERFORMANCE TIMING
 if query_to_execute:
     question_text = query_to_execute
     st.session_state["input_question"] = ""
@@ -923,15 +928,10 @@ if query_to_execute:
     status_placeholder = st.empty()
     answer_card_placeholder = st.empty()
     
-    status_placeholder.markdown(f"""
-        <div style="font-size: 13px; color: {T['text_sec']}; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-            <span style="color: {T['btn_primary_bg']}; font-size: 16px;">✦</span> Searching documents & retrieving context...
-        </div>
-    """, unsafe_allow_html=True)
-    
     accumulated_answer = ""
     retrieved_sources = []
     retrieved_chunks = []
+    elapsed_sec = 0.0
     
     try:
         api_key = os.environ.get("GEMINI_API_KEY") if selected_provider == "gemini" else None
@@ -962,23 +962,26 @@ if query_to_execute:
                             <div style="font-size: 14px; font-weight: 600; color: {T['text_main']}; display: flex; align-items: center; gap: 6px;">
                                 <span style="color: {T['btn_primary_bg']};">✦</span> RAGFoundry
                             </div>
-                            <span class="rf-badge-mint">● Generating answer...</span>
+                            <span class="rf-badge-mint">⟳ Generating answer...</span>
                         </div>
                         <div style="font-size: 15px; line-height: 1.65; color: {T['text_main']};">
                             {accumulated_answer}▌
                         </div>
                     </div>
                 """, unsafe_allow_html=True)
+            elif event["type"] == "complete":
+                elapsed_sec = event.get("elapsed_sec", 0.0)
                 
         status_placeholder.empty()
         
+        timing_label = f"✓ Answer generated · {elapsed_sec}s" if elapsed_sec > 0 else "✓ Grounded in your documents"
         answer_card_placeholder.markdown(f"""
             <div class="rf-ai-card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                     <div style="font-size: 14px; font-weight: 600; color: {T['text_main']}; display: flex; align-items: center; gap: 6px;">
                         <span style="color: {T['btn_primary_bg']};">✦</span> RAGFoundry
                     </div>
-                    <span class="rf-badge-mint">✓ Grounded in your documents</span>
+                    <span class="rf-badge-mint">{timing_label}</span>
                 </div>
                 <div style="font-size: 15px; line-height: 1.65; color: {T['text_main']};">
                     {accumulated_answer}
@@ -1000,6 +1003,8 @@ if query_to_execute:
     except Exception as e:
         status_placeholder.empty()
         st.session_state["last_error"] = str(e)
+    finally:
+        st.session_state["is_processing"] = False
         
     st.rerun()
 
