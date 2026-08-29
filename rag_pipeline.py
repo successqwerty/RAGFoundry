@@ -1,50 +1,75 @@
 from retrieval import RetrievalEngine
-from generation import generate_answer
+from generation import generate_answer_stream, generate_answer
 
 class RAGPipeline:
     def __init__(self, data_folder="data"):
-        print("Initializing RAGFoundry Pipeline...")
+        self.data_folder = data_folder
         self.retrieval_engine = RetrievalEngine(data_folder)
-        print("Pipeline Ready!\n")
 
-    def ask(self, question, k=10, provider="gemini", model_name="gemini-2.0-flash"):
+    def sync(self, user_id="user_default"):
+        """Syncs workspace documents into persistent vector store."""
+        self.retrieval_engine.sync_documents(user_id=user_id)
+
+    def ask_stream(self, question, k=5, provider="gemini", model_name="gemini-2.0-flash", user_id="user_default", api_key=None):
         """
-        End-to-end RAG workflow supporting Gemini (Cloud) and Ollama (Local).
+        Streaming RAG Pipeline Generator.
+        Yields dictionaries with step info:
+        - {"type": "status", "message": "..."}
+        - {"type": "sources", "sources": [...], "chunks": [...]}
+        - {"type": "token", "delta": "..."}
         """
-        # Step 1: Retrieve relevant chunks with metadata
-        retrieved_chunks = self.retrieval_engine.retrieve(question, k=k, provider=provider, model_name=model_name)
+        # Step 1: Retrieval Status
+        yield {"type": "status", "message": "Searching knowledge base & retrieving relevant context..."}
         
-        # Step 2: Generate answer using retrieved chunks as context
-        llm_answer = generate_answer(question, retrieved_chunks, provider=provider, model_name=model_name)
+        retrieved_chunks = self.retrieval_engine.retrieve(
+            question, k=k, provider=provider, model_name=model_name, user_id=user_id
+        )
         
-        # Step 3: Extract unique source filenames for citations
-        sources = sorted(list(set(chunk["filename"] for chunk in retrieved_chunks)))
+        # Step 2: Formulate Sources (with Page Numbers!)
+        formatted_sources = []
+        for c in retrieved_chunks:
+            fname = c["filename"]
+            pnum = c.get("page_number")
+            src_label = f"{fname} (Page {pnum})" if pnum else fname
+            if src_label not in formatted_sources:
+                formatted_sources.append(src_label)
+                
+        yield {
+            "type": "sources",
+            "sources": formatted_sources,
+            "chunks": retrieved_chunks
+        }
         
+        # Step 3: Stream LLM Generation
+        yield {"type": "status", "message": "Generating answer grounded in documents..."}
+        
+        if not retrieved_chunks:
+            yield {"type": "token", "delta": "I couldn't find any relevant information in the uploaded documents to answer your question."}
+            return
+
+        stream_gen = generate_answer_stream(
+            question, retrieved_chunks, api_key=api_key, provider=provider, model_name=model_name
+        )
+        
+        for delta in stream_gen:
+            yield {"type": "token", "delta": delta}
+
+    def ask(self, question, k=5, provider="gemini", model_name="gemini-2.0-flash", user_id="user_default", api_key=None):
+        """Synchronous RAG pipeline fallback."""
+        chunks = []
+        sources = []
+        token_deltas = []
+        
+        for event in self.ask_stream(question, k=k, provider=provider, model_name=model_name, user_id=user_id, api_key=api_key):
+            if event["type"] == "sources":
+                sources = event["sources"]
+                chunks = event["chunks"]
+            elif event["type"] == "token":
+                token_deltas.append(event["delta"])
+                
         return {
             "question": question,
-            "answer": llm_answer,
+            "answer": "".join(token_deltas),
             "sources": sources,
-            "retrieved_chunks": retrieved_chunks
+            "retrieved_chunks": chunks
         }
-
-if __name__ == "__main__":
-    rag = RAGPipeline("data")
-    
-    # user_query = "What happens if I stay late at the office after 5 PM?"
-    # user_query = "Can I bring my pet dog to the office?"
-    user_query = "What is the annual learning budget for employees?"
-
-
-    result = rag.ask(user_query, k=2)
-    
-    print("=" * 60)
-    print("USER QUESTION:", result["question"])
-    print("=" * 60)
-    
-    print("\n--- LLM GENERATED ANSWER ---")
-    print(result["answer"])
-    
-    print("\n--- SOURCES CITED ---")
-    for src in result["sources"]:
-        print(f" {src}")
-

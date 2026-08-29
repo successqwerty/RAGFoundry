@@ -1,0 +1,452 @@
+[
+  {
+    "chunk_id": "doc_92d0758eedc3_c1",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 1,
+    "chunk_index": 1,
+    "text": "Unit 2\nSECTION I — Short Answers (2 Marks each)\nQ15. Define the No-Cloning Theorem.  [CO1, 2M]\nThe No-Cloning Theorem states that it is impossible to construct a general unitary operation that can create an\nidentical, independent copy of an arbitrary, unknown quantum state.\nFormally, no unitary operator U and fixed 'blank' state |s ⟩ exist such that, for every possible input state |ψ⟩, the\nmachine outputs two copies of |ψ⟩:\nU |ψ⟩|s⟩ = |ψ⟩|ψ⟩   (impossible for arbitrary |ψ⟩)"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c2",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 1,
+    "chunk_index": 2,
+    "text": "This is a fundamental consequence of the linearity of quantum mechanics and has no classical analogue, since\nclassical bits can always be read and rewritten freely.\nQ16. What is Quantum Teleportation?  [CO1, 2M]\nQuantum Teleportation is a protocol that transfers an unknown quantum state |ψ ⟩ = α|0⟩ + β|1⟩ from a sender\n(Alice) to a distant receiver (Bob) without physically moving the particle itself."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c3",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 1,
+    "chunk_index": 3,
+    "text": "It uses a pre -shared entangled Bell pair between Alice and Bob as a resource, together with a local Bell -basis\nmeasurement by Alice and the transmission of two classical bits to Bob, who applies a corresponding correction\noperation to reconstruct |ψ⟩ exactly. The original qubit's state is destroyed at Alice's end during measurement,\nso the No-Cloning Theorem is not violated.\nQ17. Explain why an unknown quantum state cannot be cloned.  [CO1, 2M]"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c4",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 1,
+    "chunk_index": 4,
+    "text": "An unknown state |ψ⟩ = α|0⟩ + β|1⟩ cannot be measured to learn α and β, because measurement collapses the\nsuperposition into |0⟩ or |1⟩, irreversibly destroying the original amplitudes.\nSince copying via measure-and-recreate is ruled out, the only alternative is a unitary (linear) cloning machine U.\nBut linearity forces U to act term-by-term on a superposition, which produces an entangled state rather than two"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c5",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 1,
+    "chunk_index": 5,
+    "text": "independent product copies ( see Q22). Hence, no process — measurement-based or unitary — can copy an\narbitrary unknown state.\nQ18. Differentiate between classical copying and quantum cloning.  [CO1, 2M]\nAspect Classical Copying Quantum Cloning\nBasic operation Read the bit value (0 or 1), write it\nto a new memory slot\nAttempt to duplicate amplitudes α, β of\n|ψ⟩=α|0⟩+β|1⟩\nEffect of reading Reading a bit does not disturb it Measuring a qubit collapses/destroys its\nsuperposition"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c6",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 1,
+    "chunk_index": 6,
+    "text": "Feasibility Always possible — trivial operation Impossible for arbitrary/unknown states\n(No-Cloning Theorem)\nSpecial case N/A Possible only for known orthogonal basis\nstates, e.g. |0⟩, |1⟩"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c7",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 2,
+    "chunk_index": 7,
+    "text": "Aspect Classical Copying Quantum Cloning\nUnderlying reason Classical information is not\ndisturbed by observation\nQuantum linearity forces entanglement\ninstead of independent copies\nQ19. Explain the significance of Bell's Inequality.  [CO1, 2M]\nBell's Inequality sets a strict mathematical upper limit (|C| ≤ 2) on how strongly correlated the measurement\noutcomes of two distant particles can be if nature obeys classical physics with local hidden variables (local realism)."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c8",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 2,
+    "chunk_index": 8,
+    "text": "Its significance lies in being experimentally testable: quantum mechanics predicts correlations (up to 2√2 ≈ 2.828,\nthe Tsirelson bound) that clearly exceed this classical limit. Experimental violation of the inequality rules out local\nhidden-variable theories, confirms genuine quantum entanglement, and establishes the non -local character of\nquantum reality — forming the theoretical foundation for quantum cryptography and quantum information\nprotocols."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c9",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 2,
+    "chunk_index": 9,
+    "text": "Q20. Illustrate how entanglement is utilized in Quantum Teleportation.  [CO1, 2M]\nEntanglement is the essential resource that allows teleportation to bypass the No-Cloning Theorem. Alice and Bob\nfirst share a maximally entangled Bell pair:\n|β₀₀⟩₂₃ = (1/√2) (|00⟩ + |11⟩)\nAlice's Bell -basis measurement on her qubit (the unknown state) and her half of the entangled pair\ninstantaneously correlates with Bob's half, projecting Bob's qubit into a state related to |ψ ⟩ by a known Pauli"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c10",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 2,
+    "chunk_index": 10,
+    "text": "operation (I, X, Z, or ZX).\nAlice then sends the 2 -bit measurement outcome through a classical channel; Bob applies the corresponding\ncorrection gate to recover |ψ ⟩ exactly. Without the shared entanglement, no classical channel alone could\nreconstruct the exact quantum state."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c11",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 3,
+    "chunk_index": 11,
+    "text": "SECTION II — Long Answers (6 Marks each)\nQ21. Explain the No -Cloning Theorem and derive its mathematical proof using the inner\nproduct preservation property of unitary operators.  [CO2, 6M]\nConcept\nIn classical computing, copying data is trivial — a bit (0 or 1) is read and rewritten to a new slot without\ndisturbance. In quantum mechanics, if we have an unknown state |ψ ⟩ = α|0⟩ + β|1⟩, we cannot measure it to"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c12",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 3,
+    "chunk_index": 12,
+    "text": "determine α and β, because measurement collapses the state. A cloning machine must therefore work by unitary\nevolution alone.\nStep 1 — Define the cloning machine\nA quantum copying machine is modeled as a unitary operator U acting on two inputs: the target state |ψ ⟩ to be\ncopied, and a blank 'quantum paper' state |s⟩. For the machine to work, it must output two copies of |ψ⟩:\nU |ψ⟩|s⟩ = |ψ⟩|ψ⟩   ...(1)\nFig 1: Schematic of a hypothetical universal quantum cloning machine."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c13",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 3,
+    "chunk_index": 13,
+    "text": "Step 2 — Test with two different states\nIf U is a truly universal copier, it must work for any state. Suppose it successfully clones both |ψ ⟩ and a different\nstate |φ⟩:\nU |ψ⟩|s⟩ = |ψ⟩|ψ⟩      and      U |φ⟩|s⟩ = |φ⟩|φ⟩   ...(2)\nStep 3 — Take the inner product\nCompute the inner product of the states after cloning and equate it to the inner product before cloning, since\nunitary operators preserve inner products.\n(a) After cloning — inner product of the right-hand sides of (2):"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c14",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 3,
+    "chunk_index": 14,
+    "text": "(⟨ψ|⟨ψ|)(|φ⟩|φ⟩) = ⟨ψ|φ⟩⟨ψ|φ⟩ = (⟨ψ|φ⟩)²\n(b) Before cloning — inner product of the left-hand sides (before U acts). Since U is unitary, U†U = I, so it preserves\ninner products and drops out completely:\n(⟨ψ|⟨s|U†)(U|φ⟩|s⟩) = ⟨ψ|⟨s| |φ⟩|s⟩ = ⟨ψ|φ⟩⟨s|s⟩\nSince the blank state |s⟩ is normalized, ⟨s|s⟩ = 1. This leaves ⟨ψ|φ⟩.\nStep 4 — The conflict\nBecause a unitary operation cannot change the inner product, the \"before\" value must equal the \"after\" value:"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c15",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 4,
+    "chunk_index": 15,
+    "text": "(⟨ψ|φ⟩)² = ⟨ψ|φ⟩\nLet x = ⟨ψ|φ⟩. This gives the algebraic equation:\nx² = x  ⟹  x² − x = 0  ⟹  x(x − 1) = 0\nThis has exactly two solutions:\n● If x = 1: ⟨ψ|φ⟩ = 1, so |ψ⟩ = |φ⟩ (the states are identical).\n● If x = 0: ⟨ψ|φ⟩ = 0, so the states are perfectly orthogonal (like |0⟩ and |1⟩).\nConclusion\nA cloning machine can be built to perfectly copy orthogonal basis states such as |0⟩ and |1⟩. But if two states have"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c16",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 4,
+    "chunk_index": 16,
+    "text": "any overlap between 0 and 1 (as in a superposition state), the mathematics breaks down — no consistent unitary\nU can satisfy the cloning equation. Therefore, a universal quantum cloning machine cannot exist.\nQ22. Describe the cloning of basis states and superposition states. Explain why cloning fails for\narbitrary states with suitable mathematical analysis.  [CO2, 6M]\nCloning of basis states\nSuppose a device perfectly clones the standard basis states |0⟩ and |1⟩:"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c17",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 4,
+    "chunk_index": 17,
+    "text": "U|0⟩|s⟩ = |0⟩|0⟩          U|1⟩|s⟩ = |1⟩|1⟩\nThis is perfectly consistent with unitarity (basis states are orthogonal, so ⟨0|1⟩ = 0 satisfies x(x−1)=0 from Q21).\nAttempting to clone a superposition state\nNow pass the diagonal superposition state |+⟩ = (1/√2)(|0⟩ + |1⟩) through the same machine.\nPath 1 — What a perfect clone should look like: if cloning worked, the output should be two independent copies\nof |+⟩:\nExpected = |+⟩|+⟩ = (1/√2)(|0⟩+|1⟩) ⊗ (1/√2)(|0⟩+|1⟩)"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c18",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 4,
+    "chunk_index": 18,
+    "text": "Expected = (1/2)( |00⟩ + |01⟩ + |10⟩ + |11⟩ )\nPath 2 — What quantum mechanics actually outputs (by linearity): since QM is strictly linear, U must distribute\nacross the superposition term-by-term:\nU|+⟩|s⟩ = U[(1/√2)(|0⟩+|1⟩)]|s⟩ = (1/√2)( U|0⟩|s⟩ + U|1⟩|s⟩ )\nSubstituting the known machine behaviour U|0⟩|s⟩ = |00⟩ and U|1⟩|s⟩ = |11⟩:\nActual output = (1/√2)( |00⟩ + |11⟩ )\nVerdict — comparison\nQuantity Expression\nExpected (independent copies) (1/2)(|00⟩ + |01⟩ + |10⟩ + |11⟩)"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c19",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 4,
+    "chunk_index": 19,
+    "text": "Actual (linear machine output) (1/√2)(|00⟩ + |11⟩)\nInstead of creating two independent copies of the state |+ ⟩|+⟩, the machine produced a highly entangled Bell\nstate. The two qubits are bound together rather than cloned — entanglement forces the cloning process to fail.\nGeneral principle"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c20",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 5,
+    "chunk_index": 20,
+    "text": "● A CNOT-type gate designed as a copier works perfectly for standard classical basis states |0⟩ and |1⟩.\n● If fed a superposition state, the machine entangles the two qubits together instead of making a copy.\n● What was wanted: two completely independent, isolated qubits both in state |ψ⟩ — i.e. |ψ⟩⊗|ψ⟩.\n● What is actually obtained: a single, highly entangled Bell -like state — modifying or measuring one qubit\ninstantly affects the other."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c21",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 5,
+    "chunk_index": 21,
+    "text": "Q23. Explain the Quantum Teleportation protocol with the quantum circuit and describe the roles of Alice and\nBob.  [CO2, 6M]\nAlice (sender) and Bob (receiver) play the major roles in quantum teleportation:\n● Alice: holds a qubit in an unknown, arbitrary state |ψ⟩ = α|0⟩ + β|1⟩ and wants to send this exact state to\nBob.\n● Bob: is space-separated from Alice, and waits to reconstruct |ψ⟩ using information Alice sends him."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c22",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 5,
+    "chunk_index": 22,
+    "text": "Due to the No -Cloning Theorem, Alice cannot make a perfect copy of an unknown quantum state without\ndestroying the original — if she measures |ψ ⟩ directly, it collapses to |0 ⟩ or |1⟩ and she permanently loses the\nprobability amplitudes α and β. To bypass this, quantum teleportation uses quantum entanglement as a resource.\nResources required\n● The target state to be teleported (held by Alice): |ψ⟩₁ = α|0⟩ + β|1⟩"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c23",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 5,
+    "chunk_index": 23,
+    "text": "● A shared maximally entangled Bell pair distributed between Alice (qubit 2) and Bob (qubit 3): |β₀₀ ⟩₂₃ =\n(1/√2)(|00⟩ + |11⟩)\nProtocol steps (roles)\n● Step 1: Alice applies a CNOT gate (qubit 1 → qubit 2) followed by a Hadamard gate on qubit 1, rotating\nher two qubits into the Bell basis.\n● Step 2: Alice measures both her qubits, obtaining two classical bits m₁, m₂, and destroying her local copy\nof |ψ⟩ (consistent with No-Cloning)."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c24",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 5,
+    "chunk_index": 24,
+    "text": "● Step 3: Alice sends m₁, m₂ to Bob over an ordinary classical channel.\n● Step 4: Bob applies a correction — an X gate if m₂ = 1, and a Z gate if m₁ = 1 — to his qubit, exactly\nreconstructing |ψ⟩."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c25",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 11,
+    "chunk_index": 25,
+    "text": "Q24. Derive the mathematical steps involved in the Quantum Teleportation algorithm and explain the state\ntransformation after each quantum operation.  [CO2, 6M]\nSimilar answer same as Q23\nQ25. Explain Bell's Inequality, derive the CHSH inequality, and discuss its significance in\nquantum mechanics.  [CO2, 6M]\nConcept\nBell's inequality is a mathematical framework that sets a strict upper limit on how strongly correlated the"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c26",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 11,
+    "chunk_index": 26,
+    "text": "measurement outcomes of two distant particles can be under the laws of classical physics (local realism).\nAny physical system obeying classical mechanics cannot exceed this boundary, while quantum mechanics predicts\na clear violation of it. Albert Einstein and colleagues (the EPR argument) proposed that quantum mechanics was\nincomplete, and that particles must  possess predetermined hidden properties called Local Hidden Variables"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c27",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 11,
+    "chunk_index": 27,
+    "text": "(LHVs) that dictate measurement outcomes before they occur. Bell proved theoretically that if such hidden\nvariables existed, the correlation coefficient in a specific experimental setup must strictly remain ≤ 2.\nFig 3: CHSH / Bell test setup — an entangled source sends one particle to Alice and one to Bob.\nMathematical derivation (CHSH form)\nSetup: An entanglement source generates pairs of photons — one photon goes to Alice, the other to Bob."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c28",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 11,
+    "chunk_index": 28,
+    "text": "● Alice can choose to measure her photon along two different angles: A₀ or A₁\n● Bob can choose to measure his photon along two different angles: B₀ or B₁\n● The outcomes of these measurements are binary: +1 (spin up) or −1 (spin down)\nAssume local realism is true: outcomes A₀, A₁, B₀, B₁ all have predetermined values of either +1 or −1\nsimultaneously. Consider the algebraic combination:\nC = A₀(B₀+B₁) + A₁(B₀−B₁)\nRearranging:\nC = A₀B₀ + A₀B₁ + A₁B₀ − A₁B₁"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c29",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 11,
+    "chunk_index": 29,
+    "text": "Because B₀ and B₁ are each either +1 or −1, look at the terms (B₀+B₁) and (B₀−B₁):\n● If B₀ = B₁: then (B₀+B₁) = ±2 and (B₀−B₁) = 0\n● If B₀ ≠ B₁: then (B₀+B₁) = 0 and (B₀−B₁) = ±2"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c30",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 12,
+    "chunk_index": 30,
+    "text": "In either case, since A₀ and A₁ are also ±1, the value of C for any single pair of particles must strictly be either +2\nor −2. Averaging over many trials gives Bell's (CHSH) Inequality:\n| ⟨A₀B₀⟩ + ⟨A₀B₁⟩ + ⟨A₁B₀⟩ − ⟨A₁B₁⟩ | ≤ 2\nThis value 2 is the absolute limit of correlation dictated by classical physics and local hidden variables.\nSignificance\n● Rejection of local hidden-variable theories\n● Confirmation of quantum entanglement\n● Establishes the non-local nature of reality"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c31",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 12,
+    "chunk_index": 31,
+    "text": "● Major impact on the concept of classical realism\n● Provides a foundation for quantum computing\n● Enables applications in quantum cryptography\n● Confirmed repeatedly through experimental verification"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c32",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 13,
+    "chunk_index": 32,
+    "text": "Q26. Derive the mathematical proof showing the violation of Bell's Inequality by quantum\nmechanics using an entangled Bell state.  [CO2, 6M]\nLet us see what quantum mechanics actually allows. If Alice and Bob share a maximally entangled Bell state, e.g.\n|ψ⁻⟩ = (1/√2)(|01⟩ + |10⟩)\nand carefully choose their measurement angles, the quantum expectation values yield:\n⟨A₀B₀⟩ = 1/√2,   ⟨A₀B₁⟩ = 1/√2,   ⟨A₁B₀⟩ = 1/√2,   ⟨A₁B₁⟩ = −1/√2"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c33",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 13,
+    "chunk_index": 33,
+    "text": "Plugging these quantum values into the Bell (CHSH) inequality expression:\n| 1/√2 + 1/√2 + 1/√2 − (−1/√2) | = 4/√2 = 2√2\n2√2 ≈ 2.828\nSince 2.828 > 2, quantum mechanics explicitly violates Bell's inequality. This value 2√2 is known as the Tsirelson\nbound — the maximum correlation allowed by quantum mechanics, strictly greater than the classical bound of 2,\nand it has been confirmed by nu merous real-world Bell-test experiments (e.g. Aspect's experiments and later\nloophole-free tests)."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c34",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 13,
+    "chunk_index": 34,
+    "text": "This proves that no local hidden -variable theory can reproduce the predictions of quantum mechanics — the\ncorrelations between entangled particles are genuinely non-classical."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c35",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 14,
+    "chunk_index": 35,
+    "text": "Q27. Explain the implications of the No -Cloning Theorem and discuss its role in Quantum\nCommunication and Quantum Cryptography.  [CO2, 6M]\nCore implication\nThe No-Cloning Theorem proves that an arbitrary unknown quantum state cannot be perfectly duplicated by any\nphysical process — unitary evolution or measurement. Formally, no U and |s⟩ satisfy U|ψ⟩|s⟩ = |ψ⟩|ψ⟩ for every\n|ψ⟩ (derivation in Q21). This has deep implications across quantum information science."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c36",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 14,
+    "chunk_index": 36,
+    "text": "Implications for Quantum Communication\n● Any eavesdropper who intercepts a qubit in transit cannot make a perfect copy to analyze while\nforwarding an identical, undisturbed original — attempting to measure or clone it inevitably disturbs the\nstate.\n● This underlies quantum teleportation itself: since a state cannot be copied, information transfer must\noccur by destructively transferring (teleporting) it using entanglement plus classical communication,\nrather than duplicating it (Q23–Q24)."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c37",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 14,
+    "chunk_index": 37,
+    "text": "● It also justifies why quantum channels cannot be 'amplified' or repeated the way classical\noptical/electronic signals are — direct amplification would require cloning, which is forbidden.\nImplications for Quantum Cryptography\n● Quantum Key Distribution (QKD) protocols, such as BB84, rely directly on the No -Cloning Theorem for\ntheir security guarantee.\n● An eavesdropper (Eve) intercepting qubits encoding a secret key cannot clone them to keep a copy for"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c38",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 14,
+    "chunk_index": 38,
+    "text": "herself while sending on an unmodified original to the receiver.\n● Any attempt by Eve to measure/clone the qubits introduces detectable disturbances (increased error rate)\nin the transmitted key, alerting the legitimate parties (Alice and Bob) to the presence of eavesdropping.\n● This gives quantum cryptography a form of security that is guaranteed by the laws of physics, rather than\nby computational hardness assumptions used in classical cryptography.\nSummary"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c39",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 14,
+    "chunk_index": 39,
+    "text": "The No-Cloning Theorem is not a limitation but a foundational security feature — it guarantees that quantum\ninformation cannot be silently intercepted and copied, forming the physical basis for secure quantum\ncommunication and cryptographic protocols."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c40",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 15,
+    "chunk_index": 40,
+    "text": "Q28. Analyze the relationship among the No -Cloning Theorem, Quantum Teleportation, and\nBell's Inequality. Justify how these principles establish the foundations of secure quantum\ncommunication.  [CO2, 6M]\nHow the three principles connect\nPrinciple What it establishes Role in the overall system\nNo-Cloning Theorem An unknown quantum state cannot be\nperfectly copied (Q21)\nGuarantees that quantum\ninformation cannot be secretly\nintercepted/duplicated — forces\ninformation transfer to be\ndestructive"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c41",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 15,
+    "chunk_index": 41,
+    "text": "Quantum Teleportation\nA state can still be transferred (not\ncopied) using entanglement + 2\nclassical bits (Q23–Q24)\nProvides the working protocol\nthat respects No -Cloning while\nstill moving quantum information\nbetween distant parties\nBell's Inequality Entanglement correlations exceed the\nclassical limit of 2, up to 2√2 (Q25–Q26)\nProves the entangled resource\nused in teleportation is genuinely\nnon-classical and non -local, not\nexplainable by hidden variables\nLogical chain"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c42",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 15,
+    "chunk_index": 42,
+    "text": "● Because the No-Cloning Theorem forbids copying, secure transfer of quantum information cannot rely on\nduplication — it must rely on a resource that is consumed in the process.\n● Quantum teleportation supplies exactly this: it consumes a shared entangled Bell pair and 2 classical bits\nto move |ψ ⟩ from Alice to Bob, while destroying Alice's original copy — so at no point does more than\none copy of |ψ⟩ exist, consistent with No-Cloning."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c43",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 15,
+    "chunk_index": 43,
+    "text": "● Bell's inequality violation experimentally certifies that the entanglement used in teleportation (and in QKD\nprotocols) is real, non -local quantum correlation — not a classical hidden -variable trick that an\neavesdropper could exploit or replicate.\nJustification: foundations of secure quantum communication\nTogether these three results form a self-consistent physical foundation for security:\n● No-Cloning ⇒ an eavesdropper cannot copy transmitted quantum states without detection, and"
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c44",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 15,
+    "chunk_index": 44,
+    "text": "information cannot be silently duplicated.\n● Teleportation ⇒ demonstrates a concrete, physically realizable protocol for transferring quantum\ninformation using entanglement, obeying the No-Cloning restriction.\n● Bell's Inequality violation ⇒ certifies that the entanglement resource is genuinely quantum, ruling out any\nclassical local-hidden-variable explanation an adversary could exploit to fake or predict the correlations."
+  },
+  {
+    "chunk_id": "doc_92d0758eedc3_c45",
+    "doc_id": "doc_92d0758eedc3",
+    "filename": "QC Unit2_QB answers.pdf",
+    "file_hash": "92d0758eedc389813a043929e628bdc394058f8c4fad1648592af27d2ec6195c",
+    "user_id": "user_default",
+    "page_number": 15,
+    "chunk_index": 45,
+    "text": "Consequently, protocols such as Quantum Key Distribution (BB84, E91) and quantum teleportation -based\nnetworks derive their security directly from these three linked principles: unclonability prevents covert copying,\nteleportation shows how information move s without duplication, and Bell violation certifies the non -classical,\ntamper-evident nature of the shared entanglement — together establishing the physical foundations of secure\nquantum communication."
+  }
+]

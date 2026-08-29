@@ -1,62 +1,115 @@
+import os
+import json
 import faiss
 import numpy as np
-from ingestion import load_documents
-from chunking import chunk_text
 from embeddings import get_embedding, get_embeddings_batch
 
-def create_faiss_index(embeddings):
-    """
-    Creates a FAISS index and stores vectors inside it.
-    """
-    # Get vector dimensions (e.g. 384)
-    dimension = embeddings.shape[1]
-    
-    # Create an L2 Euclidean Distance index
-    index = faiss.IndexFlatL2(dimension)
-    
-    # Convert embeddings to float32 numpy array (FAISS requires float32)
-    embeddings_np = np.array(embeddings).astype('float32')
-    
-    # Add vectors to index
-    index.add(embeddings_np)
-    
-    return index
+INDEX_FILE = os.path.join("data", "index.faiss")
+META_FILE = os.path.join("data", "vector_meta.json")
 
-def search_faiss_index(index, query_vector, k=3):
-    """
-    Searches the FAISS index for the top-k closest vectors to query_vector.
-    """
-    # Ensure query vector is 2D float32 numpy array
-    query_np = np.array([query_vector]).astype('float32')
-    
-    # Perform similarity search (returns distances and indices of top-k matches)
-    distances, indices = index.search(query_np, k)
-    
-    return distances[0], indices[0]
+class PersistentVectorStore:
+    def __init__(self, index_file=INDEX_FILE, meta_file=META_FILE):
+        self.index_file = index_file
+        self.meta_file = meta_file
+        self.metadata = []
+        self.index = None
+        self.dimension = 384
+        self.load()
+
+    def load(self):
+        """Loads FAISS index and metadata from disk if available."""
+        os.makedirs(os.path.dirname(self.index_file), exist_ok=True)
+        
+        if os.path.exists(self.index_file) and os.path.exists(self.meta_file):
+            try:
+                self.index = faiss.read_index(self.index_file)
+                with open(self.meta_file, "r", encoding="utf-8") as f:
+                    self.metadata = json.load(f)
+                self.dimension = self.index.d
+                return
+            except Exception as e:
+                print(f"Error loading vector store from disk: {e}")
+                
+        # Initialize new FAISS L2 Flat Index
+        self.index = faiss.IndexFlatL2(self.dimension)
+        self.metadata = []
+
+    def save(self):
+        """Persists FAISS index and metadata to disk."""
+        os.makedirs(os.path.dirname(self.index_file), exist_ok=True)
+        if self.index is not None:
+            faiss.write_index(self.index, self.index_file)
+            with open(self.meta_file, "w", encoding="utf-8") as f:
+                json.dump(self.metadata, f, indent=2, ensure_ascii=False)
+
+    def add_chunks(self, chunk_objects):
+        """
+        Incrementally adds new chunk objects to FAISS index and metadata store.
+        Deduplicates chunks by chunk_id.
+        """
+        if not chunk_objects:
+            return
+            
+        existing_ids = set(m.get("chunk_id") for m in self.metadata)
+        new_chunks = [c for c in chunk_objects if c.get("chunk_id") not in existing_ids]
+        
+        if not new_chunks:
+            return
+            
+        texts = [c["text"] for c in new_chunks]
+        embeddings = get_embeddings_batch(texts)
+        embeddings_np = np.array(embeddings).astype("float32")
+        
+        self.index.add(embeddings_np)
+        
+        for c in new_chunks:
+            self.metadata.append(c)
+            
+        self.save()
+
+    def search(self, query_text, k=5, user_id=None):
+        """
+        Searches FAISS index for top-K matching chunks, filtered by user_id if specified.
+        """
+        if self.index is None or self.index.ntotal == 0:
+            return [], []
+            
+        query_vec = get_embedding(query_text)
+        query_np = np.array([query_vec]).astype("float32")
+        
+        # Retrieve more candidates if user_id filtering is required
+        search_k = min(k * 4 if user_id else k, self.index.ntotal)
+        distances, indices = self.index.search(query_np, search_k)
+        
+        res_distances = []
+        res_chunks = []
+        
+        for dist, idx in zip(distances[0], indices[0]):
+            if idx < 0 or idx >= len(self.metadata):
+                continue
+            meta = self.metadata[idx]
+            
+            # User level filtering: allow if user matches or if meta user is public default
+            if user_id and meta.get("user_id") not in (user_id, "user_default"):
+                continue
+                
+            res_distances.append(float(dist))
+            res_chunks.append(meta)
+            
+            if len(res_chunks) >= k:
+                break
+                
+        return res_distances, res_chunks
+
+    def clear(self):
+        """Clears all vectors and metadata."""
+        self.index = faiss.IndexFlatL2(self.dimension)
+        self.metadata = []
+        if os.path.exists(self.index_file):
+            os.remove(self.index_file)
+        if os.path.exists(self.meta_file):
+            os.remove(self.meta_file)
 
 if __name__ == "__main__":
-    # 1. Load and chunk handbook
-    docs = load_documents("data")
-    full_text = docs[0]["content"]
-    chunks = chunk_text(full_text, chunk_size=250, overlap=50)
-    
-    # 2. Embed all chunks
-    chunk_embeddings = get_embeddings_batch(chunks)
-    
-    # 3. Store in FAISS Index
-    index = create_faiss_index(chunk_embeddings)
-    print(f"Stored {index.ntotal} vectors in FAISS index.")
-    
-    # 4. User Question
-    user_query = "How many paid vacation days do employees get?"
-    print(f"\nUser Question: '{user_query}'")
-    
-    # 5. Embed Question & Search FAISS
-    query_vec = get_embedding(user_query)
-    distances, top_indices = search_faiss_index(index, query_vec, k=3)
-    
-    # 6. Display Retrieved Chunks
-    print("\n--- TOP RETRIEVED CHUNKS ---")
-    for rank, (dist, idx) in enumerate(zip(distances, top_indices)):
-        print(f"\n[Rank {rank+1}] Chunk Index #{idx} (Distance Score: {dist:.4f}):")
-        print(repr(chunks[idx]))
+    store = PersistentVectorStore()
+    print(f"Loaded store with {store.index.ntotal} vectors.")

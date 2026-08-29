@@ -56,37 +56,58 @@ def init_db():
         id TEXT PRIMARY KEY,
         user_id TEXT,
         filename TEXT,
+        file_hash TEXT,
         size_kb REAL,
+        status TEXT DEFAULT 'indexed',
         indexed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users (id)
     )
     """)
+
+    # Document Chunks table
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS document_chunks (
+        id TEXT PRIMARY KEY,
+        document_id TEXT,
+        user_id TEXT,
+        chunk_index INTEGER,
+        page_number INTEGER,
+        content TEXT,
+        metadata_json TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (document_id) REFERENCES documents (id)
+    )
+    """)
     
-    # Insert default public user if not exists
     cursor.execute("INSERT OR IGNORE INTO users (id, email) VALUES ('user_default', 'public_user@ragfoundry.local')")
     
     conn.commit()
     conn.close()
 
-def get_or_create_user(email="public_user@ragfoundry.local"):
+def get_document_by_hash(file_hash, user_id="user_default"):
     init_db()
     conn = get_connection()
     cursor = conn.cursor()
-    user_id = f"user_{hash(email) & 0xffffffff}"
-    cursor.execute("INSERT OR IGNORE INTO users (id, email) VALUES (?, ?)", (user_id, email))
+    cursor.execute(
+        "SELECT id, filename, file_hash, size_kb, status FROM documents WHERE file_hash = ? AND user_id = ?",
+        (file_hash, user_id)
+    )
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        return dict(row)
+    return None
+
+def register_document(doc_id, filename, file_hash, size_kb, user_id="user_default", status="indexed"):
+    init_db()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT OR REPLACE INTO documents (id, user_id, filename, file_hash, size_kb, status) VALUES (?, ?, ?, ?, ?, ?)",
+        (doc_id, user_id, filename, file_hash, size_kb, status)
+    )
     conn.commit()
     conn.close()
-    return user_id
-
-def generate_conversation_title(question):
-    q = question.strip()
-    words = q.split()
-    if len(words) <= 5:
-        return q.title()
-    # Simple intelligent summary title
-    cleaned = q.replace("What is", "").replace("what is", "").replace("Tell me about", "").replace("Summarize", "Summary of").strip(" ?.")
-    title_words = cleaned.split()[:5]
-    return " ".join(title_words).capitalize()
 
 def create_conversation(user_id="user_default", title="New Conversation"):
     init_db()
@@ -101,6 +122,15 @@ def create_conversation(user_id="user_default", title="New Conversation"):
     conn.commit()
     conn.close()
     return conv_id
+
+def generate_conversation_title(question):
+    q = question.strip()
+    words = q.split()
+    if len(words) <= 5:
+        return q.title()
+    cleaned = q.replace("What is", "").replace("what is", "").replace("Tell me about", "").replace("Summarize", "Summary of").strip(" ?.")
+    title_words = cleaned.split()[:5]
+    return " ".join(title_words).capitalize()
 
 def get_user_conversations_grouped(user_id="user_default"):
     init_db()
@@ -156,7 +186,6 @@ def save_message(conversation_id, role, content, sources=None, chunks=None):
         (conversation_id, role, content, sources_str, chunks_str, now)
     )
     
-    # Update conversation updated_at
     cursor.execute("UPDATE conversations SET updated_at = ? WHERE id = ?", (now, conversation_id))
     
     conn.commit()
@@ -183,23 +212,3 @@ def get_conversation_messages(conversation_id):
             "created_at": r["created_at"]
         })
     return messages
-
-def update_conversation_title(conversation_id, new_title):
-    init_db()
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("UPDATE conversations SET title = ? WHERE id = ?", (new_title, conversation_id))
-    conn.commit()
-    conn.close()
-
-def register_document(filename, size_kb, user_id="user_default"):
-    init_db()
-    conn = get_connection()
-    cursor = conn.cursor()
-    doc_id = f"doc_{hash(filename) & 0xffffffff}"
-    cursor.execute(
-        "INSERT OR REPLACE INTO documents (id, user_id, filename, size_kb, indexed_at) VALUES (?, ?, ?, ?, ?)",
-        (doc_id, user_id, filename, size_kb, datetime.now().isoformat())
-    )
-    conn.commit()
-    conn.close()

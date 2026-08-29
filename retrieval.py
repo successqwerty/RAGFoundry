@@ -1,79 +1,68 @@
 from ingestion import load_documents
-from chunking import chunk_text
-from embeddings import get_embedding, get_embeddings_batch
-from vector_store import create_faiss_index, search_faiss_index
+from chunking import chunk_document
+from vector_store import PersistentVectorStore
 from generation import rewrite_query
 from sentence_transformers import CrossEncoder
 
-# Load lightweight, fast Cross-Encoder Reranker
-try:
-    reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-except Exception:
-    reranker = None
+_reranker_instance = None
+
+def get_reranker():
+    global _reranker_instance
+    if _reranker_instance is None:
+        try:
+            _reranker_instance = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+        except Exception as e:
+            print(f"Warning: Reranker failed to initialize: {e}")
+            _reranker_instance = None
+    return _reranker_instance
 
 class RetrievalEngine:
     def __init__(self, data_folder="data"):
-        self.docs = load_documents(data_folder)
-        
-        self.chunks = []
-        self.metadata = []
-        
-        for doc in self.docs:
-            doc_chunks = chunk_text(doc["content"], chunk_size=500, overlap=80)
-            for chunk in doc_chunks:
-                self.chunks.append(chunk)
-                self.metadata.append({"filename": doc["filename"]})
-                
-        self.embeddings = get_embeddings_batch(self.chunks)
-        self.index = create_faiss_index(self.embeddings)
+        self.data_folder = data_folder
+        self.store = PersistentVectorStore()
+        self.sync_documents()
 
-    def retrieve(self, query, k=10, use_query_rewriting=True, provider="gemini", model_name=None):
+    def sync_documents(self, user_id="user_default"):
         """
-        Production Two-Stage Retrieval:
-        1. Bi-Encoder FAISS Vector Search: Retrieves Top K=10 candidates.
-        2. Cross-Encoder Reranking: Deep attention re-scoring that moves the exact target chunk to RANK 1!
+        Indexes new documents in the data folder into persistent vector store without duplicate re-embeddings.
+        """
+        docs = load_documents(self.data_folder, user_id=user_id)
+        for doc in docs:
+            all_chunks = chunk_document(doc, chunk_size=500, overlap=80)
+            self.store.add_chunks(all_chunks)
+
+    def retrieve(self, query, k=5, use_query_rewriting=True, provider="gemini", model_name=None, user_id=None):
+        """
+        Two-Stage Production Retrieval:
+        1. Bi-Encoder FAISS Search: Retrieves top candidates.
+        2. Cross-Encoder Reranking: Deep attention relevance rescoring.
         """
         search_query = query
         if use_query_rewriting:
             search_query = rewrite_query(query, provider=provider, model_name=model_name)
-            print(f"\n[Query Rewriter] Original Query: '{query}'")
-            print(f"[Query Rewriter] Optimized Search Vector Query: '{search_query}'")
             
-        query_vec = get_embedding(search_query)
-        distances, indices = search_faiss_index(self.index, query_vec, k=min(k, len(self.chunks)))
+        distances, candidate_chunks = self.store.search(search_query, k=k*2, user_id=user_id)
         
-        candidates = []
-        seen_indices = set()
-        
-        for dist, idx in zip(distances, indices):
-            if idx in seen_indices:
-                continue
-            seen_indices.add(idx)
+        if not candidate_chunks:
+            return []
             
-            full_text = self.chunks[idx]
-            if idx + 1 < len(self.chunks) and self.metadata[idx]["filename"] == self.metadata[idx+1]["filename"]:
-                full_text += "\n" + self.chunks[idx+1]
+        for i, c in enumerate(candidate_chunks):
+            c["distance_score"] = float(distances[i])
+            
+        reranker = get_reranker()
+        if reranker and candidate_chunks:
+            try:
+                pairs = [[query, c["text"]] for c in candidate_chunks]
+                scores = reranker.predict(pairs)
+                for i, score in enumerate(scores):
+                    candidate_chunks[i]["rerank_score"] = float(score)
+                candidate_chunks = sorted(candidate_chunks, key=lambda x: x["rerank_score"], reverse=True)
+            except Exception as e:
+                print(f"Reranking error: {e}")
                 
-            candidates.append({
-                "chunk_index": int(idx),
-                "text": full_text,
-                "filename": self.metadata[idx]["filename"],
-                "distance_score": float(dist)
-            })
-            
-        # Two-Stage Reranking using Cross-Encoder
-        if reranker and candidates:
-            pairs = [[query, c["text"]] for c in candidates]
-            scores = reranker.predict(pairs)
-            for i, score in enumerate(scores):
-                candidates[i]["rerank_score"] = float(score)
-            # Sort by Reranker Relevance Score (highest relevance first!)
-            candidates = sorted(candidates, key=lambda x: x["rerank_score"], reverse=True)
-            
-        return candidates
+        return candidate_chunks[:k]
 
 if __name__ == "__main__":
     engine = RetrievalEngine("data")
-    results = engine.retrieve("what is the first project done by gayathri", k=2)
-    for r in results:
-        print(f"\nSnippet: {repr(r['text'][:120])}")
+    res = engine.retrieve("test query", k=3)
+    print(f"Retrieved {len(res)} chunk(s).")

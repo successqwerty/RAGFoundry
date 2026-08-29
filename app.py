@@ -170,7 +170,7 @@ DARK_THEME = {
 
 T = LIGHT_THEME if theme == "light" else DARK_THEME
 
-# 4. Standardized CSS Rules (Using valid section[data-testid="stMain"] and section[data-testid="stSidebar"] selectors)
+# 4. Standardized CSS Rules
 custom_css = f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -295,7 +295,7 @@ h1, h2, h3, h4, h5, h6 {{
     box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15) !important;
 }}
 
-/* ALL NON-SIDEBAR MAIN CONTENT BUTTONS (History, Theme Toggle, Suggested Queries) */
+/* ALL NON-SIDEBAR MAIN CONTENT BUTTONS */
 section[data-testid="stMain"] .stButton > button,
 section[data-testid="stMain"] .rf-history-btn button,
 section[data-testid="stMain"] .rf-sec-btn button,
@@ -386,7 +386,7 @@ section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] button:hover
     fill: #FFFFFF !important;
 }}
 
-/* SIDEBAR INDEPENDENT STYLING — EXCLUDED FROM NON-SIDEBAR RULES */
+/* SIDEBAR INDEPENDENT STYLING */
 section[data-testid="stSidebar"] button,
 section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button,
 section[data-testid="stSidebar"] .rf-reindex-btn button {{
@@ -546,16 +546,13 @@ def get_documents_info(data_folder="data"):
     doc_list = []
     for f in files:
         file_path = os.path.join(data_folder, f)
-        if os.path.isfile(file_path) and not f.endswith(".db"):
+        if os.path.isfile(file_path) and not f.endswith(".db") and not f.endswith(".faiss") and not f.endswith(".json"):
             size_kb = round(os.path.getsize(file_path) / 1024, 1)
             doc_list.append({"name": f, "size_kb": size_kb})
-            db_manager.register_document(f, size_kb, current_user_id)
     return doc_list
 
 def get_dynamic_suggested_queries(documents):
-    """
-    Dynamically generates 3 smart suggested query chips based on the uploaded document names.
-    """
+    """Dynamically generates 3 smart suggested query chips based on uploaded documents."""
     if not documents:
         return [
             ("✦ What are the main topics?", "What are the main topics covered in these documents?"),
@@ -565,28 +562,24 @@ def get_dynamic_suggested_queries(documents):
     
     doc_names_lower = " ".join([d["name"].lower() for d in documents])
     
-    # Unit / Syllabus / Study Material / Textbook / Exam / HRPM / Module
     if any(k in doc_names_lower for k in ["unit", "chapter", "lecture", "syllabus", "hrpm", "exam", "notes", "module", "book", "subject"]):
         return [
             ("✦ Key concepts in Unit 1", "What are the key concepts and main topics in this unit?"),
             ("≡ Summarize this unit", "Provide a comprehensive summary of this unit."),
             ("◇ Main definitions & terms", "What are the main definitions and key terms explained?")
         ]
-    # Resume / CV / Bio / Profile
     elif any(k in doc_names_lower for k in ["resume", "cv", "bio", "profile", "portfolio"]):
         return [
             ("✦ Main projects & experience", "What are the main projects and work experience listed?"),
             ("≡ Professional summary", "Summarize the professional background and qualifications."),
             ("◇ Skills & technical stack", "What technical skills and tools are mentioned?")
         ]
-    # Report / Project / Research Paper / Thesis
     elif any(k in doc_names_lower for k in ["report", "paper", "project", "research", "thesis", "proposal"]):
         return [
             ("✦ Main objectives & findings", "What are the main objectives and findings of this document?"),
             ("≡ Executive summary", "Summarize the key executive findings and conclusions."),
             ("◇ Methodology & results", "What methodologies and key results are presented?")
         ]
-    # Generic Default Document Intelligence Prompts
     else:
         first_name = documents[0]["name"].rsplit(".", 1)[0].replace("_", " ").replace("-", " ")
         return [
@@ -600,7 +593,6 @@ doc_count = len(documents_in_data)
 
 # 6. SIDEBAR RENDERING
 with st.sidebar:
-    # Clean Brand Header
     st.markdown(f"""
         <div style='margin-bottom: 20px;'>
             <div style='font-size: 20px; font-weight: 700; color: {T["text_main"]}; display: flex; align-items: center; gap: 8px;'>
@@ -638,22 +630,23 @@ with st.sidebar:
             for existing_file in os.listdir("data"):
                 file_path_to_remove = os.path.join("data", existing_file)
                 if os.path.isfile(file_path_to_remove) and not existing_file.endswith(".db"):
-                    os.remove(file_path_to_remove)
+                    try:
+                        os.remove(file_path_to_remove)
+                    except Exception:
+                        pass
 
         for file in uploaded_files:
             file_path = os.path.join("data", file.name)
             with open(file_path, "wb") as f:
                 f.write(file.getbuffer())
         st.markdown(f'<div class="rf-badge-mint" style="margin-top:6px;">✓ Saved {len(uploaded_files)} file(s)</div>', unsafe_allow_html=True)
-        if "pipeline" in st.session_state:
-            del st.session_state["pipeline"]
+        st.cache_resource.clear()
         st.rerun()
 
     # Re-Index Button (Sidebar Button)
     st.markdown('<div class="rf-reindex-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
     if st.button("🔄 Re-Index Documents", use_container_width=True):
-        if "pipeline" in st.session_state:
-            del st.session_state["pipeline"]
+        st.cache_resource.clear()
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -698,12 +691,13 @@ with st.sidebar:
         """, unsafe_allow_html=True)
 
 
-# 7. INITIALIZE RAG PIPELINE
-if "pipeline" not in st.session_state:
-    with st.spinner("Initializing RAG Engine & Indexing Documents..."):
-        st.session_state["pipeline"] = RAGPipeline("data")
+# 7. INITIALIZE RAG PIPELINE WITH SINGLETON CACHING
+@st.cache_resource
+def get_rag_pipeline():
+    return RAGPipeline("data")
 
-pipeline = st.session_state["pipeline"]
+pipeline = get_rag_pipeline()
+pipeline.sync(user_id=current_user_id)
 
 
 # 8. MAIN WORKSPACE TOP HEADER
@@ -715,7 +709,7 @@ with col_head_left:
     st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
 with col_head_right:
-    # TOP-RIGHT CONTROLS: HISTORY + THEME TOGGLE (NON-SIDEBAR LAVENDER STYLING)
+    # TOP-RIGHT CONTROLS: HISTORY + THEME TOGGLE
     ctrl_col1, ctrl_col2 = st.columns(2)
     with ctrl_col1:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
@@ -786,7 +780,7 @@ query_to_execute = None
 if "pending_question" in st.session_state and st.session_state["pending_question"]:
     query_to_execute = st.session_state.pop("pending_question")
 
-# 10. LARGE AI QUERY COMPOSER WITH PRIMARY ACTION SEND QUERY BUTTON (EXTREME RIGHT ALIGNED)
+# 10. LARGE AI QUERY COMPOSER WITH PRIMARY ACTION SEND QUERY BUTTON
 with st.form(key="query_composer_form", clear_on_submit=False):
     user_query = st.text_area(
         "Ask anything about your documents...",
@@ -805,14 +799,13 @@ with st.form(key="query_composer_form", clear_on_submit=False):
             </div>
         """, unsafe_allow_html=True)
     with col_comp_right:
-        # Primary Action Send Query Button (Aligned Extreme Right)
         submit_button = st.form_submit_button("Send Query ➔", use_container_width=False)
 
 if submit_button and user_query.strip():
     query_to_execute = user_query.strip()
 
 
-# 11. DYNAMIC SUGGESTED QUERY CARDS (ADAPTS TO UPLOADED DOCUMENT TYPE & EXECUTES INSTANTLY)
+# 11. DYNAMIC SUGGESTED QUERY CARDS
 if not st.session_state["current_conversation_id"] and "last_result" not in st.session_state:
     st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; text-transform: uppercase; margin-top: 20px; margin-bottom: 12px;">SUGGESTED QUERIES</div>', unsafe_allow_html=True)
     
@@ -829,69 +822,15 @@ if not st.session_state["current_conversation_id"] and "last_result" not in st.s
             st.markdown('</div>', unsafe_allow_html=True)
 
 
-# 12. PROCESS QUERY SUBMISSION & PERSISTENT AUTO-SAVE TO DATABASE
-if query_to_execute:
-    question_text = query_to_execute
-    st.session_state["input_question"] = ""
-    
-    # 1. Active conversation check or create new
-    conv_id = st.session_state.get("current_conversation_id")
-    if not conv_id:
-        title = db_manager.generate_conversation_title(question_text)
-        conv_id = db_manager.create_conversation(current_user_id, title)
-        st.session_state["current_conversation_id"] = conv_id
-        
-    # 2. Save user message to Database
-    db_manager.save_message(conv_id, "user", question_text)
-    
-    # 3. Run RAG Pipeline
-    with st.spinner("✦ Searching knowledge base & generating grounded answer..."):
-        try:
-            result = pipeline.ask(question_text, k=5, provider=selected_provider, model_name=selected_model)
-            
-            # 4. Auto-save AI Grounded Answer to Database
-            db_manager.save_message(
-                conv_id, 
-                "assistant", 
-                result["answer"], 
-                sources=result["sources"], 
-                chunks=result["retrieved_chunks"]
-            )
-            st.session_state["last_result"] = result
-            if "last_error" in st.session_state:
-                del st.session_state["last_error"]
-        except Exception as e:
-            st.session_state["last_error"] = str(e)
-            
-    st.rerun()
-
-
-# 13. ERROR DISPLAY STATE
-if "last_error" in st.session_state:
-    st.markdown(f"""
-        <div style="background-color: {T['peach_bg']}; border: 1px solid {T['border']}; border-radius: 12px; padding: 18px 22px; margin-top: 20px;">
-            <div style="font-size: 15px; font-weight: 600; color: {T['text_main']}; margin-bottom: 4px;">Unable to generate answer</div>
-            <div style="font-size: 13px; color: {T['text_sec']};">Check that your selected AI service ({selected_provider.title()}) is active and try again.</div>
-            <details style="margin-top: 8px; font-size: 12px; color: {T['text_main']};">
-                <summary>Show technical details</summary>
-                <code style="display:block; margin-top:4px; padding:8px; background:{T['bg_surface']}; border-radius:6px; color:{T['text_main']};">{st.session_state["last_error"]}</code>
-            </details>
-        </div>
-    """, unsafe_allow_html=True)
-
-
-# 14. DISPLAY PERSISTENT MULTI-TURN CONVERSATION FROM DATABASE
+# 12. DISPLAY PERSISTENT MULTI-TURN CONVERSATION FROM DATABASE FIRST
 active_conv_id = st.session_state.get("current_conversation_id")
 
 if active_conv_id:
     saved_messages = db_manager.get_conversation_messages(active_conv_id)
-    
     if saved_messages:
         st.markdown("<div style='margin-top: 24px;'></div>", unsafe_allow_html=True)
-        
         for msg in saved_messages:
             if msg["role"] == "user":
-                # User Prompt Card
                 st.markdown(f"""
                     <div class="rf-user-card">
                         <div style="font-size: 11px; font-weight: 700; color: {T['btn_primary_bg']}; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;">You</div>
@@ -899,7 +838,6 @@ if active_conv_id:
                     </div>
                 """, unsafe_allow_html=True)
             else:
-                # AI Grounded Answer Card
                 st.markdown(f"""
                     <div class="rf-ai-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
@@ -914,7 +852,6 @@ if active_conv_id:
                     </div>
                 """, unsafe_allow_html=True)
                 
-                # EVIDENCE SECTION
                 if msg.get("sources"):
                     st.markdown(f'<h3 style="font-size: 16px; font-weight: 600; margin-top: 20px; margin-bottom: 12px; color: {T["text_main"]};">Evidence</h3>', unsafe_allow_html=True)
                     src_cols = st.columns(min(len(msg["sources"]), 3) or 1)
@@ -930,22 +867,140 @@ if active_conv_id:
                                 </div>
                             """, unsafe_allow_html=True)
 
-                # COLLAPSIBLE RETRIEVED CONTEXT
                 if msg.get("chunks"):
                     st.markdown("<div style='margin-top: 12px;'></div>", unsafe_allow_html=True)
                     with st.expander(f"▸ Retrieved context · {len(msg['chunks'])} chunks (FAISS & Two-Stage Reranker Scores)"):
                         for rank, chunk in enumerate(msg["chunks"]):
                             rerank_score = chunk.get("rerank_score", None)
-                            score_display = f"Rerank Score: `{rerank_score:.4f}`" if rerank_score is not None else f"Distance: `{chunk['distance_score']:.4f}`"
+                            score_display = f"Rerank Score: `{rerank_score:.4f}`" if rerank_score is not None else f"Distance: `{chunk.get('distance_score', 0):.4f}`"
+                            page_label = f" (Page {chunk['page_number']})" if chunk.get("page_number") else ""
                             
                             st.markdown(f"""
                                 <div style="background-color: {T['bg_surface']}; border: 1px solid {T['border']}; border-radius: 10px; padding: 14px; margin-bottom: 10px;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                                         <span class="rf-badge-purple">Rank {rank+1}</span>
-                                        <span style="font-size: 12px; color: {T['text_sec']};">{score_display} &nbsp;·&nbsp; 📄 {chunk['filename']}</span>
+                                        <span style="font-size: 12px; color: {T['text_sec']};">{score_display} &nbsp;·&nbsp; 📄 {chunk['filename']}{page_label}</span>
                                     </div>
                                     <div style="font-size: 13px; font-family: monospace; background-color: {T['code_bg']}; padding: 10px; border-radius: 6px; color: {T['text_main']}; white-space: pre-wrap;">
 {chunk['text']}
                                     </div>
                                 </div>
                             """, unsafe_allow_html=True)
+
+
+# 13. PROCESS NEW QUERY SUBMISSION WITH LIVE TOKEN STREAMING
+if query_to_execute:
+    question_text = query_to_execute
+    st.session_state["input_question"] = ""
+    
+    conv_id = st.session_state.get("current_conversation_id")
+    if not conv_id:
+        title = db_manager.generate_conversation_title(question_text)
+        conv_id = db_manager.create_conversation(current_user_id, title)
+        st.session_state["current_conversation_id"] = conv_id
+        
+    db_manager.save_message(conv_id, "user", question_text)
+    
+    st.markdown(f"""
+        <div class="rf-user-card">
+            <div style="font-size: 11px; font-weight: 700; color: {T['btn_primary_bg']}; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;">You</div>
+            <div style="font-size: 15px; font-weight: 500; color: {T['text_main']};">{question_text}</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    status_placeholder = st.empty()
+    answer_card_placeholder = st.empty()
+    
+    status_placeholder.markdown(f"""
+        <div style="font-size: 13px; color: {T['text_sec']}; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span style="color: {T['btn_primary_bg']}; font-size: 16px;">✦</span> Searching documents & retrieving context...
+        </div>
+    """, unsafe_allow_html=True)
+    
+    accumulated_answer = ""
+    retrieved_sources = []
+    retrieved_chunks = []
+    
+    try:
+        api_key = os.environ.get("GEMINI_API_KEY") if selected_provider == "gemini" else None
+        stream_events = pipeline.ask_stream(
+            question_text, 
+            k=5, 
+            provider=selected_provider, 
+            model_name=selected_model, 
+            user_id=current_user_id,
+            api_key=api_key
+        )
+        
+        for event in stream_events:
+            if event["type"] == "status":
+                status_placeholder.markdown(f"""
+                    <div style="font-size: 13px; color: {T['text_sec']}; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span style="color: {T['btn_primary_bg']}; font-size: 16px;">✦</span> {event['message']}
+                    </div>
+                """, unsafe_allow_html=True)
+            elif event["type"] == "sources":
+                retrieved_sources = event["sources"]
+                retrieved_chunks = event["chunks"]
+            elif event["type"] == "token":
+                accumulated_answer += event["delta"]
+                answer_card_placeholder.markdown(f"""
+                    <div class="rf-ai-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <div style="font-size: 14px; font-weight: 600; color: {T['text_main']}; display: flex; align-items: center; gap: 6px;">
+                                <span style="color: {T['btn_primary_bg']};">✦</span> RAGFoundry
+                            </div>
+                            <span class="rf-badge-mint">● Generating answer...</span>
+                        </div>
+                        <div style="font-size: 15px; line-height: 1.65; color: {T['text_main']};">
+                            {accumulated_answer}▌
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+        status_placeholder.empty()
+        
+        answer_card_placeholder.markdown(f"""
+            <div class="rf-ai-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <div style="font-size: 14px; font-weight: 600; color: {T['text_main']}; display: flex; align-items: center; gap: 6px;">
+                        <span style="color: {T['btn_primary_bg']};">✦</span> RAGFoundry
+                    </div>
+                    <span class="rf-badge-mint">✓ Grounded in your documents</span>
+                </div>
+                <div style="font-size: 15px; line-height: 1.65; color: {T['text_main']};">
+                    {accumulated_answer}
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        db_manager.save_message(
+            conv_id,
+            "assistant",
+            accumulated_answer,
+            sources=retrieved_sources,
+            chunks=retrieved_chunks
+        )
+        
+        if "last_error" in st.session_state:
+            del st.session_state["last_error"]
+            
+    except Exception as e:
+        status_placeholder.empty()
+        st.session_state["last_error"] = str(e)
+        
+    st.rerun()
+
+
+# 14. ERROR DISPLAY STATE
+if "last_error" in st.session_state:
+    st.markdown(f"""
+        <div style="background-color: {T['peach_bg']}; border: 1px solid {T['border']}; border-radius: 12px; padding: 18px 22px; margin-top: 20px;">
+            <div style="font-size: 15px; font-weight: 600; color: {T['text_main']}; margin-bottom: 4px;">Unable to generate answer</div>
+            <div style="font-size: 13px; color: {T['text_sec']};">Check that your selected AI service ({selected_provider.title()}) is active and try again.</div>
+            <details style="margin-top: 8px; font-size: 12px; color: {T['text_main']};">
+                <summary>Show technical details</summary>
+                <code style="display:block; margin-top:4px; padding:8px; background:{T['bg_surface']}; border-radius:6px; color:{T['text_main']};">{st.session_state["last_error"]}</code>
+            </details>
+        </div>
+    """, unsafe_allow_html=True)
