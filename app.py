@@ -679,16 +679,11 @@ with st.sidebar:
                 f.write(file.getbuffer())
         st.markdown(f'<div class="rf-badge-mint" style="margin-top:6px;">✓ Saved {len(uploaded_files)} file(s)</div>', unsafe_allow_html=True)
         st.cache_resource.clear()
-        st.rerun()
-
-    # Re-Index Button (Sidebar Button)
-    st.markdown('<div class="rf-reindex-btn" style="margin-top: 10px;">', unsafe_allow_html=True)
-    if st.button("🔄 Re-Index Documents", use_container_width=True):
-        st.cache_resource.clear()
-        if hasattr(pipeline, "rebuild_index"):
+        if clear_existing and hasattr(pipeline, "rebuild_index"):
             pipeline.rebuild_index(user_id=current_user_id)
+        elif hasattr(pipeline, "sync"):
+            pipeline.sync(user_id=current_user_id)
         st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown(f"<hr style='border:none; border-top:1px solid {T['border']}; margin:16px 0;'>", unsafe_allow_html=True)
 
