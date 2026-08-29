@@ -826,7 +826,27 @@ if st.session_state["show_history_drawer"]:
                     with conf_col1:
                         st.markdown('<div class="rf-sec-btn">', unsafe_allow_html=True)
                         if st.button("Delete", key=f"confirm_del_{c['id']}", use_container_width=True):
-                            db_manager.delete_conversation(c["id"])
+                            deleted_ok = False
+                            if hasattr(db_manager, "delete_conversation"):
+                                deleted_ok = db_manager.delete_conversation(c["id"])
+                            else:
+                                import importlib
+                                importlib.reload(db_manager)
+                                if hasattr(db_manager, "delete_conversation"):
+                                    deleted_ok = db_manager.delete_conversation(c["id"])
+                                else:
+                                    import sqlite3
+                                    try:
+                                        conn = sqlite3.connect(os.path.join("data", "rag_foundry.db"))
+                                        cur = conn.cursor()
+                                        cur.execute("DELETE FROM messages WHERE conversation_id = ?", (c["id"],))
+                                        cur.execute("DELETE FROM conversations WHERE id = ?", (c["id"],))
+                                        conn.commit()
+                                        conn.close()
+                                        deleted_ok = True
+                                    except Exception:
+                                        deleted_ok = False
+                                        
                             if st.session_state.get("current_conversation_id") == c["id"]:
                                 st.session_state["current_conversation_id"] = None
                             st.session_state.pop("deleting_conv_id", None)
