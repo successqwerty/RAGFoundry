@@ -387,7 +387,7 @@ section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] button:hover
 }}
 
 /* SIDEBAR INDEPENDENT STYLING */
-section[data-testid="stSidebar"] button,
+section[data-testid="stSidebar"] .stButton > button,
 section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button,
 section[data-testid="stSidebar"] .rf-reindex-btn button {{
     background-color: {T['upload_btn_bg']} !important;
@@ -397,14 +397,14 @@ section[data-testid="stSidebar"] .rf-reindex-btn button {{
     font-weight: 600 !important;
 }}
 
-section[data-testid="stSidebar"] button *,
+section[data-testid="stSidebar"] .stButton > button *,
 section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button *,
 section[data-testid="stSidebar"] .rf-reindex-btn button * {{
     color: {T['upload_btn_icon']} !important;
     fill: {T['upload_btn_icon']} !important;
 }}
 
-section[data-testid="stSidebar"] button:hover,
+section[data-testid="stSidebar"] .stButton > button:hover,
 section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button:hover,
 section[data-testid="stSidebar"] .rf-reindex-btn button:hover {{
     background-color: {T['upload_btn_hover_bg']} !important;
@@ -412,7 +412,7 @@ section[data-testid="stSidebar"] .rf-reindex-btn button:hover {{
     color: {T['upload_btn_hover_text']} !important;
 }}
 
-section[data-testid="stSidebar"] button:hover *,
+section[data-testid="stSidebar"] .stButton > button:hover *,
 section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button:hover *,
 section[data-testid="stSidebar"] .rf-reindex-btn button:hover * {{
     color: {T['upload_btn_hover_icon']} !important;
@@ -445,14 +445,37 @@ div[data-baseweb="checkbox"] label span {{
     outline: none !important;
     box-shadow: none !important;
 }}
+
+/* Remove violet square from selectbox right side */
+.stSelectbox div[data-baseweb="select"] button,
+.stSelectbox div[data-baseweb="select"] button:hover,
+.stSelectbox div[data-baseweb="select"] svg,
+.stSelectbox div[data-baseweb="select"] div {{
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}}
+
+/* Completely non-editable selectbox input (no typing, deleting, or text cursor) */
+.stSelectbox div[data-baseweb="select"] input {{
+    pointer-events: none !important;
+    user-select: none !important;
+    caret-color: transparent !important;
+    color: var(--text-primary) !important;
+}}
+
 .stSelectbox div[data-baseweb="select"]:focus-within,
 .stTextInput > div > div:focus-within {{
     border-color: var(--border-card) !important;
     box-shadow: none !important;
     outline: none !important;
 }}
+
+/* Hide question-mark tooltip icons */
 div[data-testid="stTooltipIcon"] {{
     display: none !important;
+    visibility: hidden !important;
 }}
 
 /* Custom Cards */
