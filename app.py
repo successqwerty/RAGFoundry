@@ -624,6 +624,19 @@ div[data-testid="stModal"] button[title="Close"] {{
     color: var(--text-secondary) !important;
 }}
 
+/* Remove divider line inside Delete Chat modal */
+div[data-testid="stDialog"] hr,
+div[data-testid="stModal"] hr,
+div[role="dialog"] hr,
+div[data-testid="stDialog"] div[data-testid="stHorizontalBlock"]::before,
+div[data-testid="stDialog"] div[data-testid="stVerticalBlock"] > div > hr {{
+    display: none !important;
+    border: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    visibility: hidden !important;
+}}
+
 /* Solid ChatGPT Red Delete Button (#FF0033) */
 .rf-modal-delete-btn,
 .rf-modal-delete-btn button,
