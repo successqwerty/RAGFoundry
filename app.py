@@ -570,74 +570,146 @@ div[data-testid="stTooltipIcon"] {{
 }}
 
 /* Delete Chat Modal Container & Centering */
-div[data-testid="stModal"] {{
+div[data-testid="stDialog"],
+div[data-testid="stModal"],
+div[role="dialog"],
+div[data-baseweb="modal"] {{
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.55) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    z-index: 999999 !important;
+    margin: 0 !important;
     padding: 16px !important;
 }}
-div[data-testid="stModal"] > div {{
+div[data-testid="stDialog"] > div,
+div[data-testid="stModal"] > div,
+div[role="dialog"] > div,
+div[data-baseweb="modal"] > div,
+div[data-baseweb="modal"] [role="dialog"] {{
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    max-width: 480px !important;
+    width: calc(100% - 32px) !important;
     background-color: var(--bg-card) !important;
     border: 1px solid var(--border-card) !important;
     border-radius: 16px !important;
-    max-width: 440px !important;
-    width: calc(100% - 32px) !important;
-    margin: auto !important;
     padding: 24px !important;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
+    z-index: 1000000 !important;
 }}
+div[data-testid="stDialog"] header,
 div[data-testid="stModal"] header {{
     padding: 0 0 12px 0 !important;
 }}
-div[data-testid="stModal"] h2 {{
+div[data-testid="stDialog"] h2,
+div[data-testid="stModal"] h2,
+div[role="dialog"] h2 {{
     font-size: 19px !important;
     font-weight: 700 !important;
     color: var(--text-primary) !important;
 }}
+div[data-testid="stDialog"] button[title="Close"],
 div[data-testid="stModal"] button[title="Close"] {{
     color: var(--text-secondary) !important;
 }}
 
-/* Solid Lavender Delete Button */
+/* Solid Lavender Delete Button (#7C3AED) */
+.rf-modal-delete-btn,
 .rf-modal-delete-btn button,
-.rf-modal-delete-btn button:focus {{
+div[data-testid="stDialog"] .rf-modal-delete-btn button,
+div[data-testid="stModal"] .rf-modal-delete-btn button,
+div[role="dialog"] .rf-modal-delete-btn button {{
     background-color: #7C3AED !important;
-    border: 1px solid #6D28D9 !important;
-    color: #FFFFFF !important;
+    background: #7C3AED !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35) !important;
     border-radius: 9999px !important;
-    font-weight: 600 !important;
-    font-size: 13.5px !important;
-    padding: 8px 18px !important;
-    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
-    transition: all 0.2s ease !important;
 }}
-.rf-modal-delete-btn button * {{
+
+.rf-modal-delete-btn button,
+.rf-modal-delete-btn button:focus,
+.rf-modal-delete-btn button:active,
+div[data-testid="stDialog"] .rf-modal-delete-btn button,
+div[data-testid="stModal"] .rf-modal-delete-btn button,
+div[role="dialog"] .rf-modal-delete-btn button {{
+    background-color: #7C3AED !important;
+    background: #7C3AED !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    padding: 9px 22px !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 9999px !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}}
+
+.rf-modal-delete-btn button *,
+.rf-modal-delete-btn button p,
+.rf-modal-delete-btn button span,
+div[data-testid="stDialog"] .rf-modal-delete-btn button *,
+div[data-testid="stModal"] .rf-modal-delete-btn button *,
+div[role="dialog"] .rf-modal-delete-btn button * {{
     color: #FFFFFF !important;
     fill: #FFFFFF !important;
+    font-weight: 600 !important;
 }}
-.rf-modal-delete-btn button:hover {{
+
+.rf-modal-delete-btn button:hover,
+div[data-testid="stDialog"] .rf-modal-delete-btn button:hover,
+div[data-testid="stModal"] .rf-modal-delete-btn button:hover,
+div[role="dialog"] .rf-modal-delete-btn button:hover {{
     background-color: #6D28D9 !important;
-    border-color: #5B21B6 !important;
+    background: #6D28D9 !important;
     color: #FFFFFF !important;
 }}
 
-/* Modal Cancel Button */
+/* Modal Cancel Button (Outline Style) */
 .rf-modal-cancel-btn button,
-.rf-modal-cancel-btn button:focus {{
+.rf-modal-cancel-btn button:focus,
+div[data-testid="stDialog"] .rf-modal-cancel-btn button,
+div[data-testid="stModal"] .rf-modal-cancel-btn button,
+div[role="dialog"] .rf-modal-cancel-btn button {{
     background-color: transparent !important;
+    background: transparent !important;
     border: 1px solid var(--border-card) !important;
     color: var(--text-primary) !important;
     border-radius: 9999px !important;
     font-weight: 500 !important;
-    font-size: 13.5px !important;
-    padding: 8px 18px !important;
+    font-size: 14px !important;
+    padding: 9px 22px !important;
     transition: all 0.2s ease !important;
+    cursor: pointer !important;
 }}
-.rf-modal-cancel-btn button * {{
+
+.rf-modal-cancel-btn button *,
+.rf-modal-cancel-btn button p,
+.rf-modal-cancel-btn button span,
+div[data-testid="stDialog"] .rf-modal-cancel-btn button *,
+div[data-testid="stModal"] .rf-modal-cancel-btn button *,
+div[role="dialog"] .rf-modal-cancel-btn button * {{
     color: var(--text-primary) !important;
 }}
-.rf-modal-cancel-btn button:hover {{
+
+.rf-modal-cancel-btn button:hover,
+div[data-testid="stDialog"] .rf-modal-cancel-btn button:hover,
+div[data-testid="stModal"] .rf-modal-cancel-btn button:hover,
+div[role="dialog"] .rf-modal-cancel-btn button:hover {{
     background-color: var(--bg-surface) !important;
+    background: var(--bg-surface) !important;
     border-color: var(--border-card) !important;
     color: var(--text-primary) !important;
 }}
