@@ -624,14 +624,22 @@ div[data-testid="stModal"] button[title="Close"] {{
     color: var(--text-secondary) !important;
 }}
 
-/* Remove divider line inside Delete Chat modal */
+/* Remove internal horizontal lines and borders inside Delete Chat modal */
+div[data-testid="stDialog"] > div *,
+div[data-testid="stModal"] > div *,
+div[role="dialog"] > div * {{
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}}
 div[data-testid="stDialog"] hr,
 div[data-testid="stModal"] hr,
 div[role="dialog"] hr,
 div[data-testid="stDialog"] div[data-testid="stHorizontalBlock"]::before,
+div[data-testid="stDialog"] div[data-testid="stHorizontalBlock"]::after,
 div[data-testid="stDialog"] div[data-testid="stVerticalBlock"] > div > hr {{
     display: none !important;
-    border: none !important;
+    content: none !important;
     height: 0 !important;
     margin: 0 !important;
     visibility: hidden !important;
