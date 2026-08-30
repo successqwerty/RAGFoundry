@@ -568,6 +568,71 @@ div[data-testid="stTooltipIcon"] {{
     font-weight: 500;
     margin-top: 24px;
 }}
+
+/* Delete Chat Modal Container */
+div[data-testid="stModal"] > div {{
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: 16px !important;
+    max-width: 440px !important;
+    padding: 24px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3) !important;
+}}
+div[data-testid="stModal"] header {{
+    padding: 0 0 12px 0 !important;
+}}
+div[data-testid="stModal"] h2 {{
+    font-size: 19px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+}}
+div[data-testid="stModal"] button[title="Close"] {{
+    color: var(--text-secondary) !important;
+}}
+
+/* Destructive Red Delete Button */
+.rf-modal-delete-btn button,
+.rf-modal-delete-btn button:focus {{
+    background-color: #EF4444 !important;
+    border: 1px solid #DC2626 !important;
+    color: #FFFFFF !important;
+    border-radius: 9999px !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    padding: 8px 18px !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+    transition: all 0.2s ease !important;
+}}
+.rf-modal-delete-btn button * {{
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+}}
+.rf-modal-delete-btn button:hover {{
+    background-color: #DC2626 !important;
+    border-color: #B91C1C !important;
+    color: #FFFFFF !important;
+}}
+
+/* Modal Cancel Button */
+.rf-modal-cancel-btn button,
+.rf-modal-cancel-btn button:focus {{
+    background-color: transparent !important;
+    border: 1px solid var(--border-card) !important;
+    color: var(--text-primary) !important;
+    border-radius: 9999px !important;
+    font-weight: 500 !important;
+    font-size: 13.5px !important;
+    padding: 8px 18px !important;
+    transition: all 0.2s ease !important;
+}}
+.rf-modal-cancel-btn button * {{
+    color: var(--text-primary) !important;
+}}
+.rf-modal-cancel-btn button:hover {{
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-card) !important;
+    color: var(--text-primary) !important;
+}}
 </style>
 """
 st.markdown(custom_css, unsafe_allow_html=True)
@@ -775,6 +840,44 @@ with col_head_right:
     """, unsafe_allow_html=True)
 
 
+@st.dialog("Delete chat?")
+def render_delete_modal(conv_id, conv_title):
+    st.markdown(f'<div style="font-size: 14.5px; color: {T["text_main"]}; line-height: 1.5; margin-bottom: 24px;">This will delete <strong style="color: {T["text_main"]};">"{conv_title}"</strong>.</div>', unsafe_allow_html=True)
+    m_col1, m_col2 = st.columns([1, 1])
+    with m_col1:
+        st.markdown('<div class="rf-modal-cancel-btn">', unsafe_allow_html=True)
+        if st.button("Cancel", key="modal_cancel_act", use_container_width=True):
+            st.session_state.pop("deleting_conv_info", None)
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    with m_col2:
+        st.markdown('<div class="rf-modal-delete-btn">', unsafe_allow_html=True)
+        if st.button("Delete", key="modal_delete_act", use_container_width=True):
+            if hasattr(db_manager, "delete_conversation"):
+                db_manager.delete_conversation(conv_id)
+            else:
+                import importlib
+                importlib.reload(db_manager)
+                if hasattr(db_manager, "delete_conversation"):
+                    db_manager.delete_conversation(conv_id)
+                else:
+                    import sqlite3
+                    try:
+                        conn = sqlite3.connect(os.path.join("data", "rag_foundry.db"))
+                        cur = conn.cursor()
+                        cur.execute("DELETE FROM messages WHERE conversation_id = ?", (conv_id,))
+                        cur.execute("DELETE FROM conversations WHERE id = ?", (conv_id,))
+                        conn.commit()
+                        conn.close()
+                    except Exception:
+                        pass
+            if st.session_state.get("current_conversation_id") == conv_id:
+                st.session_state["current_conversation_id"] = None
+            st.session_state.pop("deleting_conv_info", None)
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+
 # 9. HISTORY DRAWER PANEL
 if st.session_state["show_history_drawer"]:
     st.markdown(f"""
@@ -795,7 +898,6 @@ if st.session_state["show_history_drawer"]:
         st.markdown('</div>', unsafe_allow_html=True)
 
     grouped_convs = db_manager.get_user_conversations_grouped(current_user_id)
-    deleting_id = st.session_state.get("deleting_conv_id")
     
     for group_name, convs in grouped_convs.items():
         if convs:
@@ -812,54 +914,15 @@ if st.session_state["show_history_drawer"]:
                 with c_col2:
                     st.markdown('<div class="rf-sec-btn" style="margin-bottom:4px;">', unsafe_allow_html=True)
                     if st.button("🗑", key=f"del_btn_{c['id']}", help="Delete conversation", use_container_width=True):
-                        st.session_state["deleting_conv_id"] = c["id"]
+                        st.session_state["deleting_conv_info"] = {"id": c["id"], "title": c["title"]}
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
-                
-                if deleting_id == c["id"]:
-                    st.markdown(f"""
-                        <div style="background-color: {T['bg_surface']}; border: 1px solid {T['border']}; border-radius: 8px; padding: 10px 14px; margin: 4px 0 8px 0;">
-                            <div style="font-size: 13px; font-weight: 600; color: {T['text_main']}; margin-bottom: 6px;">Delete this conversation?</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    conf_col1, conf_col2 = st.columns(2)
-                    with conf_col1:
-                        st.markdown('<div class="rf-sec-btn">', unsafe_allow_html=True)
-                        if st.button("Delete", key=f"confirm_del_{c['id']}", use_container_width=True):
-                            deleted_ok = False
-                            if hasattr(db_manager, "delete_conversation"):
-                                deleted_ok = db_manager.delete_conversation(c["id"])
-                            else:
-                                import importlib
-                                importlib.reload(db_manager)
-                                if hasattr(db_manager, "delete_conversation"):
-                                    deleted_ok = db_manager.delete_conversation(c["id"])
-                                else:
-                                    import sqlite3
-                                    try:
-                                        conn = sqlite3.connect(os.path.join("data", "rag_foundry.db"))
-                                        cur = conn.cursor()
-                                        cur.execute("DELETE FROM messages WHERE conversation_id = ?", (c["id"],))
-                                        cur.execute("DELETE FROM conversations WHERE id = ?", (c["id"],))
-                                        conn.commit()
-                                        conn.close()
-                                        deleted_ok = True
-                                    except Exception:
-                                        deleted_ok = False
-                                        
-                            if st.session_state.get("current_conversation_id") == c["id"]:
-                                st.session_state["current_conversation_id"] = None
-                            st.session_state.pop("deleting_conv_id", None)
-                            st.rerun()
-                        st.markdown('</div>', unsafe_allow_html=True)
-                    with conf_col2:
-                        st.markdown('<div class="rf-sec-btn">', unsafe_allow_html=True)
-                        if st.button("Cancel", key=f"cancel_del_{c['id']}", use_container_width=True):
-                            st.session_state.pop("deleting_conv_id", None)
-                            st.rerun()
-                        st.markdown('</div>', unsafe_allow_html=True)
                     
     st.markdown('</div>', unsafe_allow_html=True)
+
+    if st.session_state.get("deleting_conv_info"):
+        d_info = st.session_state["deleting_conv_info"]
+        render_delete_modal(d_info["id"], d_info["title"])
 
 
 # Session state for prompt inputs
