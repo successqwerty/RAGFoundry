@@ -624,17 +624,17 @@ div[data-testid="stModal"] button[title="Close"] {{
     color: var(--text-secondary) !important;
 }}
 
-/* Solid Lavender Delete Button (#7C3AED) */
+/* Solid Bright Red Delete Button (#EF4444) */
 .rf-modal-delete-btn,
 .rf-modal-delete-btn button,
 div[data-testid="stDialog"] .rf-modal-delete-btn button,
 div[data-testid="stModal"] .rf-modal-delete-btn button,
 div[role="dialog"] .rf-modal-delete-btn button {{
-    background-color: #7C3AED !important;
-    background: #7C3AED !important;
+    background-color: #EF4444 !important;
+    background: #EF4444 !important;
     border: none !important;
     outline: none !important;
-    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35) !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
     border-radius: 9999px !important;
 }}
 
@@ -644,8 +644,8 @@ div[role="dialog"] .rf-modal-delete-btn button {{
 div[data-testid="stDialog"] .rf-modal-delete-btn button,
 div[data-testid="stModal"] .rf-modal-delete-btn button,
 div[role="dialog"] .rf-modal-delete-btn button {{
-    background-color: #7C3AED !important;
-    background: #7C3AED !important;
+    background-color: #EF4444 !important;
+    background: #EF4444 !important;
     color: #FFFFFF !important;
     font-weight: 600 !important;
     font-size: 14px !important;
@@ -672,19 +672,31 @@ div[role="dialog"] .rf-modal-delete-btn button * {{
 div[data-testid="stDialog"] .rf-modal-delete-btn button:hover,
 div[data-testid="stModal"] .rf-modal-delete-btn button:hover,
 div[role="dialog"] .rf-modal-delete-btn button:hover {{
-    background-color: #6D28D9 !important;
-    background: #6D28D9 !important;
+    background-color: #DC2626 !important;
+    background: #DC2626 !important;
     color: #FFFFFF !important;
 }}
 
-/* Modal Cancel Button (Outline Style) */
+/* ChatGPT-Style Cancel Button (White/Light Pill with Subtle Border) */
+.rf-modal-cancel-btn,
 .rf-modal-cancel-btn button,
-.rf-modal-cancel-btn button:focus,
 div[data-testid="stDialog"] .rf-modal-cancel-btn button,
 div[data-testid="stModal"] .rf-modal-cancel-btn button,
 div[role="dialog"] .rf-modal-cancel-btn button {{
-    background-color: transparent !important;
-    background: transparent !important;
+    background-color: var(--bg-surface) !important;
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: 9999px !important;
+}}
+
+.rf-modal-cancel-btn button,
+.rf-modal-cancel-btn button:focus,
+.rf-modal-cancel-btn button:active,
+div[data-testid="stDialog"] .rf-modal-cancel-btn button,
+div[data-testid="stModal"] .rf-modal-cancel-btn button,
+div[role="dialog"] .rf-modal-cancel-btn button {{
+    background-color: var(--bg-surface) !important;
+    background: var(--bg-surface) !important;
     border: 1px solid var(--border-card) !important;
     color: var(--text-primary) !important;
     border-radius: 9999px !important;
@@ -702,14 +714,15 @@ div[data-testid="stDialog"] .rf-modal-cancel-btn button *,
 div[data-testid="stModal"] .rf-modal-cancel-btn button *,
 div[role="dialog"] .rf-modal-cancel-btn button * {{
     color: var(--text-primary) !important;
+    font-weight: 500 !important;
 }}
 
 .rf-modal-cancel-btn button:hover,
 div[data-testid="stDialog"] .rf-modal-cancel-btn button:hover,
 div[data-testid="stModal"] .rf-modal-cancel-btn button:hover,
 div[role="dialog"] .rf-modal-cancel-btn button:hover {{
-    background-color: var(--bg-surface) !important;
-    background: var(--bg-surface) !important;
+    background-color: var(--bg-card) !important;
+    background: var(--bg-card) !important;
     border-color: var(--border-card) !important;
     color: var(--text-primary) !important;
 }}
