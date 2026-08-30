@@ -569,12 +569,20 @@ div[data-testid="stTooltipIcon"] {{
     margin-top: 24px;
 }}
 
-/* Delete Chat Modal Container */
+/* Delete Chat Modal Container & Centering */
+div[data-testid="stModal"] {{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+}}
 div[data-testid="stModal"] > div {{
     background-color: var(--bg-card) !important;
     border: 1px solid var(--border-card) !important;
     border-radius: 16px !important;
     max-width: 440px !important;
+    width: calc(100% - 32px) !important;
+    margin: auto !important;
     padding: 24px !important;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3) !important;
 }}
@@ -590,17 +598,17 @@ div[data-testid="stModal"] button[title="Close"] {{
     color: var(--text-secondary) !important;
 }}
 
-/* Destructive Red Delete Button */
+/* Solid Lavender Delete Button */
 .rf-modal-delete-btn button,
 .rf-modal-delete-btn button:focus {{
-    background-color: #EF4444 !important;
-    border: 1px solid #DC2626 !important;
+    background-color: #7C3AED !important;
+    border: 1px solid #6D28D9 !important;
     color: #FFFFFF !important;
     border-radius: 9999px !important;
     font-weight: 600 !important;
     font-size: 13.5px !important;
     padding: 8px 18px !important;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3) !important;
     transition: all 0.2s ease !important;
 }}
 .rf-modal-delete-btn button * {{
@@ -608,8 +616,8 @@ div[data-testid="stModal"] button[title="Close"] {{
     fill: #FFFFFF !important;
 }}
 .rf-modal-delete-btn button:hover {{
-    background-color: #DC2626 !important;
-    border-color: #B91C1C !important;
+    background-color: #6D28D9 !important;
+    border-color: #5B21B6 !important;
     color: #FFFFFF !important;
 }}
 
