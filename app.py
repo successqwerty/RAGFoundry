@@ -1026,45 +1026,45 @@ def render_delete_modal(conv_id, conv_title):
 
 # 9. HISTORY DRAWER PANEL
 if st.session_state["show_history_drawer"]:
-    st.markdown(f"""
-        <div style="background-color: {T['drawer_bg']}; border: 1px solid {T['border']}; border-radius: 14px; padding: 18px 22px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    with st.container():
+        st.markdown(f"""
+            <div style="background-color: {T['drawer_bg']}; border: 1px solid {T['border']}; border-radius: 14px; padding: 18px 22px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
                 <div style="font-size: 16px; font-weight: 700; color: {T['text_main']};">◷ Saved Conversations</div>
             </div>
-    """, unsafe_allow_html=True)
-    
-    h_col1, h_col2 = st.columns([1, 3])
-    with h_col1:
-        st.markdown('<div class="rf-history-btn">', unsafe_allow_html=True)
-        if st.button("+ New Conversation", key="drawer_new_chat", use_container_width=True):
-            st.session_state["current_conversation_id"] = None
-            st.session_state["input_question"] = ""
-            st.session_state["show_history_drawer"] = False
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+        
+        h_col1, h_col2 = st.columns([1, 3])
+        with h_col1:
+            st.markdown('<div class="rf-history-btn">', unsafe_allow_html=True)
+            if st.button("+ New Conversation", key="drawer_new_chat", use_container_width=True):
+                st.session_state["current_conversation_id"] = None
+                st.session_state["input_question"] = ""
+                st.session_state["show_history_drawer"] = False
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
-    grouped_convs = db_manager.get_user_conversations_grouped(current_user_id)
-    
-    for group_name, convs in grouped_convs.items():
-        if convs:
-            st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; margin-top: 12px; margin-bottom: 6px;">{group_name}</div>', unsafe_allow_html=True)
-            for c in convs:
-                c_col1, c_col2 = st.columns([5, 1])
-                with c_col1:
-                    st.markdown('<div class="rf-sec-btn" style="margin-bottom:4px;">', unsafe_allow_html=True)
-                    if st.button(f"{c['title']}", key=f"conv_{c['id']}", use_container_width=True):
-                        st.session_state["current_conversation_id"] = c["id"]
-                        st.session_state["show_history_drawer"] = False
-                        st.rerun()
-                    st.markdown('</div>', unsafe_allow_html=True)
-                with c_col2:
-                    st.markdown('<div class="rf-sec-btn" style="margin-bottom:4px;">', unsafe_allow_html=True)
-                    if st.button("🗑", key=f"del_btn_{c['id']}", help="Delete conversation", use_container_width=True):
-                        st.session_state["deleting_conv_info"] = {"id": c["id"], "title": c["title"]}
-                        st.rerun()
-                    st.markdown('</div>', unsafe_allow_html=True)
-                    
-    st.markdown('</div>', unsafe_allow_html=True)
+        grouped_convs = db_manager.get_user_conversations_grouped(current_user_id)
+        
+        for group_name, convs in grouped_convs.items():
+            if convs:
+                st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; margin-top: 12px; margin-bottom: 6px;">{group_name}</div>', unsafe_allow_html=True)
+                for c in convs:
+                    c_col1, c_col2 = st.columns([5, 1])
+                    with c_col1:
+                        st.markdown('<div class="rf-sec-btn" style="margin-bottom:4px;">', unsafe_allow_html=True)
+                        if st.button(f"{c['title']}", key=f"conv_{c['id']}", use_container_width=True):
+                            st.session_state["current_conversation_id"] = c["id"]
+                            st.session_state["show_history_drawer"] = False
+                            st.rerun()
+                        st.markdown('</div>', unsafe_allow_html=True)
+                    with c_col2:
+                        st.markdown('<div class="rf-sec-btn" style="margin-bottom:4px;">', unsafe_allow_html=True)
+                        if st.button("🗑", key=f"del_btn_{c['id']}", help="Delete conversation", use_container_width=True):
+                            st.session_state["deleting_conv_info"] = {"id": c["id"], "title": c["title"]}
+                            st.rerun()
+                        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown(f"<hr style='border:none; border-top:1px solid {T['border']}; margin:20px 0;'>", unsafe_allow_html=True)
 
     if st.session_state.get("deleting_conv_info"):
         d_info = st.session_state["deleting_conv_info"]
