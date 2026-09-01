@@ -267,6 +267,14 @@ section[data-testid="stMain"] .block-container, .main .block-container {{
     margin: 0 auto !important;
 }}
 
+/* Center Saved Conversations & Bordered Containers Horizontally */
+div[data-testid="stVerticalBlockBorderWrapper"] {{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 900px !important;
+}}
+
 /* Typography */
 h1, h2, h3, h4, h5, h6 {{
     font-family: 'Inter', sans-serif !important;
