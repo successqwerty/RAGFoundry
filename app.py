@@ -875,6 +875,8 @@ def get_dynamic_suggested_queries(documents):
 documents_in_data = get_documents_info("data")
 doc_count = len(documents_in_data)
 
+pipeline = RAGPipeline()
+
 # 6. SIDEBAR RENDERING
 with st.sidebar:
     st.markdown(f"""
