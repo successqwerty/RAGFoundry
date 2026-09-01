@@ -265,22 +265,22 @@ section[data-testid="stMain"] {{
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 1000px !important;
+    max-width: 100% !important;
     width: 100% !important;
     margin: 0 auto !important;
-    padding-top: 1rem !important;
+    padding-top: 1.2rem !important;
     padding-bottom: 2rem !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
 }}
 
-/* Center Saved Conversations & Bordered Containers Horizontally */
+/* Center Main Content Cards & Query Form Horizontally */
 div[data-testid="stVerticalBlockBorderWrapper"],
 div[data-testid="stForm"] {{
     margin-left: auto !important;
     margin-right: auto !important;
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 880px !important;
 }}
 
 /* Typography & Header Alignment */
