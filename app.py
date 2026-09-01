@@ -259,26 +259,26 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
     color: var(--text-primary) !important;
 }}
 
-/* Main Content Viewport Area & Flex Centering */
+/* Main Content Area Top Alignment & Container */
 section[data-testid="stMain"] {{
     min-height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     align-items: center !important;
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 920px !important;
+    max-width: 960px !important;
     width: 100% !important;
-    margin: auto !important;
+    margin: 0 auto !important;
     padding-top: 1.5rem !important;
-    padding-bottom: 1.5rem !important;
+    padding-bottom: 2.5rem !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
 }}
 
 /* Center Saved Conversations & Bordered Containers Horizontally */
@@ -990,15 +990,13 @@ except AttributeError:
     pipeline.sync(user_id=current_user_id)
 
 
-# 8. MAIN WORKSPACE TOP HEADER
-# Top Header Row: Document Intelligence (Extreme Left) & Controls (Extreme Right)
-col_head_left, col_head_right = st.columns([1, 1])
+# 8. MAIN WORKSPACE TOP NAVIGATION & HEADER
+nav_left, nav_right = st.columns([3, 2])
 
-with col_head_left:
+with nav_left:
     st.markdown('<span class="rf-badge-purple">DOCUMENT INTELLIGENCE</span>', unsafe_allow_html=True)
 
-with col_head_right:
-    # TOP-RIGHT CONTROLS: HISTORY + THEME TOGGLE
+with nav_right:
     ctrl_col1, ctrl_col2 = st.columns(2)
     with ctrl_col1:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
@@ -1016,17 +1014,22 @@ with col_head_right:
                 del st.session_state["deleting_conv_info"]
             st.rerun()
 
-st.markdown('<div style="margin-bottom: 20px;"></div>', unsafe_allow_html=True)
+st.markdown('<div style="margin-bottom: 16px;"></div>', unsafe_allow_html=True)
 
-# CENTERED MAIN HEADING & KNOWLEDGE BASE STATUS
-st.markdown(f"""
-    <div style="text-align: center; margin-bottom: 20px;">
-        <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 6px; color: {T["text_main"]};">Ask your documents anything</h1>
-        <div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 12px;">Search, reason, and answer using your private document knowledge base.</div>
-        <span class="rf-badge-mint">● Knowledge base · {doc_count} doc(s)</span>
-        <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 4px;">{selected_provider.title()} · {selected_model}</div>
-    </div>
-""", unsafe_allow_html=True)
+# HEADER TITLE & KNOWLEDGE BASE STATUS
+col_head_left, col_head_right = st.columns([3, 2])
+
+with col_head_left:
+    st.markdown(f'<h1 style="font-size: 32px; margin-top: 0px; margin-bottom: 4px; color: {T["text_main"]};">Ask your documents anything</h1>', unsafe_allow_html=True)
+    st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
+
+with col_head_right:
+    st.markdown(f"""
+        <div style="text-align: right; margin-top: 4px;">
+            <span class="rf-badge-mint">● Knowledge base · {doc_count} doc(s)</span>
+            <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 4px;">{selected_provider.title()} · {selected_model}</div>
+        </div>
+    """, unsafe_allow_html=True)
 
 
 @st.dialog("Delete chat?")
