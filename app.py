@@ -259,11 +259,15 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
     color: var(--text-primary) !important;
 }}
 
-/* Main Container Width & Spacing */
+/* Main Container Width, Spacing & Viewport Vertical Centering */
 section[data-testid="stMain"] .block-container, .main .block-container {{
     max-width: 1050px !important;
+    min-height: calc(100vh - 2.4rem) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
     padding-top: 1.2rem !important;
-    padding-bottom: 3rem !important;
+    padding-bottom: 1.2rem !important;
     margin: 0 auto !important;
 }}
 
