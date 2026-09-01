@@ -264,24 +264,21 @@ section[data-testid="stMain"] {{
     min-height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
-    padding: 0 !important;
+    justify-content: center !important;
+    align-items: center !important;
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 960px !important;
+    max-width: 920px !important;
     width: 100% !important;
-    margin: 0 auto !important;
-    padding-top: 1.2rem !important;
+    margin: auto !important;
+    padding-top: 1.5rem !important;
     padding-bottom: 1.5rem !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
-}}
-
-section[data-testid="stMain"] .block-container > div[data-testid="stVerticalBlock"] {{
-    min-height: calc(100vh - 3rem) !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
+    justify-content: center !important;
 }}
 
 /* Center Saved Conversations & Bordered Containers Horizontally */
