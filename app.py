@@ -1016,7 +1016,7 @@ def render_delete_modal(conv_id, conv_title):
             st.rerun()
 
 
-# 9. HISTORY DRAWER PANEL
+# 9. HISTORY DRAWER PANEL / WORKSPACE CONDITIONAL
 if st.session_state["show_history_drawer"]:
     with st.container(border=True):
         st.markdown(f'<div style="font-size: 16px; font-weight: 700; color: {T["text_main"]}; margin-bottom: 12px;">◷ Saved Conversations</div>', unsafe_allow_html=True)
@@ -1056,61 +1056,60 @@ if st.session_state["show_history_drawer"]:
     if st.session_state.get("deleting_conv_info"):
         d_info = st.session_state["deleting_conv_info"]
         render_delete_modal(d_info["id"], d_info["title"])
+else:
+    # Session state for prompt inputs
+    if "input_question" not in st.session_state:
+        st.session_state["input_question"] = ""
+
+    # Handle Instant Execution for Suggested Queries
+    query_to_execute = None
+
+    if "pending_question" in st.session_state and st.session_state["pending_question"]:
+        query_to_execute = st.session_state.pop("pending_question")
+
+    # 10. LARGE AI QUERY COMPOSER WITH DYNAMIC BUTTON STATE (SEND QUERY vs ANALYZING)
+    is_processing = st.session_state.get("is_processing", False)
+    submit_label = "⟳ Analyzing..." if is_processing else "Send Query ➔"
+
+    with st.form(key="query_composer_form", clear_on_submit=False):
+        user_query = st.text_area(
+            "Ask anything about your documents...",
+            value=st.session_state.get("input_question", ""),
+            height=105,
+            placeholder="Ask anything about your documents (e.g. What are the key concepts in this unit?)...",
+            label_visibility="collapsed"
+        )
+        
+        col_comp_left, col_comp_right = st.columns([3, 1])
+        with col_comp_left:
+            st.markdown(f"""
+                <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 10px;">
+                    {doc_count} Document(s) Indexed &nbsp;·&nbsp; 
+                    <span style="color: {T['mint_text']};">●</span> {selected_provider.title()} ({selected_model})
+                </div>
+            """, unsafe_allow_html=True)
+        with col_comp_right:
+            submit_button = st.form_submit_button(submit_label, disabled=is_processing, use_container_width=False)
+
+    if submit_button and user_query.strip():
+        query_to_execute = user_query.strip()
+        st.session_state["is_processing"] = True
 
 
-# Session state for prompt inputs
-if "input_question" not in st.session_state:
-    st.session_state["input_question"] = ""
-
-# Handle Instant Execution for Suggested Queries
-query_to_execute = None
-
-if "pending_question" in st.session_state and st.session_state["pending_question"]:
-    query_to_execute = st.session_state.pop("pending_question")
-
-# 10. LARGE AI QUERY COMPOSER WITH DYNAMIC BUTTON STATE (SEND QUERY vs ANALYZING)
-is_processing = st.session_state.get("is_processing", False)
-submit_label = "⟳ Analyzing..." if is_processing else "Send Query ➔"
-
-with st.form(key="query_composer_form", clear_on_submit=False):
-    user_query = st.text_area(
-        "Ask anything about your documents...",
-        value=st.session_state.get("input_question", ""),
-        height=105,
-        placeholder="Ask anything about your documents (e.g. What are the key concepts in this unit?)...",
-        label_visibility="collapsed"
-    )
-    
-    col_comp_left, col_comp_right = st.columns([3, 1])
-    with col_comp_left:
-        st.markdown(f"""
-            <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 10px;">
-                {doc_count} Document(s) Indexed &nbsp;·&nbsp; 
-                <span style="color: {T['mint_text']};">●</span> {selected_provider.title()} ({selected_model})
-            </div>
-        """, unsafe_allow_html=True)
-    with col_comp_right:
-        submit_button = st.form_submit_button(submit_label, disabled=is_processing, use_container_width=False)
-
-if submit_button and user_query.strip():
-    query_to_execute = user_query.strip()
-    st.session_state["is_processing"] = True
-
-
-# 11. DYNAMIC SUGGESTED QUERY CARDS
-if not st.session_state["current_conversation_id"] and "last_result" not in st.session_state:
-    st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; text-transform: uppercase; margin-top: 20px; margin-bottom: 12px;">SUGGESTED QUERIES</div>', unsafe_allow_html=True)
-    
-    dynamic_suggestions = get_dynamic_suggested_queries(documents_in_data)
-    s_col1, s_col2, s_col3 = st.columns(3)
-    
-    for idx, (col_target, (label, full_prompt)) in enumerate(zip([s_col1, s_col2, s_col3], dynamic_suggestions)):
-        with col_target:
-            if st.button(label, key=f"sug_p{idx+1}", use_container_width=True, disabled=is_processing):
-                st.session_state["pending_question"] = full_prompt
-                st.session_state["input_question"] = full_prompt
-                st.session_state["is_processing"] = True
-                st.rerun()
+    # 11. DYNAMIC SUGGESTED QUERY CARDS
+    if not st.session_state["current_conversation_id"] and "last_result" not in st.session_state:
+        st.markdown(f'<div style="font-size: 11px; font-weight: 700; color: {T["text_sec"]}; letter-spacing: 0.8px; text-transform: uppercase; margin-top: 20px; margin-bottom: 12px;">SUGGESTED QUERIES</div>', unsafe_allow_html=True)
+        
+        dynamic_suggestions = get_dynamic_suggested_queries(documents_in_data)
+        s_col1, s_col2, s_col3 = st.columns(3)
+        
+        for idx, (col_target, (label, full_prompt)) in enumerate(zip([s_col1, s_col2, s_col3], dynamic_suggestions)):
+            with col_target:
+                if st.button(label, key=f"sug_p{idx+1}", use_container_width=True, disabled=is_processing):
+                    st.session_state["pending_question"] = full_prompt
+                    st.session_state["input_question"] = full_prompt
+                    st.session_state["is_processing"] = True
+                    st.rerun()
 
 
 # 12. DISPLAY PERSISTENT MULTI-TURN CONVERSATION FROM DATABASE FIRST
