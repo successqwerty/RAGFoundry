@@ -265,22 +265,22 @@ section[data-testid="stMain"] {{
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 100% !important;
+    max-width: 1000px !important;
     width: 100% !important;
     margin: 0 auto !important;
-    padding-top: 1.2rem !important;
+    padding-top: 1rem !important;
     padding-bottom: 2rem !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
 }}
 
-/* Center Main Content Cards & Query Form Horizontally */
+/* Center Saved Conversations & Bordered Containers Horizontally */
 div[data-testid="stVerticalBlockBorderWrapper"],
 div[data-testid="stForm"] {{
     margin-left: auto !important;
     margin-right: auto !important;
     width: 100% !important;
-    max-width: 880px !important;
+    max-width: 100% !important;
 }}
 
 /* Typography & Header Alignment */
@@ -1013,20 +1013,17 @@ with nav_right:
                 del st.session_state["deleting_conv_info"]
             st.rerun()
 
-# MAIN WORKSPACE CONTENT HEADER
-col_head_left, col_head_right = st.columns([3, 2])
-
-with col_head_left:
-    st.markdown(f'<h1 style="font-size: 32px; font-weight: 700; margin-top: 24px; margin-bottom: 4px; color: {T["text_main"]}; text-align: center;">Ask your documents anything</h1>', unsafe_allow_html=True)
-    st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 20px; text-align: center;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
-
-with col_head_right:
-    st.markdown(f"""
-        <div style="text-align: right; margin-top: 28px;">
+# MAIN WORKSPACE CONTENT HEADER (UNIFIED CENTERED COLUMN)
+st.markdown(f"""
+    <div style="text-align: center; margin-top: 24px; margin-bottom: 20px;">
+        <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 4px; color: {T['text_main']}; text-align: center;">Ask your documents anything</h1>
+        <div style="font-size: 14px; color: {T['text_sec']}; margin-bottom: 12px; text-align: center;">Search, reason, and answer using your private document knowledge base.</div>
+        <div>
             <span class="rf-badge-mint">● Knowledge base · {doc_count} doc(s)</span>
-            <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 4px;">{selected_provider.title()} · {selected_model}</div>
+            <span style="font-size: 12px; color: {T['text_sec']}; margin-left: 8px;">{selected_provider.title()} · {selected_model}</span>
         </div>
-    """, unsafe_allow_html=True)
+    </div>
+""", unsafe_allow_html=True)
 
 
 @st.dialog("Delete chat?")
