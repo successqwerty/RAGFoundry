@@ -966,12 +966,14 @@ with col_head_right:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
         if st.button(hist_btn_text, key="top_history_btn", use_container_width=True):
             st.session_state["show_history_drawer"] = not st.session_state["show_history_drawer"]
+            st.session_state.pop("deleting_conv_info", None)
             st.rerun()
             
     with ctrl_col2:
         theme_btn_label = "☾ Dark Mode" if theme == "light" else "☀ Light Mode"
         if st.button(theme_btn_label, key="top_theme_btn", use_container_width=True):
             st.session_state["theme"] = "dark" if theme == "light" else "light"
+            st.session_state.pop("deleting_conv_info", None)
             st.rerun()
 
     st.markdown(f"""
@@ -1029,6 +1031,7 @@ if st.session_state["show_history_drawer"]:
                 st.session_state["current_conversation_id"] = None
                 st.session_state["input_question"] = ""
                 st.session_state["show_history_drawer"] = False
+                st.session_state.pop("deleting_conv_info", None)
                 st.rerun()
 
         grouped_convs = db_manager.get_user_conversations_grouped(current_user_id)
@@ -1044,6 +1047,7 @@ if st.session_state["show_history_drawer"]:
                         if st.button(f"{c['title']}", key=f"conv_{c['id']}", use_container_width=True):
                             st.session_state["current_conversation_id"] = c["id"]
                             st.session_state["show_history_drawer"] = False
+                            st.session_state.pop("deleting_conv_info", None)
                             st.rerun()
                     with c_col2:
                         if st.button("🗑", key=f"del_btn_{c['id']}", help="Delete conversation", use_container_width=True):
