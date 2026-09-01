@@ -283,19 +283,17 @@ div[data-testid="stForm"] {{
     max-width: 100% !important;
 }}
 
-/* Typography & Header Left Alignment */
+/* Typography & Header Alignment */
 h1, h2, h3, h4, h5, h6 {{
     font-family: 'Inter', sans-serif !important;
     color: var(--text-primary) !important;
     font-weight: 600 !important;
-    text-align: left !important;
+    text-align: center !important;
 }}
 
 section[data-testid="stMain"] h1,
 section[data-testid="stMain"] .stMarkdown h1 {{
-    text-align: left !important;
-    margin-left: 0 !important;
-    padding-left: 0 !important;
+    text-align: center !important;
 }}
 
 /* Large AI Query Composer Styling */
@@ -1019,8 +1017,8 @@ with nav_right:
 col_head_left, col_head_right = st.columns([3, 2])
 
 with col_head_left:
-    st.markdown(f'<h1 style="font-size: 32px; font-weight: 700; margin-top: 24px; margin-bottom: 4px; color: {T["text_main"]}; text-align: left;">Ask your documents anything</h1>', unsafe_allow_html=True)
-    st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 20px; text-align: left;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
+    st.markdown(f'<h1 style="font-size: 32px; font-weight: 700; margin-top: 24px; margin-bottom: 4px; color: {T["text_main"]}; text-align: center;">Ask your documents anything</h1>', unsafe_allow_html=True)
+    st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 20px; text-align: center;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
 with col_head_right:
     st.markdown(f"""
