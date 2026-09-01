@@ -297,6 +297,8 @@ h1, h2, h3, h4, h5, h6 {{
 
 /* ALL NON-SIDEBAR MAIN CONTENT BUTTONS */
 section[data-testid="stMain"] .stButton > button,
+section[data-testid="stMain"] button[kind="secondary"],
+section[data-testid="stMain"] [data-testid="stBaseButton-secondary"],
 section[data-testid="stMain"] .rf-history-btn button,
 section[data-testid="stMain"] .rf-sec-btn button,
 section[data-testid="stMain"] .rf-sug-btn button,
@@ -313,6 +315,8 @@ section[data-testid="stMain"] .rf-sug-btn button,
 }}
 
 section[data-testid="stMain"] .stButton > button *,
+section[data-testid="stMain"] button[kind="secondary"] *,
+section[data-testid="stMain"] [data-testid="stBaseButton-secondary"] *,
 section[data-testid="stMain"] .rf-history-btn button *,
 section[data-testid="stMain"] .rf-sec-btn button *,
 section[data-testid="stMain"] .rf-sug-btn button *,
@@ -322,6 +326,8 @@ section[data-testid="stMain"] .rf-sug-btn button *,
 }}
 
 section[data-testid="stMain"] .stButton > button:hover,
+section[data-testid="stMain"] button[kind="secondary"]:hover,
+section[data-testid="stMain"] [data-testid="stBaseButton-secondary"]:hover,
 section[data-testid="stMain"] .rf-history-btn button:hover,
 section[data-testid="stMain"] .rf-sec-btn button:hover,
 section[data-testid="stMain"] .rf-sug-btn button:hover,
@@ -332,6 +338,8 @@ section[data-testid="stMain"] .rf-sug-btn button:hover,
 }}
 
 section[data-testid="stMain"] .stButton > button:hover *,
+section[data-testid="stMain"] button[kind="secondary"]:hover *,
+section[data-testid="stMain"] [data-testid="stBaseButton-secondary"]:hover *,
 section[data-testid="stMain"] .rf-history-btn button:hover *,
 section[data-testid="stMain"] .rf-sec-btn button:hover *,
 section[data-testid="stMain"] .rf-sug-btn button:hover *,
@@ -388,8 +396,10 @@ section[data-testid="stMain"] div[data-testid="stFormSubmitButton"] button:hover
 
 /* SIDEBAR INDEPENDENT STYLING */
 section[data-testid="stSidebar"] .stButton > button,
-section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button,
-section[data-testid="stSidebar"] .rf-reindex-btn button {{
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] button,
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button,
+section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] button,
+section[data-testid="stSidebar"] button {{
     background-color: {T['upload_btn_bg']} !important;
     border: 1px solid {T['upload_btn_border']} !important;
     color: {T['upload_btn_text']} !important;
@@ -398,23 +408,29 @@ section[data-testid="stSidebar"] .rf-reindex-btn button {{
 }}
 
 section[data-testid="stSidebar"] .stButton > button *,
-section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button *,
-section[data-testid="stSidebar"] .rf-reindex-btn button * {{
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] button *,
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button *,
+section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] button *,
+section[data-testid="stSidebar"] button * {{
     color: {T['upload_btn_icon']} !important;
     fill: {T['upload_btn_icon']} !important;
 }}
 
 section[data-testid="stSidebar"] .stButton > button:hover,
-section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button:hover,
-section[data-testid="stSidebar"] .rf-reindex-btn button:hover {{
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] button:hover,
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button:hover,
+section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] button:hover,
+section[data-testid="stSidebar"] button:hover {{
     background-color: {T['upload_btn_hover_bg']} !important;
     border-color: {T['upload_btn_hover_border']} !important;
     color: {T['upload_btn_hover_text']} !important;
 }}
 
 section[data-testid="stSidebar"] .stButton > button:hover *,
-section[data-testid="stSidebar"] div[data-testid="stFileUploaderDropzone"] button:hover *,
-section[data-testid="stSidebar"] .rf-reindex-btn button:hover * {{
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] button:hover *,
+section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button:hover *,
+section[data-testid="stSidebar"] [data-testid="stFileUploadDropzone"] button:hover *,
+section[data-testid="stSidebar"] button:hover * {{
     color: {T['upload_btn_hover_icon']} !important;
     fill: {T['upload_btn_hover_icon']} !important;
 }}
