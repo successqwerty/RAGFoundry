@@ -991,12 +991,11 @@ except AttributeError:
 
 
 # 8. MAIN WORKSPACE TOP HEADER
-col_head_left, col_head_right = st.columns([3, 2])
+# Top Header Row: Document Intelligence (Extreme Left) & Controls (Extreme Right)
+col_head_left, col_head_right = st.columns([1, 1])
 
 with col_head_left:
     st.markdown('<span class="rf-badge-purple">DOCUMENT INTELLIGENCE</span>', unsafe_allow_html=True)
-    st.markdown(f'<h1 style="font-size: 32px; margin-top: 6px; margin-bottom: 4px; color: {T["text_main"]};">Ask your documents anything</h1>', unsafe_allow_html=True)
-    st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
 with col_head_right:
     # TOP-RIGHT CONTROLS: HISTORY + THEME TOGGLE
@@ -1017,12 +1016,17 @@ with col_head_right:
                 del st.session_state["deleting_conv_info"]
             st.rerun()
 
-    st.markdown(f"""
-        <div style="text-align: right; margin-top: 8px;">
-            <span class="rf-badge-mint">● Knowledge base · {doc_count} doc(s)</span>
-            <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 4px;">{selected_provider.title()} · {selected_model}</div>
-        </div>
-    """, unsafe_allow_html=True)
+st.markdown('<div style="margin-bottom: 20px;"></div>', unsafe_allow_html=True)
+
+# CENTERED MAIN HEADING & KNOWLEDGE BASE STATUS
+st.markdown(f"""
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 6px; color: {T["text_main"]};">Ask your documents anything</h1>
+        <div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 12px;">Search, reason, and answer using your private document knowledge base.</div>
+        <span class="rf-badge-mint">● Knowledge base · {doc_count} doc(s)</span>
+        <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 4px;">{selected_provider.title()} · {selected_model}</div>
+    </div>
+""", unsafe_allow_html=True)
 
 
 @st.dialog("Delete chat?")
