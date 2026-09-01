@@ -262,26 +262,16 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
 /* Main Content Viewport Area & Layout Hierarchy */
 section[data-testid="stMain"] {{
     min-height: 100vh !important;
-    display: flex !important;
-    flex-direction: column !important;
-    padding: 0 !important;
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 960px !important;
+    max-width: 1000px !important;
     width: 100% !important;
     margin: 0 auto !important;
-    padding-top: 1.2rem !important;
-    padding-bottom: 1.5rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 2rem !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
-}}
-
-section[data-testid="stMain"] .block-container > div[data-testid="stVerticalBlock"] {{
-    min-height: calc(100vh - 3rem) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
 }}
 
 /* Center Saved Conversations & Bordered Containers Horizontally */
@@ -994,7 +984,7 @@ except AttributeError:
 
 
 # 8. TOP NAVIGATION BAR ROW
-nav_left, nav_right = st.columns([3, 2])
+nav_left, nav_right = st.columns([1, 1])
 
 with nav_left:
     st.markdown('<span class="rf-badge-purple">DOCUMENT INTELLIGENCE</span>', unsafe_allow_html=True)
@@ -1021,12 +1011,12 @@ with nav_right:
 col_head_left, col_head_right = st.columns([3, 2])
 
 with col_head_left:
-    st.markdown(f'<h1 style="font-size: 32px; margin-top: 6px; margin-bottom: 4px; color: {T["text_main"]};">Ask your documents anything</h1>', unsafe_allow_html=True)
-    st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 16px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
+    st.markdown(f'<h1 style="font-size: 32px; margin-top: 24px; margin-bottom: 4px; color: {T["text_main"]};">Ask your documents anything</h1>', unsafe_allow_html=True)
+    st.markdown(f'<div style="font-size: 14px; color: {T["text_sec"]}; margin-bottom: 20px;">Search, reason, and answer using your private document knowledge base.</div>', unsafe_allow_html=True)
 
 with col_head_right:
     st.markdown(f"""
-        <div style="text-align: right; margin-top: 8px;">
+        <div style="text-align: right; margin-top: 28px;">
             <span class="rf-badge-mint">● Knowledge base · {doc_count} doc(s)</span>
             <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 4px;">{selected_provider.title()} · {selected_model}</div>
         </div>
