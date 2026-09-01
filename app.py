@@ -1014,14 +1014,16 @@ with nav_right:
                 del st.session_state["deleting_conv_info"]
             st.rerun()
 
-# MAIN WORKSPACE CONTENT HEADER (UNIFIED CENTERED COLUMN)
+# MAIN WORKSPACE CONTENT HEADER (PIXEL-PERFECT MATCH TO REFERENCE SCREENSHOT)
 st.markdown(f"""
-    <div style="text-align: center; margin-top: 24px; margin-bottom: 20px;">
-        <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 4px; color: {T['text_main']}; text-align: center;">Ask your documents anything</h1>
-        <div style="font-size: 14px; color: {T['text_sec']}; margin-bottom: 12px; text-align: center;">Search, reason, and answer using your private document knowledge base.</div>
-        <div>
+    <div style="position: relative; width: 100%; margin-top: 20px; margin-bottom: 24px;">
+        <div style="position: absolute; right: 0; top: 0; text-align: right;">
             <span class="rf-badge-mint">● Knowledge base · {doc_count} doc(s)</span>
-            <span style="font-size: 12px; color: {T['text_sec']}; margin-left: 8px;">{selected_provider.title()} · {selected_model}</span>
+            <div style="font-size: 12px; color: {T['text_sec']}; margin-top: 4px;">{selected_provider.title()} · {selected_model}</div>
+        </div>
+        <div style="text-align: center; margin: 0 auto; max-width: 650px;">
+            <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 4px; color: {T['text_main']}; text-align: center;">Ask your documents anything</h1>
+            <div style="font-size: 14px; color: {T['text_sec']}; text-align: center;">Search, reason, and answer using your private document knowledge base.</div>
         </div>
     </div>
 """, unsafe_allow_html=True)
