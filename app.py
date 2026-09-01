@@ -259,24 +259,35 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
     color: var(--text-primary) !important;
 }}
 
-/* Main Container Width, Spacing & Viewport Vertical Centering */
-section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 1050px !important;
-    min-height: calc(100vh - 2.4rem) !important;
+/* Main Content Viewport Area & Flex Centering */
+section[data-testid="stMain"] {{
+    min-height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
-    padding-top: 1.2rem !important;
-    padding-bottom: 1.2rem !important;
-    margin: 0 auto !important;
+    align-items: center !important;
+}}
+
+section[data-testid="stMain"] .block-container, .main .block-container {{
+    max-width: 920px !important;
+    width: 100% !important;
+    margin: auto !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
 }}
 
 /* Center Saved Conversations & Bordered Containers Horizontally */
-div[data-testid="stVerticalBlockBorderWrapper"] {{
+div[data-testid="stVerticalBlockBorderWrapper"],
+div[data-testid="stForm"] {{
     margin-left: auto !important;
     margin-right: auto !important;
     width: 100% !important;
-    max-width: 900px !important;
+    max-width: 100% !important;
 }}
 
 /* Typography */
@@ -994,14 +1005,16 @@ with col_head_right:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
         if st.button(hist_btn_text, key="top_history_btn", use_container_width=True):
             st.session_state["show_history_drawer"] = not st.session_state["show_history_drawer"]
-            st.session_state.pop("deleting_conv_info", None)
+            if "deleting_conv_info" in st.session_state:
+                del st.session_state["deleting_conv_info"]
             st.rerun()
             
     with ctrl_col2:
         theme_btn_label = "☾ Dark Mode" if theme == "light" else "☀ Light Mode"
         if st.button(theme_btn_label, key="top_theme_btn", use_container_width=True):
             st.session_state["theme"] = "dark" if theme == "light" else "light"
-            st.session_state.pop("deleting_conv_info", None)
+            if "deleting_conv_info" in st.session_state:
+                del st.session_state["deleting_conv_info"]
             st.rerun()
 
     st.markdown(f"""
