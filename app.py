@@ -964,19 +964,15 @@ with col_head_right:
     ctrl_col1, ctrl_col2 = st.columns(2)
     with ctrl_col1:
         hist_btn_text = "× Close History" if st.session_state["show_history_drawer"] else "◷ History"
-        st.markdown('<div class="rf-history-btn">', unsafe_allow_html=True)
         if st.button(hist_btn_text, key="top_history_btn", use_container_width=True):
             st.session_state["show_history_drawer"] = not st.session_state["show_history_drawer"]
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
             
     with ctrl_col2:
         theme_btn_label = "☾ Dark Mode" if theme == "light" else "☀ Light Mode"
-        st.markdown('<div class="rf-sec-btn">', unsafe_allow_html=True)
         if st.button(theme_btn_label, key="top_theme_btn", use_container_width=True):
             st.session_state["theme"] = "dark" if theme == "light" else "light"
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown(f"""
         <div style="text-align: right; margin-top: 8px;">
@@ -991,13 +987,10 @@ def render_delete_modal(conv_id, conv_title):
     st.markdown(f'<div style="font-size: 14.5px; color: {T["text_main"]}; line-height: 1.5; margin-bottom: 24px;">This will delete <strong style="color: {T["text_main"]};">"{conv_title}"</strong>.</div>', unsafe_allow_html=True)
     m_col1, m_col2 = st.columns([1, 1])
     with m_col1:
-        st.markdown('<div class="rf-modal-cancel-btn">', unsafe_allow_html=True)
         if st.button("Cancel", key="modal_cancel_act", type="secondary", use_container_width=True):
             st.session_state.pop("deleting_conv_info", None)
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
     with m_col2:
-        st.markdown('<div class="rf-modal-delete-btn">', unsafe_allow_html=True)
         if st.button("Delete", key="modal_delete_act", type="primary", use_container_width=True):
             if hasattr(db_manager, "delete_conversation"):
                 db_manager.delete_conversation(conv_id)
@@ -1021,7 +1014,6 @@ def render_delete_modal(conv_id, conv_title):
                 st.session_state["current_conversation_id"] = None
             st.session_state.pop("deleting_conv_info", None)
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
 
 
 # 9. HISTORY DRAWER PANEL
@@ -1031,13 +1023,11 @@ if st.session_state["show_history_drawer"]:
         
         h_col1, h_col2 = st.columns([1, 3])
         with h_col1:
-            st.markdown('<div class="rf-history-btn">', unsafe_allow_html=True)
             if st.button("+ New Conversation", key="drawer_new_chat", use_container_width=True):
                 st.session_state["current_conversation_id"] = None
                 st.session_state["input_question"] = ""
                 st.session_state["show_history_drawer"] = False
                 st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
 
         grouped_convs = db_manager.get_user_conversations_grouped(current_user_id)
         has_any_conv = False
@@ -1049,18 +1039,14 @@ if st.session_state["show_history_drawer"]:
                 for c in convs:
                     c_col1, c_col2 = st.columns([5, 1])
                     with c_col1:
-                        st.markdown('<div class="rf-sec-btn" style="margin-bottom:4px;">', unsafe_allow_html=True)
                         if st.button(f"{c['title']}", key=f"conv_{c['id']}", use_container_width=True):
                             st.session_state["current_conversation_id"] = c["id"]
                             st.session_state["show_history_drawer"] = False
                             st.rerun()
-                        st.markdown('</div>', unsafe_allow_html=True)
                     with c_col2:
-                        st.markdown('<div class="rf-sec-btn" style="margin-bottom:4px;">', unsafe_allow_html=True)
                         if st.button("🗑", key=f"del_btn_{c['id']}", help="Delete conversation", use_container_width=True):
                             st.session_state["deleting_conv_info"] = {"id": c["id"], "title": c["title"]}
                             st.rerun()
-                        st.markdown('</div>', unsafe_allow_html=True)
 
         if not has_any_conv:
             st.markdown(f'<div style="font-size: 13px; color: {T["text_sec"]}; margin-top: 8px;">No saved conversations yet.</div>', unsafe_allow_html=True)
@@ -1120,13 +1106,11 @@ if not st.session_state["current_conversation_id"] and "last_result" not in st.s
     
     for idx, (col_target, (label, full_prompt)) in enumerate(zip([s_col1, s_col2, s_col3], dynamic_suggestions)):
         with col_target:
-            st.markdown('<div class="rf-sug-btn">', unsafe_allow_html=True)
             if st.button(label, key=f"sug_p{idx+1}", use_container_width=True, disabled=is_processing):
                 st.session_state["pending_question"] = full_prompt
                 st.session_state["input_question"] = full_prompt
                 st.session_state["is_processing"] = True
                 st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
 
 
 # 12. DISPLAY PERSISTENT MULTI-TURN CONVERSATION FROM DATABASE FIRST
