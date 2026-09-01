@@ -269,7 +269,7 @@ section[data-testid="stMain"] .block-container, .main .block-container {{
     width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    padding-top: 2.8rem !important;
+    padding-top: 2rem !important;
     padding-bottom: 2rem !important;
     padding-left: 1.5rem !important;
     padding-right: 1.5rem !important;
