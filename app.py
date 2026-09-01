@@ -259,19 +259,20 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
     color: var(--text-primary) !important;
 }}
 
-/* Main Content Viewport Area & Layout Hierarchy */
+/* Main Content Viewport Area & Horizontal Centering */
 section[data-testid="stMain"] {{
     min-height: 100vh !important;
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 1000px !important;
+    max-width: 880px !important;
     width: 100% !important;
-    margin: 0 auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     padding-top: 1rem !important;
     padding-bottom: 2rem !important;
-    padding-left: 2rem !important;
-    padding-right: 2rem !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
 }}
 
 /* Center Saved Conversations & Bordered Containers Horizontally */
