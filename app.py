@@ -1017,6 +1017,8 @@ def render_delete_modal(conv_id, conv_title):
 
 
 # 9. HISTORY DRAWER PANEL / WORKSPACE CONDITIONAL
+query_to_execute = None
+
 if st.session_state["show_history_drawer"]:
     with st.container(border=True):
         st.markdown(f'<div style="font-size: 16px; font-weight: 700; color: {T["text_main"]}; margin-bottom: 12px;">◷ Saved Conversations</div>', unsafe_allow_html=True)
@@ -1062,8 +1064,6 @@ else:
         st.session_state["input_question"] = ""
 
     # Handle Instant Execution for Suggested Queries
-    query_to_execute = None
-
     if "pending_question" in st.session_state and st.session_state["pending_question"]:
         query_to_execute = st.session_state.pop("pending_question")
 
