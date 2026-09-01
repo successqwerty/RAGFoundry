@@ -265,14 +265,14 @@ section[data-testid="stMain"] {{
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 880px !important;
+    max-width: 1050px !important;
     width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
     padding-top: 1rem !important;
     padding-bottom: 2rem !important;
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
 }}
 
 /* Center Saved Conversations & Bordered Containers Horizontally */
