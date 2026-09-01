@@ -259,13 +259,16 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
     color: var(--text-primary) !important;
 }}
 
-/* Main Content Viewport Area & Horizontal Centering */
+/* Main Content Viewport Area & Symmetrical Horizontal Centering */
 section[data-testid="stMain"] {{
     min-height: 100vh !important;
+    width: calc(100vw - 280px) !important;
+    margin-left: 280px !important;
+    position: relative !important;
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 940px !important;
+    max-width: 880px !important;
     width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
