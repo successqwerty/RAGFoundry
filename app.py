@@ -259,23 +259,31 @@ section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] span {{
     color: var(--text-primary) !important;
 }}
 
-/* Main Content Viewport Area & Symmetrical Horizontal Centering */
+/* Main Content Viewport Area & Symmetrical Vertical Height Matching */
 section[data-testid="stMain"] {{
     min-height: 100vh !important;
-    width: calc(100vw - 280px) !important;
-    margin-left: 280px !important;
-    position: relative !important;
 }}
 
 section[data-testid="stMain"] .block-container, .main .block-container {{
-    max-width: 880px !important;
+    max-width: 940px !important;
     width: 100% !important;
+    min-height: calc(100vh - 3rem) !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    padding-top: 1rem !important;
+    padding-top: 1.2rem !important;
     padding-bottom: 2rem !important;
     padding-left: 1.5rem !important;
     padding-right: 1.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}}
+
+section[data-testid="stMain"] .block-container > div[data-testid="stVerticalBlock"] {{
+    min-height: calc(100vh - 3.5rem) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
 }}
 
 /* Center Saved Conversations & Bordered Containers Horizontally */
