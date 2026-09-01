@@ -915,27 +915,30 @@ with st.sidebar:
     )
     
     if uploaded_files:
-        os.makedirs("data", exist_ok=True)
-        if clear_existing:
-            for existing_file in os.listdir("data"):
-                file_path_to_remove = os.path.join("data", existing_file)
-                if os.path.isfile(file_path_to_remove) and not existing_file.endswith(".db"):
-                    try:
-                        os.remove(file_path_to_remove)
-                    except Exception:
-                        pass
+        upload_signature = [f"{f.name}_{f.size}" for f in uploaded_files]
+        if st.session_state.get("last_processed_uploads") != upload_signature:
+            os.makedirs("data", exist_ok=True)
+            if clear_existing:
+                for existing_file in os.listdir("data"):
+                    file_path_to_remove = os.path.join("data", existing_file)
+                    if os.path.isfile(file_path_to_remove) and not existing_file.endswith(".db"):
+                        try:
+                            os.remove(file_path_to_remove)
+                        except Exception:
+                            pass
 
-        for file in uploaded_files:
-            file_path = os.path.join("data", file.name)
-            with open(file_path, "wb") as f:
-                f.write(file.getbuffer())
-        st.markdown(f'<div class="rf-badge-mint" style="margin-top:6px;">✓ Saved {len(uploaded_files)} file(s)</div>', unsafe_allow_html=True)
-        st.cache_resource.clear()
-        if clear_existing and hasattr(pipeline, "rebuild_index"):
-            pipeline.rebuild_index(user_id=current_user_id)
-        elif hasattr(pipeline, "sync"):
-            pipeline.sync(user_id=current_user_id)
-        st.rerun()
+            for file in uploaded_files:
+                file_path = os.path.join("data", file.name)
+                with open(file_path, "wb") as f:
+                    f.write(file.getbuffer())
+            st.cache_resource.clear()
+            if clear_existing and hasattr(pipeline, "rebuild_index"):
+                pipeline.rebuild_index(user_id=current_user_id)
+            elif hasattr(pipeline, "sync"):
+                pipeline.sync(user_id=current_user_id)
+
+            st.session_state["last_processed_uploads"] = upload_signature
+            st.rerun()
 
     st.markdown(f"<hr style='border:none; border-top:1px solid {T['border']}; margin:16px 0;'>", unsafe_allow_html=True)
 
