@@ -1072,6 +1072,44 @@ def render_delete_modal(conv_id, conv_title):
             st.rerun()
 
 
+@st.dialog("Past Conversation")
+def render_history_detail_modal(conv_id):
+    saved_messages = db_manager.get_conversation_messages(conv_id)
+    if saved_messages:
+        for msg in saved_messages:
+            if msg["role"] == "user":
+                st.markdown(f"""
+                    <div class="rf-user-card" style="margin-bottom: 14px;">
+                        <div style="font-size: 11px; font-weight: 700; color: {T['btn_primary_bg']}; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;">Question</div>
+                        <div style="font-size: 15px; font-weight: 500; color: {T['text_main']};">{msg['content']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                    <div class="rf-ai-card" style="margin-bottom: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div style="font-size: 14px; font-weight: 600; color: {T['text_main']}; display: flex; align-items: center; gap: 6px;">
+                                <span style="color: {T['btn_primary_bg']};">✦</span> RAGFoundry
+                            </div>
+                            <span class="rf-badge-mint">✓ Stored Answer</span>
+                        </div>
+                        <div style="font-size: 14.5px; line-height: 1.65; color: {T['text_main']};">
+                            {msg['content']}
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                if msg.get("sources"):
+                    st.markdown(f'<div style="font-size: 13px; font-weight: 600; color: {T["text_main"]}; margin-top: 12px; margin-bottom: 6px;">Evidence Sources</div>', unsafe_allow_html=True)
+                    for src in msg["sources"]:
+                        st.markdown(f'<span class="rf-badge-blue" style="margin-right: 6px; margin-bottom: 6px; display: inline-block;">{src}</span>', unsafe_allow_html=True)
+
+    st.markdown('<div style="margin-top: 20px;"></div>', unsafe_allow_html=True)
+    if st.button("Close", key="close_history_modal_act", type="secondary", use_container_width=True):
+        st.session_state.pop("selected_history_conv_id", None)
+        st.rerun()
+
+
 # 9. HISTORY DRAWER PANEL / WORKSPACE CONDITIONAL
 query_to_execute = None
 
@@ -1086,6 +1124,7 @@ if st.session_state["show_history_drawer"]:
                 st.session_state["input_question"] = ""
                 st.session_state["view_source"] = None
                 st.session_state["show_history_drawer"] = False
+                st.session_state.pop("selected_history_conv_id", None)
                 st.session_state.pop("deleting_conv_info", None)
                 st.rerun()
 
@@ -1100,9 +1139,7 @@ if st.session_state["show_history_drawer"]:
                     c_col1, c_col2 = st.columns([5, 1])
                     with c_col1:
                         if st.button(f"{c['title']}", key=f"conv_{c['id']}", use_container_width=True):
-                            st.session_state["current_conversation_id"] = c["id"]
-                            st.session_state["view_source"] = "history"
-                            st.session_state["show_history_drawer"] = False
+                            st.session_state["selected_history_conv_id"] = c["id"]
                             st.session_state.pop("deleting_conv_info", None)
                             st.rerun()
                     with c_col2:
@@ -1114,6 +1151,10 @@ if st.session_state["show_history_drawer"]:
             st.markdown(f'<div style="font-size: 13px; color: {T["text_sec"]}; margin-top: 8px;">No saved conversations yet.</div>', unsafe_allow_html=True)
 
     st.markdown('<div style="margin-bottom: 24px;"></div>', unsafe_allow_html=True)
+
+    if st.session_state.get("selected_history_conv_id"):
+        h_id = st.session_state["selected_history_conv_id"]
+        render_history_detail_modal(h_id)
 
     if st.session_state.get("deleting_conv_info"):
         d_info = st.session_state["deleting_conv_info"]
