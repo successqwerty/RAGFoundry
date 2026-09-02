@@ -124,13 +124,7 @@ def create_conversation(user_id="user_default", title="New Conversation"):
     return conv_id
 
 def generate_conversation_title(question):
-    q = question.strip()
-    words = q.split()
-    if len(words) <= 5:
-        return q.title()
-    cleaned = q.replace("What is", "").replace("what is", "").replace("Tell me about", "").replace("Summarize", "Summary of").strip(" ?.")
-    title_words = cleaned.split()[:5]
-    return " ".join(title_words).capitalize()
+    return question.strip()
 
 def get_user_conversations_grouped(user_id="user_default"):
     init_db()

@@ -19,6 +19,9 @@ if "show_history_drawer" not in st.session_state:
 if "current_conversation_id" not in st.session_state:
     st.session_state["current_conversation_id"] = None
 
+if "view_source" not in st.session_state:
+    st.session_state["view_source"] = None
+
 theme = st.session_state["theme"]
 sidebar_state = st.session_state["sidebar_state"]
 current_user_id = "user_default"
@@ -1064,6 +1067,7 @@ def render_delete_modal(conv_id, conv_title):
                         pass
             if st.session_state.get("current_conversation_id") == conv_id:
                 st.session_state["current_conversation_id"] = None
+                st.session_state["view_source"] = None
             st.session_state.pop("deleting_conv_info", None)
             st.rerun()
 
@@ -1080,6 +1084,7 @@ if st.session_state["show_history_drawer"]:
             if st.button("+ New Conversation", key="drawer_new_chat", use_container_width=True):
                 st.session_state["current_conversation_id"] = None
                 st.session_state["input_question"] = ""
+                st.session_state["view_source"] = None
                 st.session_state["show_history_drawer"] = False
                 st.session_state.pop("deleting_conv_info", None)
                 st.rerun()
@@ -1096,6 +1101,7 @@ if st.session_state["show_history_drawer"]:
                     with c_col1:
                         if st.button(f"{c['title']}", key=f"conv_{c['id']}", use_container_width=True):
                             st.session_state["current_conversation_id"] = c["id"]
+                            st.session_state["view_source"] = "history"
                             st.session_state["show_history_drawer"] = False
                             st.session_state.pop("deleting_conv_info", None)
                             st.rerun()
@@ -1236,6 +1242,7 @@ if active_conv_id:
 if query_to_execute:
     question_text = query_to_execute
     st.session_state["input_question"] = ""
+    st.session_state["view_source"] = "fresh"
     
     conv_id = st.session_state.get("current_conversation_id")
     if not conv_id:
