@@ -5,7 +5,6 @@
 [![FAISS](https://img.shields.io/badge/Vector_DB-FAISS-00599C.svg)](https://github.com/facebookresearch/faiss)
 [![Gemini](https://img.shields.io/badge/LLM-Google_Gemini-4285F4.svg)](https://ai.google.dev/)
 [![Ollama](https://img.shields.io/badge/Local_LLM-Ollama-black.svg)](https://ollama.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 
 **RAGFoundry** is a modern, high-performance **Retrieval-Augmented Generation (RAG)** platform designed to transform private business documents into interactive, cited knowledge bases. It features a ChatGPT-style conversational architecture, dual AI engine execution (100% offline local models via Ollama or ultra-fast cloud inference via Google Gemini), persistent multi-turn SQLite conversation history, and a sleek, responsive Single-Page Application (SPA).
 
@@ -190,9 +189,3 @@ python -m http.server 3000 --directory frontend
 - **Client-Side Keys**: Custom Gemini API keys are held strictly in the browser's `localStorage` and transmitted via HTTPS headers per request.
 - **Local Fallback**: Switching to Ollama routes 100% of embeddings and generations on-premise without cloud calls.
 - **Data Isolation**: Source documents and vector indices remain on your local disk in the `data/` directory.
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
