@@ -5,3 +5,6 @@ google-genai
 python-dotenv
 streamlit
 ollama
+fastapi
+uvicorn
+pydantic

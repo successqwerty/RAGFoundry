@@ -84,8 +84,9 @@ class RAGPipeline:
         elapsed = round(time.perf_counter() - start_time, 1)
         yield {"type": "complete", "elapsed_sec": elapsed}
 
-    def ask(self, question, k=5, provider="gemini", model_name="gemini-2.0-flash", user_id="user_default", api_key=None):
-        """Synchronous RAG pipeline fallback."""
+    def ask(self, question, k=5, provider="gemini", model_name="gemini-3.6-flash", user_id="user_default", api_key=None):
+        """Synchronous RAG pipeline fallback returning clean plain text."""
+        from generation import clean_plain_text
         chunks = []
         sources = []
         token_deltas = []
@@ -100,9 +101,10 @@ class RAGPipeline:
             elif event["type"] == "complete":
                 elapsed = event["elapsed_sec"]
                 
+        raw_answer = "".join(token_deltas)
         return {
             "question": question,
-            "answer": "".join(token_deltas),
+            "answer": clean_plain_text(raw_answer),
             "sources": sources,
             "retrieved_chunks": chunks,
             "elapsed_sec": elapsed

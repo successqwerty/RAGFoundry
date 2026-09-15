@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RAGFoundry Intelligence - Document AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed-dim": "#d2bbff",
+                        "on-secondary-fixed-variant": "#543098",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#484554",
+                        "on-tertiary-fixed-variant": "#4a4456",
+                        "on-background": "#121c2a",
+                        "surface-container-high": "#dee9fc",
+                        "surface-dim": "#d0dbed",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary": "#484153",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#461f8a",
+                        "secondary": "#6c49b2",
+                        "outline": "#797586",
+                        "surface-tint": "#6042d6",
+                        "primary": "#5d3fd3",
+                        "outline-variant": "#c9c4d7",
+                        "on-secondary-fixed": "#25005a",
+                        "surface-container": "#e6eeff",
+                        "surface-variant": "#d9e3f6",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9ff",
+                        "surface": "#f8f9ff",
+                        "on-primary-container": "#ffffff",
+                        "on-primary-fixed": "#1c0062",
+                        "on-tertiary-container": "#dad0e6",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#5d3fd3",
+                        "secondary-fixed": "#eaddff",
+                        "tertiary-fixed": "#e9def5",
+                        "secondary-container": "#b390fe",
+                        "on-primary-fixed-variant": "#4723be",
+                        "surface-container-highest": "#d9e3f6",
+                        "on-surface": "#121c2a",
+                        "background": "#f8f9ff",
+                        "tertiary-container": "#60586b",
+                        "on-tertiary-fixed": "#1e1929",
+                        "inverse-primary": "#cabeff",
+                        "inverse-surface": "#27313f",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#cdc2d9",
+                        "primary-fixed": "#e6deff",
+                        "primary-fixed-dim": "#cabeff",
+                        "on-primary": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "content_max_width": "800px",
+                        "gutter": "24px",
+                        "stack_gap_md": "16px",
+                        "stack_gap_lg": "32px",
+                        "sidebar_width": "280px",
+                        "margin_mobile": "16px",
+                        "margin_desktop": "40px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Inter", "sans-serif"],
+                        "display-lg": ["Hanken Grotesk", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "headline-md": ["Hanken Grotesk", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-sm": ["Hanken Grotesk", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style id="theme-dark-overrides">
+/* Modern Midnight & Sleek Dark Mode Styling */
+html.dark, html.dark body {
+  background-color: #0b0f19 !important;
+  color: #f8fafc !important;
+}
+
+/* Sidebar Scroll Container: Hide Visual Scrollbar while maintaining scrolling */
+#sidebar,
+#sidebar-scroll-container,
+#sidebar .overflow-y-auto,
+.sidebar-scroll-container {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE / Edge */
+}
+
+#sidebar::-webkit-scrollbar,
+#sidebar-scroll-container::-webkit-scrollbar,
+#sidebar .overflow-y-auto::-webkit-scrollbar,
+.sidebar-scroll-container::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+  display: none !important;
+  background: transparent !important;
+}
+
+/* History Page: Hide Visual Scrollbar while maintaining full scrolling */
+#content-views-scroll.history-view-active,
+#content-views-scroll:has(#view-history:not(.hidden)),
+#view-history,
+.history-page-scroll-container {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE / Edge */
+}
+
+#content-views-scroll.history-view-active::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+  display: none !important;
+  background: transparent !important;
+}
+
+#content-views-scroll:has(#view-history:not(.hidden))::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+  display: none !important;
+  background: transparent !important;
+}
+
+#view-history::-webkit-scrollbar,
+.history-page-scroll-container::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+  display: none !important;
+  background: transparent !important;
+}
+
+/* Sidebar dark palette */
+html.dark #sidebar {
+  background-color: #111524 !important;
+  border-color: #1e2436 !important;
+}
+html.dark #sidebar h1 {
+  color: #ffffff !important;
+}
+html.dark #sidebar h2,
+html.dark #sidebar h3 {
+  color: #aeb8d0 !important;
+}
+html.dark #sidebar p {
+  color: #94a3b8 !important;
+}
+html.dark #sidebar label,
+html.dark #sidebar label span {
+  color: #cbd5e1 !important;
+}
+html.dark #sidebar #nav-knowledge-base,
+html.dark #sidebar #nav-ai-engine {
+  color: #cbd5e1 !important;
+}
+html.dark #sidebar button.text-on-surface-variant {
+  color: #cbd5e1 !important;
+}
+html.dark #sidebar button.hover\:bg-\[\#DDD5FA\]:hover {
+  background-color: #1e2438 !important;
+  color: #ffffff !important;
+}
+html.dark #sidebar .nav-tab-active {
+  background-color: #242247 !important;
+  color: #c7d2fe !important;
+}
+html.dark #sidebar .bg-white {
+  background-color: #181d2f !important;
+  border-color: #262d44 !important;
+  color: #f1f5f9 !important;
+}
+html.dark #sidebar .bg-white span.truncate {
+  color: #f1f5f9 !important;
+}
+html.dark #sidebar .bg-white\/40 {
+  background-color: #161b2c !important;
+  border-color: #2f3754 !important;
+}
+html.dark #sidebar .bg-white\/40:hover {
+  background-color: #1e243a !important;
+}
+html.dark #sidebar .border-\[\#D5CDF7\] {
+  border-color: #22293e !important;
+}
+html.dark #sidebar .border-\[\#C5BBEF\] {
+  border-color: #3b3363 !important;
+}
+html.dark #sidebar .bg-\[\#EFF4FF\] {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+html.dark #sidebar .text-primary {
+  color: #a78bfa !important;
+}
+html.dark #sidebar .border-t {
+  border-color: #1e2436 !important;
+}
+html.dark #sidebar a {
+  color: #94a3b8 !important;
+}
+html.dark #sidebar a:hover {
+  color: #c7d2fe !important;
+}
+
+/* Header dark palette */
+html.dark header {
+  background-color: #0b0f19 !important;
+  border-color: #1c2235 !important;
+}
+html.dark header #sidebar-toggle {
+  color: #94a3b8 !important;
+}
+html.dark header #sidebar-toggle:hover {
+  background-color: #1c2235 !important;
+  color: #f8fafc !important;
+}
+html.dark header #dark-mode-toggle {
+  color: #cbd5e1 !important;
+}
+html.dark header #dark-mode-toggle:hover {
+  background-color: #1c2235 !important;
+  color: #ffffff !important;
+}
+html.dark header .text-primary {
+  color: #a78bfa !important;
+}
+html.dark header .text-primary:hover {
+  color: #c4b5fd !important;
+}
+
+/* Main Workspace Canvas dark palette */
+html.dark .workspace-container {
+  background-color: #0b0f19 !important;
+}
+html.dark #view-new-chat h2 {
+  color: #ffffff !important;
+}
+html.dark #view-new-chat p {
+  color: #94a3b8 !important;
+}
+
+/* Home Page Empty State Centered Layout */
+#view-new-chat.is-empty-state {
+  justify-content: center;
+  min-height: 100%;
+  padding-bottom: 4rem;
+}
+#view-new-chat.is-empty-state #chat-messages-stream {
+  display: none !important;
+}
+#view-new-chat.is-empty-state #welcome-box {
+  margin-bottom: 2rem;
+}
+
+/* Prompt Box */
+html.dark .prompt-box-container {
+  background-color: #151a2a !important;
+  border-color: #262e48 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+html.dark .prompt-box-container:focus-within {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+}
+html.dark textarea#prompt-input {
+  color: #f8fafc !important;
+}
+html.dark textarea#prompt-input::placeholder {
+  color: #aeb8d0 !important;
+  opacity: 1 !important;
+}
+html.dark .prompt-status-text,
+html.dark #prompt-doc-count,
+html.dark #prompt-engine-status {
+  color: #94a3b8 !important;
+}
+
+/* History View */
+html.dark #view-history h2 {
+  color: #ffffff !important;
+}
+html.dark #view-history h4 {
+  color: #aeb8d0 !important;
+}
+html.dark input#history-search {
+  background-color: #151a2a !important;
+  color: #f8fafc !important;
+  border-color: #262e48 !important;
+}
+html.dark input#history-search::placeholder {
+  color: #aeb8d0 !important;
+  opacity: 1 !important;
+}
+html.dark input#history-search:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25) !important;
+}
+html.dark .conv-item {
+  background-color: #151a2a !important;
+  border-color: #242c44 !important;
+}
+html.dark .conv-item:hover {
+  border-color: #6366f1 !important;
+  background-color: #1b2138 !important;
+}
+html.dark .conv-item.border-primary {
+  border-color: #6366f1 !important;
+  background-color: #202242 !important;
+}
+html.dark .conv-item .conv-title {
+  color: #f8fafc !important;
+}
+html.dark .conv-item:hover .conv-title {
+  color: #c7d2fe !important;
+}
+html.dark .conv-item p {
+  color: #94a3b8 !important;
+}
+html.dark .conv-item .bg-\[\#EFEAFE\] {
+  background-color: #26234f !important;
+  color: #c4b5fd !important;
+}
+html.dark .conv-item button {
+  color: #94a3b8 !important;
+}
+html.dark .conv-item button:hover {
+  color: #f87171 !important;
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Chat response styles in dark mode */
+html.dark .assistant-card {
+  background-color: #121826 !important;
+  border-color: #20293F !important;
+  color: #e2e8f0 !important;
+}
+html.dark .assistant-card .text-slate-700,
+html.dark .assistant-card .text-slate-900 {
+  color: #f1f5f9 !important;
+}
+html.dark .assistant-card summary {
+  color: #a78bfa !important;
+}
+html.dark .assistant-card summary:hover {
+  color: #c4b5fd !important;
+}
+html.dark .assistant-card [id^="sources-drawer"] div {
+  background-color: #1e2538 !important;
+  color: #c4b5fd !important;
+  border-color: #3b3363 !important;
+}
+html.dark .assistant-card [id^="sources-drawer"] span {
+  color: #a78bfa !important;
+}
+
+/* User Bubble Question Text Styling */
+.user-message-text {
+  color: #1e293b;
+}
+
+html.dark .user-bubble {
+  background-color: #1A2338 !important;
+  border-color: #263554 !important;
+}
+
+html.dark .user-bubble .text-primary {
+  color: #a78bfa !important;
+}
+
+html.dark .user-message-text,
+html.dark .user-bubble p,
+html.dark .user-bubble .user-message-text {
+  color: #f5f7ff !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
+/* Conversation Header Bar */
+html.dark #chat-header-bar h3,
+html.dark #chat-header-title {
+  color: #f8fafc !important;
+}
+html.dark #chat-header-bar p,
+html.dark #chat-header-count {
+  color: #94a3b8 !important;
+}
+
+/* Universal Dark Mode Input & Textarea Placeholders */
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #aeb8d0 !important;
+  opacity: 1 !important;
+}
+
+html.dark input,
+html.dark textarea {
+  color: #f8fafc !important;
+}
+
+/* Gemini API Key BYOK Box */
+html.dark #gemini-api-key-input {
+  background-color: #181d2f !important;
+  border-color: #262d44 !important;
+  color: #f8fafc !important;
+}
+html.dark #gemini-api-key-input::placeholder {
+  color: #aeb8d0 !important;
+  opacity: 1 !important;
+}
+html.dark #toggle-key-visibility {
+  color: #aeb8d0 !important;
+}
+html.dark #toggle-key-visibility:hover {
+  color: #c7d2fe !important;
+}
+html.dark a[href*="aistudio"] {
+  color: #a78bfa !important;
+}
+html.dark a[href*="aistudio"]:hover {
+  color: #c4b5fd !important;
+}
+
+/* Sidebar AI Engine Card Text */
+html.dark #engine-title-text,
+html.dark #engine-model-text {
+  color: #f8fafc !important;
+}
+html.dark #sidebar .uppercase {
+  color: #aeb8d0 !important;
+}
+
+/* Global Semantic Overrides for Dark Mode */
+html.dark .text-on-surface {
+  color: #f8fafc !important;
+}
+html.dark .text-on-surface-variant {
+  color: #94a3b8 !important;
+}
+html.dark .text-on-surface-variant\/80 {
+  color: #aeb8d0 !important;
+}
+html.dark .text-on-surface-variant\/70 {
+  color: #94a3b8 !important;
+}
+html.dark .text-on-surface-variant\/60 {
+  color: #94a3b8 !important;
+}
+html.dark .text-on-surface-variant\/50 {
+  color: #94a3b8 !important;
+}
+html.dark .text-on-surface-variant\/40 {
+  color: #94a3b8 !important;
+}
+html.dark .text-on-background {
+  color: #f8fafc !important;
+}
+
+/* Custom ChatGPT-Style Delete Confirmation Modal */
+.delete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  padding: 16px;
+}
+.delete-modal-overlay.active {
+  display: flex;
+}
+.delete-modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  animation: modalScaleIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.delete-modal h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #111827;
+}
+.delete-modal p {
+  margin-top: 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4b5563;
+}
+.delete-modal p strong {
+  font-weight: 600;
+  color: #111827;
+  word-break: break-word;
+}
+.delete-modal-actions {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.cancel-button {
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.cancel-button:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+.cancel-button:focus-visible {
+  outline: 2px solid #6b7280;
+  outline-offset: 2px;
+}
+.delete-button {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: none;
+  background-color: #e02424;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s, opacity 0.15s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.delete-button:hover:not(:disabled) {
+  background-color: #c81e1e;
+}
+.delete-button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.delete-button:disabled, .cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark Mode Modal Styles */
+html.dark .delete-modal {
+  background-color: #151a2a !important;
+  border-color: #242c44 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+}
+html.dark .delete-modal h2 {
+  color: #f8fafc !important;
+}
+html.dark .delete-modal p {
+  color: #94a3b8 !important;
+}
+html.dark .delete-modal p strong {
+  color: #ffffff !important;
+}
+html.dark .cancel-button {
+  background-color: #1e2538 !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+html.dark .cancel-button:hover:not(:disabled) {
+  background-color: #2a344d !important;
+  border-color: #475569 !important;
+}
+html.dark .delete-button {
+  background-color: #e02424 !important;
+  color: #ffffff !important;
+}
+html.dark .delete-button:hover:not(:disabled) {
+  background-color: #c81e1e !important;
+}
+
+/* Custom Alert / Notification Modal */
+.alert-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  padding: 16px;
+}
+.alert-modal-overlay.active {
+  display: flex;
+}
+.alert-modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  animation: modalScaleIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.alert-modal h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #111827;
+}
+.alert-modal p {
+  margin-top: 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #4b5563;
+  word-break: break-word;
+}
+.alert-modal-actions {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.alert-ok-button {
+  padding: 8px 26px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: none;
+  background-color: #5d3fd3;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+.alert-ok-button:hover {
+  background-color: #4e31c4;
+}
+.alert-ok-button:active {
+  transform: scale(0.97);
+}
+.alert-ok-button:focus-visible {
+  outline: 2px solid #5d3fd3;
+  outline-offset: 2px;
+}
+
+/* Dark Mode Alert Modal */
+html.dark .alert-modal {
+  background-color: #151a2a !important;
+  border-color: #242c44 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+}
+html.dark .alert-modal h2 {
+  color: #f8fafc !important;
+}
+html.dark .alert-modal p {
+  color: #94a3b8 !important;
+}
+html.dark .alert-ok-button {
+  background-color: #5d3fd3 !important;
+  color: #ffffff !important;
+}
+html.dark .alert-ok-button:hover {
+  background-color: #4e31c4 !important;
+}
+</style>
+</head>
+<body class="bg-[#F8F9FF] text-on-background font-body-md h-screen flex overflow-hidden select-none">
+
+<!-- Persistent SideNavBar -->
+<aside class="w-[280px] bg-[#E9E4FC] border-r border-[#D5CDF7] flex flex-col h-screen flex-shrink-0 z-50 transition-all duration-300" id="sidebar">
+<div class="p-4 flex flex-col h-full">
+
+<!-- Logo / Branding Area -->
+<div class="flex items-center space-x-2.5 px-2 py-3 mb-2">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-sm font-bold text-on-surface leading-tight tracking-tight">RAGFoundry</h1>
+<p class="text-[11px] font-medium text-on-surface-variant leading-none">Local AI Document Intelligence</p>
+</div>
+</div>
+
+<!-- '+ New Chat' Action Button -->
+<button class="w-full bg-[#5D3FD3] text-white font-label-md py-3 px-4 rounded-xl flex items-center justify-center space-x-2 hover:bg-[#4E31C4] active:scale-[0.99] transition-all shadow-sm group ring-2 ring-primary/40" id="btn-nav-new-chat" onclick="startNewChat()">
+<span class="material-symbols-outlined text-xl" data-icon="add">add</span>
+<span class="font-medium text-sm">New Chat</span>
+</button>
+
+<!-- Scrollable Navigation and Workspace Content -->
+<div class="sidebar-scroll-container flex-1 overflow-y-auto space-y-6 pt-5 pr-1 -mr-1" id="sidebar-scroll-container">
+
+<!-- Navigation Links -->
+<ul class="space-y-1">
+<li>
+<button class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl hover:bg-[#DDD5FA] transition-colors font-medium text-sm text-left text-on-surface-variant cursor-pointer" id="btn-nav-history" onclick="switchView('history')">
+<span class="material-symbols-outlined text-[20px]" data-icon="history">history</span>
+<span>History</span>
+</button>
+</li>
+<li>
+<div class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant/80 font-medium text-sm text-left cursor-default select-none pointer-events-none" id="nav-knowledge-base">
+<span class="material-symbols-outlined text-[20px]" data-icon="database">database</span>
+<span>Knowledge Base</span>
+</div>
+</li>
+<li>
+<div class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-on-surface-variant/80 font-medium text-sm text-left cursor-default select-none pointer-events-none" id="nav-ai-engine">
+<span class="material-symbols-outlined text-[20px]" data-icon="memory">memory</span>
+<span>AI Engine</span>
+</div>
+</li>
+</ul>
+
+<!-- Workspace Section -->
+<div>
+<h3 class="text-[11px] font-semibold tracking-wider text-on-surface-variant/80 uppercase mb-2.5 px-1">WORKSPACE</h3>
+<div class="space-y-2" id="sidebar-doc-container">
+<!-- Indexed Document Item 1 -->
+<div class="bg-white border border-[#D5CDF7] rounded-xl p-3 flex justify-between items-center text-xs shadow-xs hover:border-primary/40 transition-colors">
+<span class="truncate font-medium text-on-surface pr-2" id="doc-name-1">coi unit 2 (1).docx</span>
+<span class="bg-[#EFF4FF] text-primary font-semibold text-[11px] px-2 py-0.5 rounded-md flex items-center shrink-0">
+<span class="material-symbols-outlined text-[13px] mr-1">check</span> Indexed
+</span>
+</div>
+<!-- Indexed Document Item 2 -->
+<div class="bg-white border border-[#D5CDF7] rounded-xl p-3 flex justify-between items-center text-xs shadow-xs hover:border-primary/40 transition-colors">
+<span class="truncate font-medium text-on-surface pr-2" id="doc-name-2">Constitution of In...</span>
+<span class="bg-[#EFF4FF] text-primary font-semibold text-[11px] px-2 py-0.5 rounded-md flex items-center shrink-0">
+<span class="material-symbols-outlined text-[13px] mr-1">check</span> Indexed
+</span>
+</div>
+</div>
+
+<label class="flex items-center space-x-2 text-xs text-on-surface-variant mt-3 px-1 cursor-pointer">
+<input checked="" id="clear-docs-checkbox" class="w-3.5 h-3.5 rounded text-primary focus:ring-0 border-[#C9C4D7]" type="checkbox"/>
+<span>Clear old documents on upload</span>
+</label>
+
+<!-- Dashed Upload Zone -->
+<div id="sidebar-upload-dropzone" class="mt-2.5 border-2 border-dashed border-[#C5BBEF] bg-white/40 hover:bg-white/70 rounded-xl p-3.5 text-center cursor-pointer transition-colors group">
+<input type="file" id="file-uploader-input" class="hidden" accept=".txt,.pdf,.docx,.json" />
+<span class="material-symbols-outlined text-primary text-2xl mb-1 group-hover:scale-110 transition-transform">upload</span>
+<p class="text-xs font-semibold text-primary" id="upload-label-text">Upload</p>
+<p class="text-[10px] text-on-surface-variant mt-0.5">200MB per file • TXT, PDF, DOCX</p>
+</div>
+</div>
+
+<!-- AI Engine Status Card -->
+<div>
+<h3 class="text-[11px] font-semibold tracking-wider text-on-surface-variant/80 uppercase mb-2.5 px-1">AI ENGINE</h3>
+<div class="bg-white border border-[#D5CDF7] rounded-xl p-3 shadow-xs">
+
+<!-- Engine Selector Pills -->
+<div class="grid grid-cols-2 gap-1 p-1 bg-[#EFEAFE] dark:bg-slate-800 rounded-lg mb-2.5">
+  <button type="button" id="btn-engine-ollama" onclick="selectEngine('ollama')" class="text-xs py-1.5 px-2 rounded-md font-semibold text-center transition-all cursor-pointer bg-primary text-white shadow-xs" title="100% Offline Local Model (Unlimited, No API Quotas)">
+    🦙 Ollama
+  </button>
+  <button type="button" id="btn-engine-gemini" onclick="selectEngine('gemini')" class="text-xs py-1.5 px-2 rounded-md font-semibold text-center transition-all cursor-pointer text-on-surface-variant dark:text-slate-300 hover:text-primary dark:hover:text-white" title="Google Gemini Cloud AI">
+    ✨ Gemini
+  </button>
+</div>
+
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-xs font-semibold text-on-surface dark:text-slate-100" id="engine-title-text">Ollama (100% Offline Local)</span>
+<div class="w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20" id="engine-dot"></div>
+</div>
+<p class="text-[10px] font-medium text-on-surface-variant dark:text-slate-400 uppercase tracking-wider">Model Name</p>
+<p class="text-xs font-semibold text-on-surface dark:text-slate-100 mb-1.5" id="engine-model-text">llama3.2</p>
+<div class="flex items-center text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold" id="engine-status-text">
+<span class="material-symbols-outlined text-[13px] mr-1">verified</span> Unlimited Offline AI Active
+</div>
+</div>
+
+<!-- Gemini API Key Input (Bring Your Own Key) -->
+<div class="mt-3">
+<div class="flex items-center justify-between px-1 mb-1.5">
+<label for="gemini-api-key-input" class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant/80 dark:text-slate-300">GEMINI API KEY (BYOK)</label>
+<a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[10px] text-primary dark:text-[#a78bfa] hover:underline font-semibold flex items-center gap-0.5" title="Get free API key from Google AI Studio">Get Key <span class="material-symbols-outlined text-[12px]">open_in_new</span></a>
+</div>
+<div class="relative flex items-center">
+<input type="password" id="gemini-api-key-input" class="w-full bg-white dark:bg-[#181d2f] border border-[#D5CDF7] dark:border-[#262d44] rounded-xl px-3 py-2 text-xs text-on-surface dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-primary shadow-xs pr-8" placeholder="Paste Gemini API Key..." />
+<button type="button" id="toggle-key-visibility" onclick="toggleKeyVisibility()" class="absolute right-2 text-on-surface-variant/60 dark:text-[#aeb8d0] hover:text-primary dark:hover:text-primary transition flex items-center justify-center cursor-pointer" title="Show/Hide Key">
+<span class="material-symbols-outlined text-[16px]" id="key-vis-icon">visibility_off</span>
+</button>
+</div>
+<p class="text-[10px] text-on-surface-variant/70 dark:text-slate-400 mt-1 px-1 leading-tight">Stored in your browser. Uses your own Gemini quota.</p>
+</div>
+
+</div>
+
+</div>
+</aside>
+
+<!-- Dynamic Right Side Workspace -->
+<div class="workspace-container flex-1 flex flex-col min-w-0 bg-[#F8F9FF] h-screen overflow-hidden">
+
+<!-- Top Header Bar -->
+<header class="bg-[#F8F9FF] border-b border-[#E6E0F8] h-16 px-4 sm:px-6 flex justify-between items-center shrink-0 z-30">
+<div class="flex items-center space-x-2.5 sm:space-x-3 shrink-0 min-w-0">
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors flex items-center justify-center cursor-pointer shrink-0" id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle Sidebar">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+<span class="text-white px-3 sm:px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase shadow-xs bg-[#5D3FD3] whitespace-nowrap shrink-0">
+DOCUMENT INTELLIGENCE
+</span>
+</div>
+<div class="flex items-center shrink-0 ml-2">
+<button class="flex items-center space-x-1.5 text-on-surface-variant hover:text-primary transition-colors text-xs font-medium px-2 py-1.5 rounded-lg hover:bg-surface-variant cursor-pointer whitespace-nowrap shrink-0" id="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode">
+<span class="material-symbols-outlined text-[18px] text-slate-600" id="dark-mode-icon">dark_mode</span>
+<span id="dark-mode-label">Dark Mode</span>
+</button>
+</div>
+</header>
+
+<!-- Content Views Container -->
+<div class="flex-1 overflow-y-auto relative flex flex-col" id="content-views-scroll">
+
+<!-- VIEW 1: New Chat / Canvas View -->
+<main class="flex-1 p-6 md:p-10 flex flex-col items-center max-w-[840px] mx-auto w-full transition-opacity duration-200 is-empty-state min-h-full" id="view-new-chat">
+
+<!-- Active Conversation Header Bar (Shown during active chat) -->
+<div id="chat-header-bar" class="w-full flex items-center pb-4 mb-5 border-b border-slate-200 dark:border-[#20293F] hidden">
+  <div class="flex items-center space-x-3 min-w-0 flex-1">
+    <div class="w-9 h-9 rounded-lg bg-[#EFEAFE] dark:bg-violet-950/60 text-primary flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-[20px]">chat</span>
+    </div>
+    <div class="min-w-0 flex-1">
+      <h3 id="chat-header-title" class="text-sm md:text-base font-bold text-on-surface dark:text-slate-100 truncate">Conversation</h3>
+      <p class="text-xs text-on-surface-variant flex items-center gap-2">
+        <span id="chat-header-count">0 messages</span>
+        <span class="text-gray-400">•</span>
+        <span class="text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
+          <span class="material-symbols-outlined text-[13px]">verified</span> Grounded in documents
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Welcome Heading (Shown on empty conversation state) -->
+<div class="text-center mb-8" id="welcome-box">
+<h2 class="font-display-lg text-4xl md:text-5xl font-extrabold text-[#121C2A] tracking-tight mb-3">
+Ask your documents anything
+</h2>
+<p class="text-base text-on-surface-variant font-normal">
+Search, reason, and answer using your private document knowledge base.
+</p>
+</div>
+
+<!-- Persistent Multi-Turn Chat Stream (Contains all user bubbles and assistant response cards) -->
+<div id="chat-messages-stream" class="w-full space-y-4 mb-4"></div>
+
+<!-- Prompt Input Box (Always accessible below the conversation messages stream) -->
+<div class="prompt-box-container w-full relative bg-white border border-[#DCD5F3] rounded-2xl shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all p-4 pb-14">
+<textarea class="w-full bg-transparent border-0 resize-none focus:ring-0 p-0 text-sm md:text-base text-on-surface placeholder-on-surface-variant/60 min-h-[90px] outline-none" id="prompt-input" placeholder="Ask anything about your documents..."></textarea>
+<div class="prompt-status-text absolute bottom-4 left-4 flex items-center space-x-2 text-[11px] text-on-surface-variant font-medium">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span id="prompt-doc-count">2 Document(s) Indexed</span>
+<span class="text-gray-400 dark:text-gray-600">•</span>
+<span id="prompt-engine-status">Ollama (llama3.2)</span>
+</div>
+<button id="send-query-btn" class="absolute bottom-3 right-3 bg-[#5D3FD3] text-white w-9 h-9 rounded-xl flex items-center justify-center hover:bg-[#4D2FC5] active:scale-95 transition-all shadow-sm cursor-pointer" onclick="handleSend()">
+<span class="material-symbols-outlined text-xl" id="send-btn-icon">arrow_upward</span>
+</button>
+</div>
+
+</main>
+
+<!-- VIEW 2: History View (Saved Conversations) -->
+<main class="hidden flex-1 p-6 md:p-10 flex flex-col items-center max-w-[840px] mx-auto w-full transition-opacity duration-200 history-page-scroll-container" id="view-history">
+
+<!-- Header & Search -->
+<div class="w-full mb-8">
+<div class="mb-6">
+<h2 class="font-display-lg text-3xl font-bold text-on-surface">Saved Conversations</h2>
+<p class="text-xs text-on-surface-variant mt-1">Review past intelligence chats, citations, and answers</p>
+</div>
+
+<!-- Central Search Bar -->
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-4 top-3 text-on-surface-variant text-xl">search</span>
+<input class="w-full pl-11 pr-4 py-2.5 bg-white border border-[#DCD5F3] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-xs" id="history-search" oninput="filterHistory(this.value)" placeholder="Search conversations..." type="text"/>
+</div>
+</div>
+
+<!-- Grouped Conversations List (Populated dynamically from backend SQLite) -->
+<div class="w-full space-y-7" id="history-groups-container">
+    <div id="history-loading-placeholder" class="text-center py-12 text-on-surface-variant text-sm flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined animate-spin text-primary">progress_activity</span>
+        <span>Loading saved conversations...</span>
+    </div>
+</div>
+</main>
+
+</div>
+</div>
+
+<script>
+    const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+      ? "http://localhost:8000" 
+      : window.location.origin;
+
+    let activeModelInfo = { provider: "gemini", model_name: "gemini-3.6-flash" };
+    
+    // Persistent Multi-Turn Conversation State
+    let currentConversationId = null;
+    let currentConversationTitle = "";
+
+    // 1. Tab and View state switcher
+    function switchView(viewName) {
+        const viewNewChat = document.getElementById('view-new-chat');
+        const viewHistory = document.getElementById('view-history');
+        const btnNewChat = document.getElementById('btn-nav-new-chat');
+        const btnHistory = document.getElementById('btn-nav-history');
+        const scrollContainer = document.getElementById('content-views-scroll');
+
+        if (viewName === 'new-chat') {
+            viewNewChat.classList.remove('hidden');
+            viewHistory.classList.add('hidden');
+            if (scrollContainer) scrollContainer.classList.remove('history-view-active');
+
+            btnNewChat.classList.add('ring-2', 'ring-primary/40');
+            btnHistory.classList.remove('bg-[#DDD5FA]', 'nav-tab-active', 'font-semibold', 'text-primary');
+            btnHistory.classList.add('text-on-surface-variant');
+            document.getElementById('prompt-input').focus();
+        } else if (viewName === 'history') {
+            viewHistory.classList.remove('hidden');
+            viewNewChat.classList.add('hidden');
+            if (scrollContainer) scrollContainer.classList.add('history-view-active');
+
+            btnNewChat.classList.remove('ring-2', 'ring-primary/40');
+            btnHistory.classList.add('bg-[#DDD5FA]', 'nav-tab-active', 'font-semibold', 'text-primary');
+            btnHistory.classList.remove('text-on-surface-variant');
+            loadBackendHistory();
+        }
+    }
+
+    // 2. Start a fresh new chat (+ New Chat)
+    function startNewChat() {
+        currentConversationId = null;
+        currentConversationTitle = "";
+
+        // Reset views
+        switchView('new-chat');
+        const viewNewChat = document.getElementById('view-new-chat');
+        if (viewNewChat) viewNewChat.classList.add('is-empty-state');
+        document.getElementById('welcome-box').classList.remove('hidden');
+        document.getElementById('chat-header-bar').classList.add('hidden');
+
+        // Clear message stream
+        document.getElementById('chat-messages-stream').innerHTML = '';
+
+        // Reset input box
+        const input = document.getElementById('prompt-input');
+        input.value = '';
+        input.placeholder = "Ask anything about your documents...";
+        input.focus();
+    }
+
+    // 3. Open an existing conversation from History (PURE READ - NEVER CALLS /ask)
+    async function openConversation(convId) {
+        if (!convId) return;
+
+        // Immediately switch to the chat view
+        switchView('new-chat');
+
+        // Prepare UI
+        const viewNewChat = document.getElementById('view-new-chat');
+        if (viewNewChat) viewNewChat.classList.remove('is-empty-state');
+        document.getElementById('welcome-box').classList.add('hidden');
+
+        const headerBar = document.getElementById('chat-header-bar');
+        headerBar.classList.remove('hidden');
+        document.getElementById('chat-header-title').textContent = "Loading conversation...";
+        document.getElementById('chat-header-count').textContent = "";
+
+        const stream = document.getElementById('chat-messages-stream');
+        stream.innerHTML = `
+            <div class="text-center py-10 text-on-surface-variant text-sm flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined animate-spin text-primary">progress_activity</span>
+                <span>Loading saved conversation from storage...</span>
+            </div>
+        `;
+
+        try {
+            // GET /conversations/{id} performs PURE SQLite read: NO RAG, NO FAISS, NO LLM
+            const res = await fetch(`${API_BASE_URL}/conversations/${convId}`);
+            if (!res.ok) {
+                throw new Error(`Failed to load conversation (${res.status})`);
+            }
+
+            const conv = await res.json();
+            currentConversationId = conv.id;
+            currentConversationTitle = conv.title || "Conversation";
+
+            document.getElementById('chat-header-title').textContent = currentConversationTitle;
+            const messages = conv.messages || [];
+            document.getElementById('chat-header-count').textContent = `${messages.length} message${messages.length === 1 ? '' : 's'}`;
+
+            // Render all historical messages into the stream
+            stream.innerHTML = '';
+            messages.forEach(msg => {
+                appendMessageToStream(msg);
+            });
+
+            // Update prompt input for follow-up questions
+            const input = document.getElementById('prompt-input');
+            input.value = '';
+            input.placeholder = "Ask a follow-up...";
+            input.focus();
+
+            // Scroll container to bottom
+            setTimeout(() => {
+                const scrollContainer = document.getElementById('content-views-scroll');
+                if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
+            }, 100);
+
+        } catch (err) {
+            stream.innerHTML = `
+                <div class="p-4 bg-red-50 text-red-600 rounded-xl text-xs font-semibold">
+                    Error loading conversation: ${escapeHtml(err.message)}
+                </div>
+            `;
+        }
+    }
+
+    function renderCleanPlainText(content) {
+        if (!content) return "";
+        let clean = content
+            .replace(/^[ \t]*#{1,6}\s*/gm, '')        // Strip markdown headings (###, ##, #)
+            .replace(/\*\*(.*?)\*\*/g, '$1')          // Strip bold markers (**text** -> text)
+            .replace(/\*(.*?)\*/g, '$1')              // Strip italic markers (*text* -> text)
+            .replace(/^[ \t]*\*\s+/gm, '')            // Strip leading bullet asterisks (* item -> item)
+            .replace(/^[ \t]*[-*_]{3,}[ \t]*$/gm, '') // Strip horizontal rules (---, ***)
+            .replace(/\n{3,}/g, '\n\n');              // Normalize multiple empty lines
+        return escapeHtml(clean).replace(/\n/g, '<br/>');
+    }
+
+    // 4. Append message to chat stream (User bubble or Assistant card)
+    function appendMessageToStream(msg, elapsedSec = null) {
+        const stream = document.getElementById('chat-messages-stream');
+
+        if (msg.role === 'user') {
+            const userDiv = document.createElement('div');
+            userDiv.className = 'user-bubble max-w-2xl ml-auto bg-[#e2ecfc] dark:bg-[#1A2338] border border-[#263554]/30 rounded-2xl p-4 shadow-sm mb-4';
+            userDiv.innerHTML = `
+                <div class="text-[10px] font-bold tracking-wider text-primary uppercase mb-1">YOU</div>
+                <p class="user-message-text text-sm font-medium leading-relaxed whitespace-pre-wrap">${escapeHtml(msg.content)}</p>
+            `;
+            stream.appendChild(userDiv);
+        } else {
+            const article = document.createElement('article');
+            article.className = 'assistant-card bg-white dark:bg-[#121826] border border-slate-200 dark:border-[#20293F] rounded-2xl p-6 shadow-md space-y-4 mb-4';
+
+            const elapsed = elapsedSec !== null ? elapsedSec : (msg.elapsed_sec || null);
+            const elapsedHtml = elapsed ? `<span class="text-[11px] text-slate-500 dark:text-slate-400">⚡ ${Number(elapsed).toFixed(2)}s</span>` : '';
+
+            const sources = msg.sources || [];
+            const uniqueDrawerId = 'sources-drawer-' + Math.random().toString(36).substring(2, 9);
+            let sourcesHtml = '';
+            if (sources.length > 0) {
+                const srcItems = sources.map(src => `
+                    <div class="text-xs text-primary bg-[#EFF4FF] dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-primary/20 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[14px]">description</span> ${escapeHtml(src)}
+                    </div>
+                `).join('');
+
+                sourcesHtml = `
+                    <div class="pt-3 border-t border-slate-100 dark:border-[#1C253B]">
+                        <button class="w-full flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 py-1 transition cursor-pointer" onclick="toggleSourcesDrawerById('${uniqueDrawerId}')">
+                            <span class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-[18px]">menu_book</span>
+                                <span>Evidence &amp; Sources (${sources.length})</span>
+                            </span>
+                            <span class="text-[11px] font-normal text-slate-500 dark:text-slate-400 truncate max-w-xs">${escapeHtml(sources[0])}</span>
+                        </button>
+                        <div id="${uniqueDrawerId}" class="mt-2 space-y-1 hidden">
+                            ${srcItems}
+                        </div>
+                    </div>
+                `;
+            }
+
+            article.innerHTML = `
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#1C253B]">
+                    <div class="flex items-center gap-2.5">
+                        <div class="h-6 w-6 rounded-md bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[16px]">hub</span>
+                        </div>
+                        <span class="text-sm font-bold text-slate-900 dark:text-white tracking-wide">RAGFoundry</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        ${elapsedHtml}
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/80">
+                            <span class="material-symbols-outlined text-[14px]">check</span>
+                            <span>Grounded in documents</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed space-y-3">${renderCleanPlainText(msg.content)}</div>
+                ${sourcesHtml}
+            `;
+            stream.appendChild(article);
+        }
+    }
+
+    function toggleSourcesDrawerById(id) {
+        const drawer = document.getElementById(id);
+        if (drawer) drawer.classList.toggle('hidden');
+    }
+
+    // 5. Connect Multi-Turn RAG API (handleSend)
+    async function handleSend() {
+        const input = document.getElementById('prompt-input');
+        const question = input.value.trim();
+        if (!question) {
+            input.focus();
+            return;
+        }
+
+        const sendBtn = document.getElementById('send-query-btn');
+        const icon = document.getElementById('send-btn-icon');
+        const stream = document.getElementById('chat-messages-stream');
+        const scrollContainer = document.getElementById('content-views-scroll');
+
+        // Prepare UI for active conversation
+        const viewNewChat = document.getElementById('view-new-chat');
+        if (viewNewChat) viewNewChat.classList.remove('is-empty-state');
+        document.getElementById('welcome-box').classList.add('hidden');
+        document.getElementById('chat-header-bar').classList.remove('hidden');
+
+        if (!currentConversationTitle) {
+            currentConversationTitle = question;
+            document.getElementById('chat-header-title').textContent = currentConversationTitle;
+        }
+
+        // 1. Immediately append user bubble to stream
+        appendMessageToStream({ role: 'user', content: question });
+
+        // 2. Append temporary assistant loading card
+        const loadingArticle = document.createElement('article');
+        loadingArticle.className = 'assistant-card bg-white dark:bg-[#121826] border border-slate-200 dark:border-[#20293F] rounded-2xl p-6 shadow-md space-y-4 mb-4';
+        loadingArticle.innerHTML = `
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#1C253B]">
+                <div class="flex items-center gap-2.5">
+                    <div class="h-6 w-6 rounded-md bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[16px]">hub</span>
+                    </div>
+                    <span class="text-sm font-bold text-slate-900 dark:text-white tracking-wide">RAGFoundry</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 animate-pulse">Processing...</span>
+                </div>
+            </div>
+            <div class="text-sm text-primary font-medium flex items-center gap-2 py-2">
+                <span class="material-symbols-outlined text-lg animate-spin">progress_activity</span>
+                <span>Searching document knowledge base &amp; generating answer...</span>
+            </div>
+        `;
+        stream.appendChild(loadingArticle);
+
+        // Scroll down
+        if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+        // Button loading state
+        sendBtn.disabled = true;
+        icon.textContent = 'hourglass_empty';
+        icon.classList.add('animate-spin');
+        input.value = '';
+
+        try {
+            const userKeyInput = document.getElementById('gemini-api-key-input');
+            const customApiKey = userKeyInput ? userKeyInput.value.trim() : '';
+
+            // Send question with conversation_id if continuing an existing chat
+            const res = await fetch(`${API_BASE_URL}/ask`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    conversation_id: currentConversationId || undefined,
+                    question: question,
+                    k: 5,
+                    provider: activeModelInfo.provider,
+                    model_name: activeModelInfo.model_name,
+                    api_key: customApiKey || undefined
+                })
+            });
+
+            if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.detail || `Server error ${res.status}`);
+            }
+
+            const data = await res.json();
+
+            // Set/confirm conversation ID returned from backend
+            currentConversationId = data.conversation_id;
+
+            // Remove loading card and append real assistant answer
+            loadingArticle.remove();
+            appendMessageToStream({
+                role: 'assistant',
+                content: data.answer,
+                sources: data.sources || [],
+                chunks: data.retrieved_chunks || []
+            }, data.elapsed_sec);
+
+            // Update conversation header meta
+            const totalBubbles = stream.children.length;
+            document.getElementById('chat-header-count').textContent = `${totalBubbles} message${totalBubbles === 1 ? '' : 's'}`;
+
+            // Update placeholder
+            input.placeholder = "Ask a follow-up...";
+
+            // Refresh History list in background
+            loadBackendHistory();
+
+        } catch (err) {
+            loadingArticle.innerHTML = `
+                <div class="p-3 bg-red-50 text-red-600 rounded-xl text-xs font-semibold">
+                    Error: ${escapeHtml(err.message)}
+                </div>
+            `;
+        } finally {
+            sendBtn.disabled = false;
+            icon.textContent = 'arrow_upward';
+            icon.classList.remove('animate-spin');
+            input.focus();
+            if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }
+    }
+
+    // 6. Sidebar Toggle
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar.classList.contains('hidden') || sidebar.style.display === 'none') {
+            sidebar.classList.remove('hidden');
+            sidebar.style.display = 'flex';
+        } else {
+            sidebar.classList.add('hidden');
+            sidebar.style.display = 'none';
+        }
+    }
+
+    // 7. Dark / Light Mode Toggle
+    function toggleDarkMode() {
+        const html = document.documentElement;
+        const icon = document.getElementById('dark-mode-icon');
+        const label = document.getElementById('dark-mode-label');
+
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            icon.textContent = 'dark_mode';
+            icon.className = 'material-symbols-outlined text-[18px] text-slate-600';
+            label.textContent = 'Dark Mode';
+            localStorage.setItem('rag_theme', 'light');
+        } else {
+            html.classList.add('dark');
+            icon.textContent = 'light_mode';
+            icon.className = 'material-symbols-outlined text-[18px] text-amber-400';
+            label.textContent = 'Light Mode';
+            localStorage.setItem('rag_theme', 'dark');
+        }
+    }
+
+    // Initialize saved theme
+    if (localStorage.getItem('rag_theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+        const darkIcon = document.getElementById('dark-mode-icon');
+        if (darkIcon) {
+            darkIcon.textContent = 'light_mode';
+            darkIcon.className = 'material-symbols-outlined text-[18px] text-amber-400';
+        }
+        const darkLabel = document.getElementById('dark-mode-label');
+        if (darkLabel) darkLabel.textContent = 'Light Mode';
+    }
+
+    // Enter key sends query
+    document.getElementById('prompt-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+        }
+    });
+
+    // 8. Real Workspace Documents API
+    async function loadWorkspaceDocs() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/documents`);
+            if (res.ok) {
+                const data = await res.json();
+                const docs = data.documents || [];
+                document.getElementById('prompt-doc-count').textContent = `${docs.length} Document(s) Indexed`;
+                
+                const container = document.getElementById('sidebar-doc-container');
+                container.innerHTML = '';
+                if (docs.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-[11px] text-on-surface-variant/60 italic p-2 text-center">
+                            No documents uploaded
+                        </div>
+                    `;
+                }
+                docs.forEach(d => {
+                    const item = document.createElement('div');
+                    item.className = 'bg-white dark:bg-[#181d2f] border border-[#D5CDF7] dark:border-[#262d44] rounded-xl p-2.5 flex justify-between items-center text-xs shadow-xs hover:border-primary/40 transition-colors group';
+                    item.innerHTML = `
+                        <span class="truncate font-medium text-on-surface dark:text-slate-200 pr-2" title="${escapeHtml(d.filename)}">${escapeHtml(d.filename)}</span>
+                        <div class="flex items-center space-x-1.5 shrink-0">
+                            <span class="bg-[#EFF4FF] dark:bg-slate-800 text-primary font-semibold text-[10px] px-1.5 py-0.5 rounded flex items-center">
+                                <span class="material-symbols-outlined text-[12px] mr-0.5">check</span> Indexed
+                            </span>
+                            <button class="text-on-surface-variant/40 hover:text-error p-1 rounded hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer" onclick="deleteDocument(event, '${escapeHtml(d.filename)}')" title="Delete document">
+                                <span class="material-symbols-outlined text-[15px]">delete</span>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
+        } catch (err) {
+            console.warn("Documents load:", err);
+        }
+    }
+
+    async function deleteDocument(event, filename) {
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        if (!filename) return;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/documents/${encodeURIComponent(filename)}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                await loadWorkspaceDocs();
+            } else {
+                console.error("Failed to delete document:", res.statusText);
+            }
+        } catch (err) {
+            console.error("Document delete error:", err);
+        }
+    }
+
+    // 9. Real File Upload Dropzone
+    const dropzone = document.getElementById('sidebar-upload-dropzone');
+    const fileInput = document.getElementById('file-uploader-input');
+    const clearCheck = document.getElementById('clear-docs-checkbox');
+
+    if (dropzone && fileInput) {
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', async () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('clear_old', clearCheck && clearCheck.checked ? 'true' : 'false');
+
+            const label = document.getElementById('upload-label-text');
+            const origText = label.textContent;
+            label.textContent = 'Indexing...';
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (res.ok) {
+                    showCustomAlert(`Uploaded and indexed ${file.name}!`, 'Document Indexed', 'success');
+                    await loadWorkspaceDocs();
+                } else {
+                    throw new Error("Upload failed");
+                }
+            } catch (e) {
+                showCustomAlert(`Upload failed: ${e.message}`, 'Upload Failed', 'error');
+            } finally {
+                label.textContent = origText;
+                fileInput.value = '';
+            }
+        });
+    }
+
+    // 10. Real AI Engine Selector (Ollama / Gemini)
+    function selectEngine(provider) {
+        const btnOllama = document.getElementById('btn-engine-ollama');
+        const btnGemini = document.getElementById('btn-engine-gemini');
+        const titleText = document.getElementById('engine-title-text');
+        const modelText = document.getElementById('engine-model-text');
+        const statusText = document.getElementById('engine-status-text');
+        const promptStatus = document.getElementById('prompt-engine-status');
+        const dot = document.getElementById('engine-dot');
+
+        if (provider === 'ollama') {
+            activeModelInfo = { provider: 'ollama', model_name: 'llama3.2' };
+            localStorage.setItem('rag_ai_provider', 'ollama');
+
+            if (btnOllama) btnOllama.className = 'text-xs py-1.5 px-2 rounded-md font-semibold text-center transition-all cursor-pointer bg-primary text-white shadow-xs';
+            if (btnGemini) btnGemini.className = 'text-xs py-1.5 px-2 rounded-md font-semibold text-center transition-all cursor-pointer text-on-surface-variant dark:text-slate-300 hover:text-primary dark:hover:text-white';
+
+            if (titleText) titleText.textContent = 'Ollama (100% Offline Local)';
+            if (modelText) modelText.textContent = 'llama3.2';
+            if (statusText) {
+                statusText.innerHTML = '<span class="material-symbols-outlined text-[13px] mr-1">verified</span> Unlimited Offline AI Active';
+                statusText.className = 'flex items-center text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold';
+            }
+            if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20';
+            if (promptStatus) promptStatus.textContent = 'Ollama (llama3.2)';
+        } else {
+            activeModelInfo = { provider: 'gemini', model_name: 'gemini-3.6-flash' };
+            localStorage.setItem('rag_ai_provider', 'gemini');
+
+            if (btnGemini) btnGemini.className = 'text-xs py-1.5 px-2 rounded-md font-semibold text-center transition-all cursor-pointer bg-primary text-white shadow-xs';
+            if (btnOllama) btnOllama.className = 'text-xs py-1.5 px-2 rounded-md font-semibold text-center transition-all cursor-pointer text-on-surface-variant dark:text-slate-300 hover:text-primary dark:hover:text-white';
+
+            if (titleText) titleText.textContent = 'Gemini Cloud AI';
+            if (modelText) modelText.textContent = 'gemini-3.6-flash';
+            if (statusText) {
+                statusText.innerHTML = '<span class="w-2 h-2 rounded-full bg-primary mr-2 inline-block"></span> Cloud AI Active';
+                statusText.className = 'flex items-center text-primary text-[11px] font-semibold';
+            }
+            if (dot) dot.className = 'w-2 h-2 rounded-full bg-primary ring-4 ring-primary/20';
+            if (promptStatus) promptStatus.textContent = 'Gemini (gemini-3.6-flash)';
+        }
+    }
+
+    async function loadEngineInfo() {
+        // Default to saved choice or Ollama (offline, unlimited)
+        const savedProvider = localStorage.getItem('rag_ai_provider') || 'ollama';
+        selectEngine(savedProvider);
+    }
+
+    // 11. Real History from backend (Grouped by TODAY, YESTERDAY, etc.)
+    async function loadBackendHistory() {
+        const container = document.getElementById('history-groups-container');
+        if (!container) return;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/history`);
+            if (!res.ok) throw new Error("Failed to fetch history");
+
+            const data = await res.json();
+            const grouped = data.history || {};
+            
+            const groupKeys = ["TODAY", "YESTERDAY", "PREVIOUS 7 DAYS", "OLDER"];
+            let totalConvs = 0;
+            container.innerHTML = '';
+
+            groupKeys.forEach(groupName => {
+                const items = grouped[groupName] || [];
+                if (items.length > 0) {
+                    totalConvs += items.length;
+                    const groupSection = document.createElement('div');
+                    groupSection.className = 'history-group-section';
+                    groupSection.innerHTML = `
+                        <h4 class="text-[11px] font-bold tracking-wider text-on-surface-variant/80 uppercase mb-3 px-1">${groupName}</h4>
+                        <div class="space-y-2.5 group-items-list"></div>
+                    `;
+                    const listContainer = groupSection.querySelector('.group-items-list');
+                    items.forEach(item => {
+                        listContainer.appendChild(createConvCard(item));
+                    });
+                    container.appendChild(groupSection);
+                }
+            });
+
+            if (totalConvs === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-on-surface-variant text-sm">
+                        <p class="font-medium text-base mb-1 text-on-surface">No saved conversations yet</p>
+                        <p class="text-xs mb-4">Start a new document intelligence chat to see it saved here.</p>
+                        <button class="bg-primary text-white text-xs font-semibold px-4 py-2 rounded-xl inline-flex items-center gap-1.5 hover:bg-[#4E31C4] transition shadow-xs cursor-pointer" onclick="startNewChat()">
+                            <span class="material-symbols-outlined text-[16px]">add</span> Start New Chat
+                        </button>
+                    </div>
+                `;
+            }
+
+        } catch (err) {
+            console.warn("History load error:", err);
+            container.innerHTML = `
+                <div class="text-center py-10 text-error text-xs">
+                    Failed to load conversation history. Ensure backend server is running.
+                </div>
+            `;
+        }
+    }
+
+    function createConvCard(item) {
+        const div = document.createElement('div');
+        div.className = 'conv-item bg-white dark:bg-[#121826] border border-[#E2DBF8] dark:border-[#20293F] hover:border-primary/60 dark:hover:border-primary/60 rounded-xl p-4 flex items-center justify-between group cursor-pointer transition-all shadow-2xs hover:shadow-xs';
+        div.onclick = () => openConversation(item.id);
+
+        const countBadge = item.msg_count ? `<span class="bg-[#EFF4FF] dark:bg-slate-800 text-primary text-[10px] font-semibold px-2 py-0.5 rounded-md shrink-0">${item.msg_count} msgs</span>` : '';
+        const timeFormatted = item.updated_at ? formatRelativeTime(item.updated_at) : '';
+
+        div.innerHTML = `
+            <div class="flex items-center space-x-3.5 min-w-0 flex-1 pr-3">
+                <div class="w-9 h-9 rounded-lg bg-[#EFEAFE] dark:bg-violet-950/60 text-primary flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">chat</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2">
+                        <h5 class="conv-title text-sm font-semibold text-on-surface group-hover:text-primary truncate transition-colors">${escapeHtml(item.title || 'Untitled Conversation')}</h5>
+                        ${countBadge}
+                    </div>
+                    <p class="conv-preview text-xs text-on-surface-variant truncate mt-0.5">${escapeHtml(item.preview || 'No messages')}</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 shrink-0">
+                <span class="text-[11px] text-on-surface-variant/70">${timeFormatted}</span>
+                <button class="text-on-surface-variant/50 hover:text-error p-1.5 rounded-lg hover:bg-error-container/30 transition-colors cursor-pointer" 
+                    data-conv-id="${item.id}" 
+                    data-conv-title="${escapeHtml(item.title || 'Untitled Conversation')}" 
+                    onclick="handleDeleteBtnClick(event, this)" 
+                    title="Delete conversation">
+                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+            </div>
+        `;
+        return div;
+    }
+
+    let pendingDeleteConvId = null;
+    let pendingTriggerBtn = null;
+    let isDeletingConversation = false;
+
+    function handleDeleteBtnClick(event, btnEl) {
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        const convId = btnEl.getAttribute('data-conv-id');
+        const convTitle = btnEl.getAttribute('data-conv-title') || 'this chat';
+        openDeleteModal(event, convId, convTitle);
+    }
+
+    function openDeleteModal(event, convId, title) {
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        if (!convId) return;
+
+        pendingDeleteConvId = convId;
+        pendingTriggerBtn = event?.currentTarget || null;
+
+        const titleEl = document.getElementById('delete-modal-chat-title');
+        if (titleEl) {
+            titleEl.textContent = title || 'this chat';
+        }
+
+        const overlay = document.getElementById('delete-modal-overlay');
+        if (overlay) {
+            overlay.classList.add('active');
+            // Safe default action: move focus into the Cancel button
+            setTimeout(() => {
+                document.getElementById('delete-modal-cancel')?.focus();
+            }, 40);
+        }
+    }
+
+    function closeDeleteModal() {
+        if (isDeletingConversation) return; // Prevent closing while delete is in-flight
+        const overlay = document.getElementById('delete-modal-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+        pendingDeleteConvId = null;
+        if (pendingTriggerBtn) {
+            try { pendingTriggerBtn.focus(); } catch (_) {}
+            pendingTriggerBtn = null;
+        }
+    }
+
+    async function confirmDeleteConversation() {
+        if (!pendingDeleteConvId || isDeletingConversation) return;
+        isDeletingConversation = true;
+
+        const confirmBtn = document.getElementById('delete-modal-confirm');
+        const cancelBtn = document.getElementById('delete-modal-cancel');
+
+        if (confirmBtn) {
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = `
+                <svg class="animate-spin -ml-0.5 mr-1.5 h-3.5 w-3.5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>Deleting...
+            `;
+        }
+        if (cancelBtn) cancelBtn.disabled = true;
+
+        const convIdToDelete = pendingDeleteConvId;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/conversations/${convIdToDelete}`, { method: 'DELETE' });
+            if (res.ok) {
+                // If the active conversation was deleted, reset chat to fresh state
+                if (currentConversationId === convIdToDelete) {
+                    startNewChat();
+                }
+                // Refresh backend history without full page reload
+                loadBackendHistory();
+            } else {
+                console.error('Delete request failed:', res.status, res.statusText);
+            }
+        } catch (e) {
+            console.error('Delete error:', e);
+        } finally {
+            isDeletingConversation = false;
+            if (confirmBtn) {
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Delete';
+            }
+            if (cancelBtn) cancelBtn.disabled = false;
+            closeDeleteModal();
+        }
+    }
+
+    // Backward-compatibility alias that routes directly to custom modal
+    function deleteConversation(event, convId, title) {
+        openDeleteModal(event, convId, title || 'this chat');
+    }
+
+    // Search Filter for History
+    function filterHistory(query) {
+        const items = document.querySelectorAll('.conv-item');
+        const q = query.toLowerCase().trim();
+        items.forEach(item => {
+            const title = (item.querySelector('.conv-title')?.textContent || '').toLowerCase();
+            const preview = (item.querySelector('.conv-preview')?.textContent || '').toLowerCase();
+            if (title.includes(q) || preview.includes(q)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    function formatRelativeTime(isoStr) {
+        try {
+            const date = new Date(isoStr);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins}m ago`;
+            if (diffHours < 24) return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays}d ago`;
+            return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        } catch {
+            return '';
+        }
+    }
+
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // 12. Custom Gemini API Key (BYOK) Management
+    function toggleKeyVisibility() {
+        const input = document.getElementById('gemini-api-key-input');
+        const icon = document.getElementById('key-vis-icon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = 'visibility';
+        } else {
+            input.type = 'password';
+            icon.textContent = 'visibility_off';
+        }
+    }
+
+    const apiKeyInput = document.getElementById('gemini-api-key-input');
+    if (apiKeyInput) {
+        const savedKey = localStorage.getItem('user_gemini_api_key') || '';
+        if (savedKey) {
+            apiKeyInput.value = savedKey;
+        }
+        apiKeyInput.addEventListener('input', (e) => {
+            localStorage.setItem('user_gemini_api_key', e.target.value.trim());
+        });
+    }
+
+    // Custom Alert / Notice Modal
+    let pendingAlertResolve = null;
+
+    function showCustomAlert(message, title = 'Notice', icon = 'info') {
+        return new Promise((resolve) => {
+            pendingAlertResolve = resolve;
+            const overlay = document.getElementById('alert-modal-overlay');
+            const titleEl = document.getElementById('alert-modal-title');
+            const msgEl = document.getElementById('alert-modal-message');
+            const iconEl = document.getElementById('alert-modal-icon');
+            const iconContainer = document.getElementById('alert-modal-icon-container');
+
+            if (titleEl) titleEl.textContent = title;
+            if (msgEl) msgEl.textContent = message;
+            if (iconEl && iconContainer) {
+                const lowerTitle = (title || '').toLowerCase();
+                const lowerMsg = (message || '').toLowerCase();
+                if (icon === 'success' || lowerTitle.includes('success') || lowerMsg.includes('indexed') || lowerMsg.includes('uploaded')) {
+                    iconEl.textContent = 'check_circle';
+                    iconContainer.className = 'w-9 h-9 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0';
+                } else if (icon === 'error' || lowerTitle.includes('fail') || lowerTitle.includes('error')) {
+                    iconEl.textContent = 'error';
+                    iconContainer.className = 'w-9 h-9 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0';
+                } else {
+                    iconEl.textContent = 'info';
+                    iconContainer.className = 'w-9 h-9 rounded-full bg-primary/15 text-primary flex items-center justify-center shrink-0';
+                }
+            }
+
+            if (overlay) {
+                overlay.classList.add('active');
+                setTimeout(() => {
+                    document.getElementById('alert-modal-ok-btn')?.focus();
+                }, 30);
+            }
+        });
+    }
+
+    function closeCustomAlert() {
+        const overlay = document.getElementById('alert-modal-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+        if (pendingAlertResolve) {
+            const resolve = pendingAlertResolve;
+            pendingAlertResolve = null;
+            resolve();
+        }
+    }
+
+    // Global override for native window.alert
+    window.alert = function (msg) {
+        showCustomAlert(String(msg || ''));
+    };
+
+    // Close Modals on Escape Key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const delOverlay = document.getElementById('delete-modal-overlay');
+            if (delOverlay && delOverlay.classList.contains('active')) {
+                closeDeleteModal();
+            }
+            const alertOverlay = document.getElementById('alert-modal-overlay');
+            if (alertOverlay && alertOverlay.classList.contains('active')) {
+                closeCustomAlert();
+            }
+        }
+    });
+
+    // Initial API loads
+    loadWorkspaceDocs();
+    loadEngineInfo();
+</script>
+
+<!-- Custom ChatGPT-Style Delete Confirmation Modal -->
+<div class="delete-modal-overlay" id="delete-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" aria-describedby="delete-modal-desc" onclick="if(event.target === this) closeDeleteModal()">
+    <div class="delete-modal" onclick="event.stopPropagation()">
+        <h2 id="delete-modal-title">Delete chat?</h2>
+        <p id="delete-modal-desc">
+            This will delete <strong id="delete-modal-chat-title">CHAT TITLE</strong>.
+        </p>
+
+        <div class="delete-modal-actions">
+            <button id="delete-modal-cancel" type="button" class="cancel-button" onclick="closeDeleteModal()">Cancel</button>
+            <button id="delete-modal-confirm" type="button" class="delete-button" onclick="confirmDeleteConversation()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Notice / Alert Modal -->
+<div class="alert-modal-overlay" id="alert-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="alert-modal-title" aria-describedby="alert-modal-message" onclick="if(event.target === this) closeCustomAlert()">
+    <div class="alert-modal" onclick="event.stopPropagation()">
+        <div class="flex items-center space-x-3 mb-2">
+            <div id="alert-modal-icon-container" class="w-9 h-9 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <span id="alert-modal-icon" class="material-symbols-outlined text-[20px]">check_circle</span>
+            </div>
+            <h2 id="alert-modal-title">Notice</h2>
+        </div>
+        <p id="alert-modal-message"></p>
+
+        <div class="alert-modal-actions">
+            <button id="alert-modal-ok-btn" type="button" class="alert-ok-button" onclick="closeCustomAlert()">OK</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

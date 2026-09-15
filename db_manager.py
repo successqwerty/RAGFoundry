@@ -130,10 +130,15 @@ def get_user_conversations_grouped(user_id="user_default"):
     init_db()
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT id, title, created_at, updated_at FROM conversations WHERE user_id = ? ORDER BY updated_at DESC",
-        (user_id,)
-    )
+    cursor.execute("""
+        SELECT c.id, c.title, c.created_at, c.updated_at,
+               (SELECT content FROM messages WHERE conversation_id = c.id AND role = 'assistant' ORDER BY id ASC LIMIT 1) as first_assistant_msg,
+               (SELECT content FROM messages WHERE conversation_id = c.id ORDER BY id ASC LIMIT 1) as first_msg,
+               (SELECT COUNT(*) FROM messages WHERE conversation_id = c.id) as msg_count
+        FROM conversations c 
+        WHERE c.user_id = ? 
+        ORDER BY c.updated_at DESC
+    """, (user_id,))
     rows = cursor.fetchall()
     conn.close()
     
@@ -150,9 +155,14 @@ def get_user_conversations_grouped(user_id="user_default"):
     
     for row in rows:
         conv_date = datetime.fromisoformat(row["updated_at"]).date()
+        raw_preview = row["first_assistant_msg"] or row["first_msg"] or "No messages yet"
+        preview = (raw_preview[:95] + "...") if len(raw_preview) > 95 else raw_preview
         item = {
             "id": row["id"],
             "title": row["title"],
+            "preview": preview,
+            "msg_count": row["msg_count"],
+            "created_at": row["created_at"],
             "updated_at": row["updated_at"]
         }
         if conv_date == today:
@@ -165,6 +175,57 @@ def get_user_conversations_grouped(user_id="user_default"):
             grouped["OLDER"].append(item)
             
     return grouped
+
+def get_all_conversations(user_id="user_default"):
+    """Returns flat list of all conversations for user with message count and preview."""
+    init_db()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT c.id, c.title, c.created_at, c.updated_at,
+               (SELECT content FROM messages WHERE conversation_id = c.id AND role = 'assistant' ORDER BY id ASC LIMIT 1) as first_assistant_msg,
+               (SELECT content FROM messages WHERE conversation_id = c.id ORDER BY id ASC LIMIT 1) as first_msg,
+               (SELECT COUNT(*) FROM messages WHERE conversation_id = c.id) as msg_count
+        FROM conversations c 
+        WHERE c.user_id = ? 
+        ORDER BY c.updated_at DESC
+    """, (user_id,))
+    rows = cursor.fetchall()
+    conn.close()
+
+    result = []
+    for row in rows:
+        raw_preview = row["first_assistant_msg"] or row["first_msg"] or "No messages yet"
+        preview = (raw_preview[:95] + "...") if len(raw_preview) > 95 else raw_preview
+        result.append({
+            "id": row["id"],
+            "title": row["title"],
+            "preview": preview,
+            "msg_count": row["msg_count"],
+            "created_at": row["created_at"],
+            "updated_at": row["updated_at"]
+        })
+    return result
+
+def get_conversation(conversation_id):
+    """Retrieves full conversation metadata and its messages list."""
+    if not conversation_id:
+        return None
+    init_db()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT id, user_id, title, created_at, updated_at FROM conversations WHERE id = ?",
+        (conversation_id,)
+    )
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        conv = dict(row)
+        conv["messages"] = get_conversation_messages(conversation_id)
+        return conv
+    return None
+
 
 def save_message(conversation_id, role, content, sources=None, chunks=None):
     init_db()
