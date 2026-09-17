@@ -127,31 +127,21 @@ aside.sidebar::-webkit-scrollbar {
   background: transparent !important;
 }
 
-/* History Page: Hide Visual Scrollbar while maintaining full scrolling */
-#content-views-scroll.history-view-active,
-#content-views-scroll:has(#view-history:not(.hidden)),
+/* Main Content & Views (Chat, History, Canvas): Hide Visual Scrollbar while maintaining full scrolling */
+#content-views-scroll,
+#view-new-chat,
 #view-history,
-.history-page-scroll-container {
+.history-page-scroll-container,
+.workspace-container {
   scrollbar-width: none !important; /* Firefox */
   -ms-overflow-style: none !important; /* IE / Edge */
 }
 
-#content-views-scroll.history-view-active::-webkit-scrollbar {
-  width: 0px !important;
-  height: 0px !important;
-  display: none !important;
-  background: transparent !important;
-}
-
-#content-views-scroll:has(#view-history:not(.hidden))::-webkit-scrollbar {
-  width: 0px !important;
-  height: 0px !important;
-  display: none !important;
-  background: transparent !important;
-}
-
+#content-views-scroll::-webkit-scrollbar,
+#view-new-chat::-webkit-scrollbar,
 #view-history::-webkit-scrollbar,
-.history-page-scroll-container::-webkit-scrollbar {
+.history-page-scroll-container::-webkit-scrollbar,
+.workspace-container::-webkit-scrollbar {
   width: 0px !important;
   height: 0px !important;
   display: none !important;
