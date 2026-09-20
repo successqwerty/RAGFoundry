@@ -941,9 +941,9 @@ Search, reason, and answer using your private document knowledge base.
 </div>
 
 <script>
-    const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
-      ? "http://localhost:8000" 
-      : window.location.origin;
+    // In production or when served directly by FastAPI, use relative paths ("").
+    // Only route to port 8000 when developing with a separate frontend server on port 3000.
+    const API_BASE_URL = (window.location.port === "3000") ? "http://localhost:8000" : "";
 
     let activeModelInfo = { provider: "gemini", model_name: "gemini-3.6-flash" };
     

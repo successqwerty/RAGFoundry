@@ -1,10 +1,31 @@
-pypdf
-sentence-transformers
-faiss-cpu
-google-genai
-python-dotenv
-streamlit
-ollama
+# FastAPI Backend & Server
 fastapi
 uvicorn
-pydantic
+python-multipart
+pydantic
+python-dotenv
+
+# RAG, Vector Search & Embeddings
+sentence-transformers
+faiss-cpu
+numpy
+
+# LLM Providers
+google-genai
+ollama
+
+# Multi-Format Document Loaders
+pypdf
+python-docx
+python-pptx
+pandas
+openpyxl
+beautifulsoup4
+PyYAML
+Pillow
+
+# Testing & Client
+httpx
+
+# Streamlit Interface
+streamlit

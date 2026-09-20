@@ -1,8 +1,7 @@
 // RAGFoundry SaaS Frontend Connection & UI Management Logic
 
-const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
-  ? "http://localhost:8000" 
-  : window.location.origin;
+const API_BASE_URL = (window.location.port === "3000") ? "http://localhost:8000" : "";
+
 
 // State
 let currentTheme = localStorage.getItem("ragfoundry_theme") || "light";
@@ -145,7 +144,13 @@ async function fetchWorkspaceDocuments() {
     }
 
     // Update bottom status bar
-    indexedCountText.textContent = `${indexedDocsCount} Document(s) Indexed`;
+    if (indexedDocsCount === 0) {
+      indexedCountText.textContent = "0 Documents Indexed";
+    } else if (indexedDocsCount === 1) {
+      indexedCountText.textContent = "1 Document Indexed";
+    } else {
+      indexedCountText.textContent = `${indexedDocsCount} Documents Indexed`;
+    }
   } catch (err) {
     console.warn("Could not load documents from API:", err);
   }
@@ -236,10 +241,18 @@ uploadDropzone.addEventListener("drop", async (e) => {
 
 
 
-// 7. Main Query Execution (`POST /ask`)
 async function handleSendQuery() {
   const question = mainQueryInput.value.trim();
   if (!question) return;
+
+  if (indexedDocsCount === 0) {
+    if (typeof showCustomAlert === 'function') {
+      showCustomAlert("Upload a PDF, DOCX, or TXT file to start asking questions.", "Please upload a document first.", "info");
+    } else {
+      alert("Please upload a document first. Upload a PDF, DOCX, or TXT file to start asking questions.");
+    }
+    return;
+  }
 
   sendQueryBtn.disabled = true;
   sendQueryBtn.innerHTML = `<div class="spinner-sm"></div>`;

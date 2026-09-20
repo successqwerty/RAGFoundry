@@ -7,7 +7,10 @@ _model_instance = None
 def get_embedding_model():
     global _model_instance
     if _model_instance is None:
-        _model_instance = SentenceTransformer("all-MiniLM-L6-v2")
+        try:
+            _model_instance = SentenceTransformer("all-MiniLM-L6-v2", local_files_only=True)
+        except Exception:
+            _model_instance = SentenceTransformer("all-MiniLM-L6-v2")
     return _model_instance
 
 def get_embedding(text):

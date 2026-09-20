@@ -27,7 +27,8 @@ class TestRAGFoundryAPI(unittest.TestCase):
         payload = {
             "question": "What is Human Resource Management?",
             "k": 2,
-            "provider": "gemini"
+            "provider": "gemini",
+            "stream": False
         }
         response = self.client.post("/ask", json=payload)
         self.assertEqual(response.status_code, 200)
@@ -51,14 +52,14 @@ class TestRAGFoundryAPI(unittest.TestCase):
     def test_05_multi_turn_conversations(self):
         """Test multi-turn chat persistence: Q1 creates conv, Q2 appends to same conv."""
         # Turn 1
-        r1 = self.client.post("/ask", json={"question": "What is Article 12?", "k": 2, "provider": "gemini"})
+        r1 = self.client.post("/ask", json={"question": "What is Article 12?", "k": 2, "provider": "gemini", "stream": False})
         self.assertEqual(r1.status_code, 200)
         d1 = r1.json()
         conv_id = d1.get("conversation_id")
         self.assertTrue(conv_id, "Response should include conversation_id")
 
         # Turn 2 in SAME conversation
-        r2 = self.client.post("/ask", json={"conversation_id": conv_id, "question": "What are the important cases?", "k": 2, "provider": "gemini"})
+        r2 = self.client.post("/ask", json={"conversation_id": conv_id, "question": "What are the important cases?", "k": 2, "provider": "gemini", "stream": False})
         self.assertEqual(r2.status_code, 200)
         d2 = r2.json()
         self.assertEqual(d2.get("conversation_id"), conv_id, "Turn 2 must belong to SAME conversation_id")
@@ -82,7 +83,7 @@ class TestRAGFoundryAPI(unittest.TestCase):
     def test_06_conversations_list_and_delete(self):
         """Test GET /conversations and DELETE /conversations/{id}."""
         # Create test conversation
-        r = self.client.post("/ask", json={"question": "Test question for list", "k": 2, "provider": "gemini"})
+        r = self.client.post("/ask", json={"question": "Test question for list", "k": 2, "provider": "gemini", "stream": False})
         self.assertEqual(r.status_code, 200)
         conv_id = r.json().get("conversation_id")
 

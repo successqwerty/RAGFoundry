@@ -45,10 +45,44 @@ def init_db():
         content TEXT,
         sources_json TEXT,
         chunks_json TEXT,
+        precision REAL DEFAULT 0.0,
+        accuracy REAL DEFAULT 0.0,
+        precision_pct TEXT DEFAULT '0.0%',
+        accuracy_pct TEXT DEFAULT '0.0%',
+        elapsed_sec REAL DEFAULT 0.0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (conversation_id) REFERENCES conversations (id)
     )
     """)
+    
+    # Auto-migrate existing messages table if columns are missing
+    cursor.execute("PRAGMA table_info(messages)")
+    existing_cols = [r[1] for r in cursor.fetchall()]
+    if "precision" not in existing_cols and len(existing_cols) > 0:
+        try:
+            cursor.execute("ALTER TABLE messages ADD COLUMN precision REAL DEFAULT 0.0")
+        except Exception:
+            pass
+    if "accuracy" not in existing_cols and len(existing_cols) > 0:
+        try:
+            cursor.execute("ALTER TABLE messages ADD COLUMN accuracy REAL DEFAULT 0.0")
+        except Exception:
+            pass
+    if "precision_pct" not in existing_cols and len(existing_cols) > 0:
+        try:
+            cursor.execute("ALTER TABLE messages ADD COLUMN precision_pct TEXT DEFAULT '0.0%'")
+        except Exception:
+            pass
+    if "accuracy_pct" not in existing_cols and len(existing_cols) > 0:
+        try:
+            cursor.execute("ALTER TABLE messages ADD COLUMN accuracy_pct TEXT DEFAULT '0.0%'")
+        except Exception:
+            pass
+    if "elapsed_sec" not in existing_cols and len(existing_cols) > 0:
+        try:
+            cursor.execute("ALTER TABLE messages ADD COLUMN elapsed_sec REAL DEFAULT 0.0")
+        except Exception:
+            pass
     
     # Documents table
     cursor.execute("""
@@ -227,7 +261,7 @@ def get_conversation(conversation_id):
     return None
 
 
-def save_message(conversation_id, role, content, sources=None, chunks=None):
+def save_message(conversation_id, role, content, sources=None, chunks=None, precision=0.0, accuracy=0.0, precision_pct=None, accuracy_pct=None, elapsed_sec=0.0):
     init_db()
     conn = get_connection()
     cursor = conn.cursor()
@@ -236,9 +270,17 @@ def save_message(conversation_id, role, content, sources=None, chunks=None):
     chunks_str = json.dumps(chunks) if chunks else None
     now = datetime.now().isoformat()
     
+    prec_num = float(precision or 0.0)
+    acc_num = float(accuracy or 0.0)
+    prec_pct = precision_pct or (f"{prec_num:.1f}%" if prec_num > 0 else "0.0%")
+    acc_pct = accuracy_pct or (f"{acc_num:.1f}%" if acc_num > 0 else "0.0%")
+    elapsed_num = float(elapsed_sec or 0.0)
+    
     cursor.execute(
-        "INSERT INTO messages (conversation_id, role, content, sources_json, chunks_json, created_at) VALUES (?, ?, ?, ?, ?, ?)",
-        (conversation_id, role, content, sources_str, chunks_str, now)
+        """INSERT INTO messages 
+           (conversation_id, role, content, sources_json, chunks_json, precision, accuracy, precision_pct, accuracy_pct, elapsed_sec, created_at) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (conversation_id, role, content, sources_str, chunks_str, prec_num, acc_num, prec_pct, acc_pct, elapsed_num, now)
     )
     
     cursor.execute("UPDATE conversations SET updated_at = ? WHERE id = ?", (now, conversation_id))
@@ -251,7 +293,7 @@ def get_conversation_messages(conversation_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT role, content, sources_json, chunks_json, created_at FROM messages WHERE conversation_id = ? ORDER BY id ASC",
+        "SELECT * FROM messages WHERE conversation_id = ? ORDER BY id ASC",
         (conversation_id,)
     )
     rows = cursor.fetchall()
@@ -259,12 +301,44 @@ def get_conversation_messages(conversation_id):
     
     messages = []
     for r in rows:
+        r_dict = dict(r)
+        
+        chunks = json.loads(r_dict["chunks_json"]) if r_dict.get("chunks_json") else []
+        sources = json.loads(r_dict["sources_json"]) if r_dict.get("sources_json") else []
+        
+        msg_precision = r_dict.get("precision", 0.0) or 0.0
+        msg_accuracy = r_dict.get("accuracy", 0.0) or 0.0
+        msg_precision_pct = r_dict.get("precision_pct")
+        msg_accuracy_pct = r_dict.get("accuracy_pct")
+        
+        # Calculate dynamic fallback if precision/accuracy was not stored on older rows
+        if (msg_accuracy == 0.0 or msg_accuracy is None) and r_dict.get("role") == "assistant" and chunks:
+            try:
+                from rag_pipeline import calculate_rag_metrics
+                metrics = calculate_rag_metrics("", r_dict.get("content", ""), chunks)
+                msg_precision = metrics["precision"]
+                msg_accuracy = metrics["accuracy"]
+                msg_precision_pct = metrics["precision_pct"]
+                msg_accuracy_pct = metrics["accuracy_pct"]
+            except Exception:
+                pass
+
+        if not msg_precision_pct:
+            msg_precision_pct = f"{float(msg_precision):.1f}%" if msg_precision else "0.0%"
+        if not msg_accuracy_pct:
+            msg_accuracy_pct = f"{float(msg_accuracy):.1f}%" if msg_accuracy else "0.0%"
+
         messages.append({
-            "role": r["role"],
-            "content": r["content"],
-            "sources": json.loads(r["sources_json"]) if r["sources_json"] else [],
-            "chunks": json.loads(r["chunks_json"]) if r["chunks_json"] else [],
-            "created_at": r["created_at"]
+            "role": r_dict["role"],
+            "content": r_dict["content"],
+            "sources": sources,
+            "chunks": chunks,
+            "precision": float(msg_precision),
+            "accuracy": float(msg_accuracy),
+            "precision_pct": msg_precision_pct,
+            "accuracy_pct": msg_accuracy_pct,
+            "elapsed_sec": float(r_dict.get("elapsed_sec") or 0.0),
+            "created_at": r_dict["created_at"]
         })
     return messages
 

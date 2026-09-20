@@ -144,9 +144,18 @@ def generate_answer_stream_gemini(question, context_chunks, api_key=None, model_
     load_dotenv(override=True)
     key = api_key or os.environ.get("GEMINI_API_KEY")
     if not key:
-        # If no key, fall back to local Ollama directly
+        # If no key, attempt Ollama; if Ollama is unreachable, prompt user to add Gemini BYOK key
+        ollama_failed = False
+        chunks_streamed = []
         for chunk in generate_answer_stream_ollama(question, context_chunks, model_name=OLLAMA_MODEL):
+            if "unavailable" in chunk.lower() or "connection" in chunk.lower():
+                ollama_failed = True
+                break
+            chunks_streamed.append(chunk)
             yield chunk
+
+        if ollama_failed:
+            yield "Gemini API key is required for cloud deployment. Please enter your Gemini API Key in the left sidebar under 'GEMINI API KEY (BYOK)' to start asking questions."
         return
 
     candidate_models = ["gemini-3.6-flash", model_name, "gemini-2.5-flash", "gemini-1.5-flash"]
@@ -176,20 +185,34 @@ def generate_answer_stream_gemini(question, context_chunks, api_key=None, model_
             err_str = str(e)
             if "404" in err_str or "NOT_FOUND" in err_str or "not found" in err_str.lower():
                 continue
+            elif "API_KEY_INVALID" in err_str or "INVALID_ARGUMENT" in err_str and "key" in err_str.lower() or "not valid" in err_str.lower():
+                yield "Invalid Gemini API key. Please check your Gemini API key in the sidebar under 'GEMINI API KEY (BYOK)'."
+                return
             elif "429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "quota" in err_str.lower():
-                # Automatic seamless fallback to local Ollama!
+                # Attempt local Ollama fallback
                 try:
+                    ollama_chunks = []
+                    ollama_failed = False
                     for chunk in generate_answer_stream_ollama(question, context_chunks, model_name=OLLAMA_MODEL):
-                        yield chunk
-                    return
+                        if "unavailable" in chunk.lower() or "connection" in chunk.lower():
+                            ollama_failed = True
+                            break
+                        ollama_chunks.append(chunk)
+                    if not ollama_failed and ollama_chunks:
+                        for c in ollama_chunks:
+                            yield c
+                        return
+                    else:
+                        yield "Gemini Cloud quota reached (429). Please verify your Gemini quota or use another API key."
+                        return
                 except Exception:
-                    yield f"Gemini Cloud quota reached (429). Please switch to Ollama in the sidebar."
+                    yield "Gemini Cloud quota reached (429). Please verify your Gemini quota or use another API key."
                     return
             else:
                 yield f"Unable to generate answer via Gemini Cloud: {e}"
                 return
 
-    # If all candidate models failed, fall back to Ollama
+    # If all candidate models failed, fall back to Ollama if available
     try:
         for chunk in generate_answer_stream_ollama(question, context_chunks, model_name=OLLAMA_MODEL):
             yield chunk

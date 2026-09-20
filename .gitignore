@@ -1,22 +1,109 @@
-# Environment files (API Keys)
+# ==========================================
+# Environment Variables & Secrets
+# ==========================================
 .env
+.env.*
 *.env
+*.key
+*.pem
+*.cert
+secrets/
 
-# Python cache files
+# ==========================================
+# Python Bytecode & Cache
+# ==========================================
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ==========================================
 # Virtual Environments
+# ==========================================
 .venv/
 env/
 venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Vector Stores & Large Data Index Files
+# ==========================================
+# Local Databases & State
+# ==========================================
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ==========================================
+# Vector Stores & Retrieval Indexes
+# ==========================================
 *.index
 *.faiss
 *.pkl
+vector_meta.json
 
-# IDE settings
+# ==========================================
+# Uploaded Documents & Knowledge Base Data
+# (Preserves directory structure via .gitkeep)
+# ==========================================
+data/*
+!data/.gitkeep
+
+# ==========================================
+# IDE & Editor Settings
+# ==========================================
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# ==========================================
+# Operating System Files
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Logs & Temporary Files
+# ==========================================
+*.log
+logs/
+tmp/
+temp/
+scratch/

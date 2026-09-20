@@ -1229,13 +1229,25 @@ if active_conv_id:
                     </div>
                 """, unsafe_allow_html=True)
             else:
+                acc_display = msg.get("accuracy_pct") or (f"{msg.get('accuracy', 0):.1f}%" if msg.get("accuracy") else None)
+                prec_display = msg.get("precision_pct") or (f"{msg.get('precision', 0):.1f}%" if msg.get("precision") else None)
+                
+                metrics_badges = ""
+                if acc_display and acc_display not in ["0.0%", "0%"]:
+                    metrics_badges += f'<span class="rf-badge-blue" style="margin-right:6px;">Accuracy: {acc_display}</span>'
+                if prec_display and prec_display not in ["0.0%", "0%"]:
+                    metrics_badges += f'<span class="rf-badge-purple" style="margin-right:6px;">Precision: {prec_display}</span>'
+
                 st.markdown(f"""
                     <div class="rf-ai-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <div style="font-size: 14px; font-weight: 600; color: {T['text_main']}; display: flex; align-items: center; gap: 6px;">
                                 <span style="color: {T['btn_primary_bg']};">✦</span> RAGFoundry
                             </div>
-                            <span class="rf-badge-mint">✓ Grounded in your documents</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                {metrics_badges}
+                                <span class="rf-badge-mint">✓ Grounded in your documents</span>
+                            </div>
                         </div>
                         <div style="font-size: 15px; line-height: 1.65; color: {T['text_main']};">
                             {msg['content']}
@@ -1346,9 +1358,19 @@ if query_to_execute:
                 """, unsafe_allow_html=True)
             elif event["type"] == "complete":
                 elapsed_sec = event.get("elapsed_sec", 0.0)
+                precision_val = event.get("precision", 0.0)
+                accuracy_val = event.get("accuracy", 0.0)
+                precision_pct = event.get("precision_pct", "0.0%")
+                accuracy_pct = event.get("accuracy_pct", "0.0%")
                 
         status_placeholder.empty()
         
+        metrics_badges = ""
+        if accuracy_pct and accuracy_pct not in ["0.0%", "0%"]:
+            metrics_badges += f'<span class="rf-badge-blue" style="margin-right:6px;">Accuracy: {accuracy_pct}</span>'
+        if precision_pct and precision_pct not in ["0.0%", "0%"]:
+            metrics_badges += f'<span class="rf-badge-purple" style="margin-right:6px;">Precision: {precision_pct}</span>'
+
         timing_label = f"✓ Answer generated · {elapsed_sec}s" if elapsed_sec > 0 else "✓ Grounded in your documents"
         answer_card_placeholder.markdown(f"""
             <div class="rf-ai-card">
@@ -1356,7 +1378,10 @@ if query_to_execute:
                     <div style="font-size: 14px; font-weight: 600; color: {T['text_main']}; display: flex; align-items: center; gap: 6px;">
                         <span style="color: {T['btn_primary_bg']};">✦</span> RAGFoundry
                     </div>
-                    <span class="rf-badge-mint">{timing_label}</span>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        {metrics_badges}
+                        <span class="rf-badge-mint">{timing_label}</span>
+                    </div>
                 </div>
                 <div style="font-size: 15px; line-height: 1.65; color: {T['text_main']};">
                     {accumulated_answer}
@@ -1369,7 +1394,12 @@ if query_to_execute:
             "assistant",
             accumulated_answer,
             sources=retrieved_sources,
-            chunks=retrieved_chunks
+            chunks=retrieved_chunks,
+            precision=precision_val,
+            accuracy=accuracy_val,
+            precision_pct=precision_pct,
+            accuracy_pct=accuracy_pct,
+            elapsed_sec=elapsed_sec
         )
         
         if "last_error" in st.session_state:
