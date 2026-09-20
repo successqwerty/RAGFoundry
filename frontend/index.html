@@ -350,13 +350,22 @@ html.dark .assistant-card summary {
 html.dark .assistant-card summary:hover {
   color: #c4b5fd !important;
 }
-html.dark .assistant-card [id^="sources-drawer"] div {
-  background-color: #1e2538 !important;
-  color: #c4b5fd !important;
-  border-color: #3b3363 !important;
+
+/* Evidence & Sources Clean Row Styling */
+.source-row {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
-html.dark .assistant-card [id^="sources-drawer"] span {
-  color: #a78bfa !important;
+.source-row:hover {
+  transform: translateY(-1px);
+}
+html.dark .source-row {
+  background-color: #151C2C !important;
+  border-color: #222D44 !important;
+  color: #CBD5E1 !important;
+}
+html.dark .source-row:hover {
+  background-color: #1C2438 !important;
+  border-color: #4C3A7A !important;
 }
 
 /* User Bubble Question Text Styling */
@@ -367,6 +376,28 @@ html.dark .assistant-card [id^="sources-drawer"] span {
 html.dark .user-bubble {
   background-color: #1A2338 !important;
   border-color: #263554 !important;
+}
+
+/* Streaming text caret / cursor */
+.streaming-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.15em;
+  vertical-align: -0.15em;
+  margin-left: 2px;
+  background-color: #7C3AED;
+  border-radius: 1px;
+  animation: blink-caret 0.75s ease-in-out infinite;
+  pointer-events: none;
+}
+
+html.dark .streaming-caret {
+  background-color: #A78BFA;
+}
+
+@keyframes blink-caret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 html.dark .user-bubble .text-primary {
@@ -740,19 +771,8 @@ html.dark .alert-ok-button:hover {
 <div>
 <h3 class="text-[11px] font-semibold tracking-wider text-on-surface-variant/80 uppercase mb-2.5 px-1">WORKSPACE</h3>
 <div class="space-y-2" id="sidebar-doc-container">
-<!-- Indexed Document Item 1 -->
-<div class="bg-white border border-[#D5CDF7] rounded-xl p-3 flex justify-between items-center text-xs shadow-xs hover:border-primary/40 transition-colors">
-<span class="truncate font-medium text-on-surface pr-2" id="doc-name-1">coi unit 2 (1).docx</span>
-<span class="bg-[#EFF4FF] text-primary font-semibold text-[11px] px-2 py-0.5 rounded-md flex items-center shrink-0">
-<span class="material-symbols-outlined text-[13px] mr-1">check</span> Indexed
-</span>
-</div>
-<!-- Indexed Document Item 2 -->
-<div class="bg-white border border-[#D5CDF7] rounded-xl p-3 flex justify-between items-center text-xs shadow-xs hover:border-primary/40 transition-colors">
-<span class="truncate font-medium text-on-surface pr-2" id="doc-name-2">Constitution of In...</span>
-<span class="bg-[#EFF4FF] text-primary font-semibold text-[11px] px-2 py-0.5 rounded-md flex items-center shrink-0">
-<span class="material-symbols-outlined text-[13px] mr-1">check</span> Indexed
-</span>
+<div class="text-[11px] text-on-surface-variant/60 italic p-2 text-center" id="no-docs-placeholder">
+    No documents uploaded
 </div>
 </div>
 
@@ -880,7 +900,7 @@ Search, reason, and answer using your private document knowledge base.
 <textarea class="w-full bg-transparent border-0 resize-none focus:ring-0 p-0 text-sm md:text-base text-on-surface placeholder-on-surface-variant/60 min-h-[90px] outline-none" id="prompt-input" placeholder="Ask anything about your documents..."></textarea>
 <div class="prompt-status-text absolute bottom-4 left-4 flex items-center space-x-2 text-[11px] text-on-surface-variant font-medium">
 <span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
-<span id="prompt-doc-count">2 Document(s) Indexed</span>
+<span id="prompt-doc-count">0 Documents Indexed</span>
 <span class="text-gray-400 dark:text-gray-600">•</span>
 <span id="prompt-engine-status">Ollama (llama3.2)</span>
 </div>
@@ -930,6 +950,7 @@ Search, reason, and answer using your private document knowledge base.
     // Persistent Multi-Turn Conversation State
     let currentConversationId = null;
     let currentConversationTitle = "";
+    let currentDocCount = 0;
 
     // 1. Tab and View state switcher
     function switchView(viewName) {
@@ -1078,43 +1099,19 @@ Search, reason, and answer using your private document knowledge base.
             article.className = 'assistant-card bg-white dark:bg-[#121826] border border-slate-200 dark:border-[#20293F] rounded-2xl p-6 shadow-md space-y-4 mb-4';
 
             const elapsed = elapsedSec !== null ? elapsedSec : (msg.elapsed_sec || null);
-            const elapsedHtml = elapsed ? `<span class="text-[11px] text-slate-500 dark:text-slate-400">⚡ ${Number(elapsed).toFixed(2)}s</span>` : '';
+            const elapsedHtml = elapsed ? `<span class="text-[11px] font-medium text-slate-500 dark:text-slate-400">⚡ ${Number(elapsed).toFixed(2)}s</span>` : '';
 
-            const sources = msg.sources || [];
-            const uniqueDrawerId = 'sources-drawer-' + Math.random().toString(36).substring(2, 9);
-            let sourcesHtml = '';
-            if (sources.length > 0) {
-                const srcItems = sources.map(src => `
-                    <div class="text-xs text-primary bg-[#EFF4FF] dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-primary/20 flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-[14px]">description</span> ${escapeHtml(src)}
-                    </div>
-                `).join('');
-
-                sourcesHtml = `
-                    <div class="pt-3 border-t border-slate-100 dark:border-[#1C253B]">
-                        <button class="w-full flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 py-1 transition cursor-pointer" onclick="toggleSourcesDrawerById('${uniqueDrawerId}')">
-                            <span class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary text-[18px]">menu_book</span>
-                                <span>Evidence &amp; Sources (${sources.length})</span>
-                            </span>
-                            <span class="text-[11px] font-normal text-slate-500 dark:text-slate-400 truncate max-w-xs">${escapeHtml(sources[0])}</span>
-                        </button>
-                        <div id="${uniqueDrawerId}" class="mt-2 space-y-1 hidden">
-                            ${srcItems}
-                        </div>
-                    </div>
-                `;
-            }
+            const sourcesHtml = renderSourcesSectionHtml(msg.sources || []);
 
             article.innerHTML = `
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#1C253B]">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#1C253B] flex-wrap gap-2">
                     <div class="flex items-center gap-2.5">
                         <div class="h-6 w-6 rounded-md bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-primary">
                             <span class="material-symbols-outlined text-[16px]">hub</span>
                         </div>
                         <span class="text-sm font-bold text-slate-900 dark:text-white tracking-wide">RAGFoundry</span>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
                         ${elapsedHtml}
                         <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/80">
                             <span class="material-symbols-outlined text-[14px]">check</span>
@@ -1129,9 +1126,57 @@ Search, reason, and answer using your private document knowledge base.
         }
     }
 
-    function toggleSourcesDrawerById(id) {
+    function renderSourcesSectionHtml(sources) {
+        if (!sources || sources.length === 0) return '';
+        const uniqueDrawerId = 'sources-drawer-' + Math.random().toString(36).substring(2, 9);
+
+        const srcItems = sources.map(src => {
+            const parts = src.split(" · ");
+            const filename = parts[0];
+            const pageInfo = parts.length > 1 ? parts.slice(1).join(" · ") : null;
+
+            return `
+                <div class="source-row flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-50/90 dark:bg-[#151C2C] hover:bg-violet-50/70 dark:hover:bg-[#1C2438] border border-slate-200/70 dark:border-[#222D44] hover:border-violet-300/60 dark:hover:border-[#4C3A7A] transition-all">
+                    <div class="flex items-center gap-2 min-w-0 truncate">
+                        <span class="material-symbols-outlined text-primary dark:text-violet-400 text-[15px] shrink-0">description</span>
+                        <span class="truncate font-semibold text-slate-800 dark:text-slate-200">${escapeHtml(filename)}</span>
+                    </div>
+                    ${pageInfo ? `<span class="shrink-0 text-[11px] font-medium text-slate-500 dark:text-slate-400 bg-white/90 dark:bg-[#0F1420] px-2 py-0.5 rounded border border-slate-200/60 dark:border-[#243048]">${escapeHtml(pageInfo)}</span>` : ''}
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <div class="pt-2.5 mt-2 border-t border-slate-100 dark:border-[#1C253B]">
+                <button class="w-full flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-violet-300 py-1 transition-colors cursor-pointer group" onclick="toggleSourcesDrawerById('${uniqueDrawerId}', this)">
+                    <span class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary dark:text-violet-400 text-[16px] group-hover:scale-105 transition-transform">menu_book</span>
+                        <span>Evidence &amp; Sources <span class="font-normal opacity-75">(${sources.length})</span></span>
+                    </span>
+                    <span class="flex items-center gap-1.5 text-[11px] font-normal text-slate-400 dark:text-slate-500 truncate max-w-xs group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
+                        <span class="truncate">${escapeHtml(sources[0])}</span>
+                        <span class="material-symbols-outlined text-[15px] transition-transform duration-200 chevron-icon">expand_more</span>
+                    </span>
+                </button>
+                <div id="${uniqueDrawerId}" class="mt-2 space-y-1.5 hidden">
+                    ${srcItems}
+                </div>
+            </div>
+        `;
+    }
+
+    function toggleSourcesDrawerById(id, btn) {
         const drawer = document.getElementById(id);
-        if (drawer) drawer.classList.toggle('hidden');
+        if (drawer) {
+            drawer.classList.toggle('hidden');
+            const targetBtn = btn || (window.event && window.event.currentTarget);
+            if (targetBtn) {
+                const chevron = targetBtn.querySelector('.chevron-icon');
+                if (chevron) {
+                    chevron.style.transform = drawer.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+                }
+            }
+        }
     }
 
     // 5. Connect Multi-Turn RAG API (handleSend)
@@ -1140,6 +1185,16 @@ Search, reason, and answer using your private document knowledge base.
         const question = input.value.trim();
         if (!question) {
             input.focus();
+            return;
+        }
+
+        // Guard: Check whether there are any currently indexed documents
+        if (currentDocCount === 0) {
+            showCustomAlert(
+                "Upload a PDF, DOCX, or TXT file to start asking questions.",
+                "Please upload a document first.",
+                "info"
+            );
             return;
         }
 
@@ -1162,29 +1217,40 @@ Search, reason, and answer using your private document knowledge base.
         // 1. Immediately append user bubble to stream
         appendMessageToStream({ role: 'user', content: question });
 
-        // 2. Append temporary assistant loading card
-        const loadingArticle = document.createElement('article');
-        loadingArticle.className = 'assistant-card bg-white dark:bg-[#121826] border border-slate-200 dark:border-[#20293F] rounded-2xl p-6 shadow-md space-y-4 mb-4';
-        loadingArticle.innerHTML = `
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#1C253B]">
+        // 2. Append live assistant streaming card
+        const assistantCard = document.createElement('article');
+        assistantCard.className = 'assistant-card bg-white dark:bg-[#121826] border border-slate-200 dark:border-[#20293F] rounded-2xl p-6 shadow-md space-y-4 mb-4 transition-all';
+        
+        const cardUniqueId = Math.random().toString(36).substring(2, 9);
+        const headerRightId = `header-right-${cardUniqueId}`;
+        const contentId = `content-body-${cardUniqueId}`;
+        const sourcesId = `sources-drawer-container-${cardUniqueId}`;
+
+        assistantCard.innerHTML = `
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#1C253B] flex-wrap gap-2">
                 <div class="flex items-center gap-2.5">
                     <div class="h-6 w-6 rounded-md bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-primary">
                         <span class="material-symbols-outlined text-[16px]">hub</span>
                     </div>
                     <span class="text-sm font-bold text-slate-900 dark:text-white tracking-wide">RAGFoundry</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-[11px] text-slate-500 dark:text-slate-400 animate-pulse">Processing...</span>
+                <div id="${headerRightId}" class="flex items-center gap-2 flex-wrap">
+                    <span class="inline-flex items-center gap-1.5 text-xs text-primary dark:text-violet-400 font-medium animate-pulse">
+                        <span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>
+                        <span class="stage-label">Searching documents...</span>
+                    </span>
                 </div>
             </div>
-            <div class="text-sm text-primary font-medium flex items-center gap-2 py-2">
-                <span class="material-symbols-outlined text-lg animate-spin">progress_activity</span>
-                <span>Searching document knowledge base &amp; generating answer...</span>
+            <div id="${contentId}" class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed space-y-3">
+                <div class="text-slate-400 dark:text-slate-500 text-xs flex items-center gap-1.5 py-1">
+                    <span class="material-symbols-outlined text-sm animate-pulse">hourglass_top</span>
+                    <span>Thinking &amp; retrieving context...</span>
+                </div>
             </div>
+            <div id="${sourcesId}"></div>
         `;
-        stream.appendChild(loadingArticle);
+        stream.appendChild(assistantCard);
 
-        // Scroll down
         if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
 
         // Button loading state
@@ -1192,6 +1258,15 @@ Search, reason, and answer using your private document knowledge base.
         icon.textContent = 'hourglass_empty';
         icon.classList.add('animate-spin');
         input.value = '';
+
+        const headerRightEl = document.getElementById(headerRightId);
+        const contentEl = document.getElementById(contentId);
+        const sourcesContainerEl = document.getElementById(sourcesId);
+
+        let accumulatedAnswer = "";
+        let retrievedSources = [];
+        let retrievedChunks = [];
+        let hasStartedStreamingTokens = false;
 
         try {
             const userKeyInput = document.getElementById('gemini-api-key-input');
@@ -1207,7 +1282,8 @@ Search, reason, and answer using your private document knowledge base.
                     k: 5,
                     provider: activeModelInfo.provider,
                     model_name: activeModelInfo.model_name,
-                    api_key: customApiKey || undefined
+                    api_key: customApiKey || undefined,
+                    stream: true
                 })
             });
 
@@ -1216,36 +1292,156 @@ Search, reason, and answer using your private document knowledge base.
                 throw new Error(errData.detail || `Server error ${res.status}`);
             }
 
-            const data = await res.json();
+            const contentType = res.headers.get("content-type") || "";
 
-            // Set/confirm conversation ID returned from backend
-            currentConversationId = data.conversation_id;
+            if (contentType.includes("text/event-stream") && res.body) {
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                let sseBuffer = "";
 
-            // Remove loading card and append real assistant answer
-            loadingArticle.remove();
-            appendMessageToStream({
-                role: 'assistant',
-                content: data.answer,
-                sources: data.sources || [],
-                chunks: data.retrieved_chunks || []
-            }, data.elapsed_sec);
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
 
-            // Update conversation header meta
-            const totalBubbles = stream.children.length;
-            document.getElementById('chat-header-count').textContent = `${totalBubbles} message${totalBubbles === 1 ? '' : 's'}`;
+                    sseBuffer += decoder.decode(value, { stream: true });
+                    const lines = sseBuffer.split("\n");
+                    sseBuffer = lines.pop(); // save incomplete line
 
-            // Update placeholder
-            input.placeholder = "Ask a follow-up...";
+                    for (const rawLine of lines) {
+                        const line = rawLine.trim();
+                        if (!line || !line.startsWith("data:")) continue;
+                        const jsonStr = line.substring(5).trim();
+                        if (!jsonStr) continue;
 
-            // Refresh History list in background
-            loadBackendHistory();
+                        try {
+                            const event = JSON.parse(jsonStr);
+                            processStreamEvent(event);
+                        } catch (e) {
+                            console.error("Error parsing SSE JSON:", e, jsonStr);
+                        }
+                    }
+                }
+
+                if (sseBuffer.trim().startsWith("data:")) {
+                    try {
+                        const event = JSON.parse(sseBuffer.trim().substring(5).trim());
+                        processStreamEvent(event);
+                    } catch (e) {}
+                }
+
+            } else {
+                // Fallback for standard JSON response
+                const data = await res.json();
+                accumulatedAnswer = data.answer || "";
+                renderCompleteCard(data);
+            }
+
+            function processStreamEvent(event) {
+                if (event.type === 'conversation_meta') {
+                    currentConversationId = event.conversation_id;
+                    if (event.title && !currentConversationTitle) {
+                        currentConversationTitle = event.title;
+                        document.getElementById('chat-header-title').textContent = currentConversationTitle;
+                    }
+                } else if (event.type === 'status') {
+                    if (!hasStartedStreamingTokens && headerRightEl) {
+                        const stageMsg = event.message || 'Generating answer...';
+                        headerRightEl.innerHTML = `
+                            <span class="inline-flex items-center gap-1.5 text-xs text-primary dark:text-violet-400 font-medium">
+                                <span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>
+                                <span>${escapeHtml(stageMsg)}</span>
+                            </span>
+                        `;
+                    }
+                } else if (event.type === 'sources') {
+                    retrievedSources = event.sources || [];
+                    retrievedChunks = event.chunks || [];
+                } else if (event.type === 'token') {
+                    if (!hasStartedStreamingTokens) {
+                        hasStartedStreamingTokens = true;
+                        if (headerRightEl) {
+                            headerRightEl.innerHTML = `
+                                <span class="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                                    <span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>
+                                    <span>Generating...</span>
+                                </span>
+                            `;
+                        }
+                    }
+                    accumulatedAnswer += event.delta;
+                    contentEl.innerHTML = renderCleanPlainText(accumulatedAnswer) + '<span class="streaming-caret"></span>';
+                    if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
+                } else if (event.type === 'complete') {
+                    renderCompleteCard(event);
+                } else if (event.type === 'no_documents') {
+                    contentEl.innerHTML = `
+                        <div class="p-3 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 rounded-xl text-xs font-semibold border border-amber-200 dark:border-amber-800/60 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px]">info</span>
+                            <span>${escapeHtml(event.message)}</span>
+                        </div>
+                    `;
+                } else if (event.type === 'error') {
+                    contentEl.innerHTML = `
+                        <div class="p-3 bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 rounded-xl text-xs font-semibold border border-red-200 dark:border-red-800/60 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px]">error</span>
+                            <span>${escapeHtml(event.message)}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            function renderCompleteCard(event) {
+                if (event.conversation_id) {
+                    currentConversationId = event.conversation_id;
+                }
+
+                // Final Clean Render of Answer (removes streaming cursor)
+                contentEl.innerHTML = renderCleanPlainText(accumulatedAnswer || event.answer || "");
+
+                // Render Header Badges
+                const elapsed = event.elapsed_sec ? Number(event.elapsed_sec).toFixed(2) : null;
+                const elapsedHtml = elapsed ? `<span class="text-[11px] font-medium text-slate-500 dark:text-slate-400">⚡ ${elapsed}s</span>` : '';
+
+                headerRightEl.innerHTML = `
+                    ${elapsedHtml}
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/80">
+                        <span class="material-symbols-outlined text-[14px]">check</span>
+                        <span>Grounded in documents</span>
+                    </span>
+                `;
+
+                // Render Evidence & Sources Drawer
+                const sources = (retrievedSources && retrievedSources.length > 0) ? retrievedSources : (event.sources || []);
+                if (sources.length > 0 && sourcesContainerEl) {
+                    sourcesContainerEl.innerHTML = renderSourcesSectionHtml(sources);
+                }
+
+                // Update conversation message count
+                const totalBubbles = stream.children.length;
+                document.getElementById('chat-header-count').textContent = `${totalBubbles} message${totalBubbles === 1 ? '' : 's'}`;
+
+                // Update input placeholder
+                input.placeholder = "Ask a follow-up...";
+
+                // Refresh History list in background
+                loadBackendHistory();
+            }
 
         } catch (err) {
-            loadingArticle.innerHTML = `
-                <div class="p-3 bg-red-50 text-red-600 rounded-xl text-xs font-semibold">
-                    Error: ${escapeHtml(err.message)}
+            contentEl.innerHTML = `
+                <div class="p-3 bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 rounded-xl text-xs font-semibold border border-red-200 dark:border-red-800/60 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[16px]">error</span>
+                    <span>Error: ${escapeHtml(err.message)}</span>
                 </div>
             `;
+            if (headerRightEl) {
+                headerRightEl.innerHTML = `
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 dark:bg-red-950/70 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800/80">
+                        <span class="material-symbols-outlined text-[14px]">close</span>
+                        <span>Failed</span>
+                    </span>
+                `;
+            }
         } finally {
             sendBtn.disabled = false;
             icon.textContent = 'arrow_upward';
@@ -1315,7 +1511,18 @@ Search, reason, and answer using your private document knowledge base.
             if (res.ok) {
                 const data = await res.json();
                 const docs = data.documents || [];
-                document.getElementById('prompt-doc-count').textContent = `${docs.length} Document(s) Indexed`;
+                currentDocCount = docs.length;
+                
+                const promptDocCount = document.getElementById('prompt-doc-count');
+                if (promptDocCount) {
+                    if (currentDocCount === 0) {
+                        promptDocCount.textContent = '0 Documents Indexed';
+                    } else if (currentDocCount === 1) {
+                        promptDocCount.textContent = '1 Document Indexed';
+                    } else {
+                        promptDocCount.textContent = `${currentDocCount} Documents Indexed`;
+                    }
+                }
                 
                 const container = document.getElementById('sidebar-doc-container');
                 container.innerHTML = '';
